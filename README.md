@@ -1,66 +1,93 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# AnnourTicketOps
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Overview
 
-## About Laravel
+AnnourTicketOps is a ticket management application designed to streamline the handling of support tickets within an organization. It provides various functionalities for different user roles including Sub Admins, Main Admins, Supervisors, and Normal Users. The application focuses on tracking, reporting, and managing tickets efficiently, with robust logging and reporting features.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### General Functionality
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Ticket Management:**
+  - Create, update, close, and reopen tickets.
+  - Transfer tickets between users.
+  - Merge tickets related to the same issue.
 
-## Learning Laravel
+- **Statistics & Reports:**
+  - View ticket statistics and reports.
+  - Analyze ticket logs for actions such as creation, updates, and closures.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### User Roles
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+1. **Normal User:**
+   - Create and manage their own tickets.
+   - View and update ticket statistics and reports.
+   - Transfer tickets to other users and accept or decline transfer requests.
+   - Reopen tickets within 24 hours if issues persist.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2. **Supervisor:**
+   - Inherits all functionalities of a Normal User.
+   - Cannot decline ticket transfers.
+   - Monitor and track ticket statistics for normal users.
+   - Enforce tagging of problems and add new tags.
+   - View all tickets and their associated logs.
 
-## Laravel Sponsors
+3. **Sub Admin:**
+   - Manage Normal Users and Supervisors.
+   - View ticket statistics and reports for all users.
+   - Add and delete users and Supervisors.
+   - Oversee ticket management and reporting.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+4. **Main Admin:**
+   - Has all functionalities of Sub Admins.
+   - Can also add and manage Sub Admins.
+   - Full control over ticket management and user administration.
 
-### Premium Partners
+## Application Design
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+### Use Cases and Diagrams
 
-## Contributing
+- **Use Cases:**
+  - Detailed use cases for Sub Admin, Main Admin, Supervisor, and Normal User.
+  - Functional requirements include ticket creation, management, and reporting.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- **Sequence Diagrams:**
+  - Show interactions between users and the system for key processes.
 
-## Code of Conduct
+### Database and Reporting
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- **Database:**
+  - Structured to track ticket details, user actions, and logs.
+  - Ensure accurate and efficient data handling for reporting purposes.
 
-## Security Vulnerabilities
+- **Reporting:**
+  - Export reports and ticket data to Excel.
+  - Generate PDF files for tickets.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Communication and Integration
 
-## License
+- **External Communication:**
+  - Integrates with a chat application for user communication.
+  - Logs all user actions and ticket changes.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Future Enhancements
+
+- **File Management System:**
+  - Planned integration for file management to handle attachments and related files.
+
+- **Enhanced Reporting:**
+  - Additional reporting features and statistical analysis to be added.
+
+## Questions and Considerations
+
+- **Ticket Merging:**
+  - Tickets may be merged if related issues are identified to improve tracking.
+
+- **Role-Based Access:**
+  - Ensure appropriate permissions and access based on user roles.
+
+## Getting Started
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/abdelbasse/AnnourTicketOps.git
