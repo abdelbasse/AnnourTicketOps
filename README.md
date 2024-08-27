@@ -9,7 +9,7 @@ AnnourTicketOps is a ticket management application designed to streamline the ha
 ### General Functionality
 
 - **Ticket Management:**
-  - Create, update, close, and reopen tickets.
+  - Create, update, and close tickets.
   - Transfer tickets between users.
   - Merge tickets related to the same issue.
 
