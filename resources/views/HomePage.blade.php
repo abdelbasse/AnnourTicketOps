@@ -1,5 +1,9 @@
 @extends('layouts')
-
+@section('style')
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+@endsection
 @section('body')
     {{-- Data visulation --}}
     <div class="alertsContainer container mt-3">

@@ -76,7 +76,19 @@
                                 <span class="text nav-text">Users Management</span>
                             </a>
                         </li>
+                        <li class="nav-link">
+                            <a href="{{ route('fileM.index') }}">
+                                <i class='bx bx-folder icon'></i>
+                                <span class="text nav-text">Files Management</span>
+                            </a>
+                        </li>
                     @elseif (auth()->user()->role() == 3)
+                        <li class="nav-link">
+                            <a href="{{ route('fileM.index') }}">
+                                <i class='bx bx-folder icon'></i>
+                                <span class="text nav-text">Files Management</span>
+                            </a>
+                        </li>
                         {{-- Supervisor menu --}}
                     @elseif (auth()->user()->role() > 3)
                         {{-- Operatore menu --}}

@@ -11,6 +11,7 @@ use App\Http\Controllers\TicketManagementController;
 use Illuminate\Support\Facades\Route;
 use App\Exports\TableExport;
 use App\Http\Controllers\AccuileController;
+use App\Http\Controllers\FileManagementController;
 use App\Http\Controllers\TicketExporterController;
 use App\Http\Controllers\UserInfoAdminUserManagamentController;
 use Illuminate\Support\Facades\Storage;
@@ -104,14 +105,19 @@ Route::middleware('login')->group(function () {
         Route::post('/Tickets/items/Add', [AdminTicketManagementController::class, 'addNew'])->name('admin.ticket.Add');
     });
 
-    // Routes only for Supervisorrs
-    Route::middleware('Supervisor')->group(function () {
-    });
+    // |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    // |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-    // Routes only for norml users
-    Route::middleware('User')->group(function () {
-        // ticket managemnt for normal user's
-        // Route::post('/Tickets/Edit',[AdminTicketManagementController::class,'edit'])->name('user.ticket.Edit');
-        // Route::post('/Tickets/Add',[AdminTicketManagementController::class,'addNew'])->name('user.ticket.Add');
-    });
+    Route::get('/files',[FileManagementController::class,'index'])->name('fileM.index');
+
+    // Routes only for Supervisorrs
+    // Route::middleware('Supervisor')->group(function () {
+    // });
+
+    // // Routes only for norml users
+    // Route::middleware('User')->group(function () {
+    //     // ticket managemnt for normal user's
+    //     // Route::post('/Tickets/Edit',[AdminTicketManagementController::class,'edit'])->name('user.ticket.Edit');
+    //     // Route::post('/Tickets/Add',[AdminTicketManagementController::class,'addNew'])->name('user.ticket.Add');
+    // });
 });
