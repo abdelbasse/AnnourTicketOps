@@ -39,7 +39,7 @@ class AdminUserManagementController extends Controller
             ->with('latestLoginLog')
             ->get();
 
-        return response()->json(['users' => $ListOfUsersNoAdmin, 'admins' => $ListOfAdmins]);
+        return response()->json(['users' => $ListOfAdmins, 'admins' => $ListOfUsersNoAdmin]);
     }
 
     //
@@ -61,10 +61,7 @@ class AdminUserManagementController extends Controller
     {
         if ($req->type == 'Cuser') {
             $req->validate([
-                'Fname' => 'required|string|max:255',
-                'Lname' => 'required|string|max:255',
                 'email' => 'required',
-                'tell' => 'required|string|max:255',
                 'role' => 'required|integer|in:1,2,3,4',
             ]);
 

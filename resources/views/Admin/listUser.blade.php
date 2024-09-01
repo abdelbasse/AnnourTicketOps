@@ -177,7 +177,7 @@
                                 </div>
                             </div>
                             <div class="col">
-                                <div class="">
+                                <div class="" style="overflow: auto;">
                                     <hr>
                                     <table id="example" class="table table-striped" style="width:100%">
                                         <thead>
@@ -293,14 +293,14 @@
                                             </tr>
                                         </tfoot>
                                     </table>
-                                    <div class="d-flex justify-content-end mt-3">
-                                        <button type="button" class="btn btn-danger m-3 mt-0 mb-0"
-                                            id="deleteSelected">Delete
-                                            Selected</button>
-                                        <button type="button" class="btn btn-success mt-0 mb-0"
-                                            id="exportSelected">Export
-                                            Selected</button>
-                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end mt-3">
+                                    <button type="button" class="btn btn-danger m-3 mt-0 mb-0"
+                                        id="deleteSelected">Delete
+                                        Selected</button>
+                                    <button type="button" class="btn btn-success mt-0 mb-0"
+                                        id="exportSelected">Export
+                                        Selected</button>
                                 </div>
                             </div>
                         </div>
@@ -586,13 +586,14 @@
                 // Find the row with the user's ID and update it
                 const userRow = document.querySelector(`tr[data-userId="${user.id}"]`);
                 if (userRow) {
+                    console.log(user);
                     userRow.querySelector('td:nth-child(2)').innerHTML =
                         `<img src="{{ asset('') }}${user.imgUrl}" alt="Profile Image" class="profile-img">`;
                     userRow.querySelector('td:nth-child(3)').innerText = `${user.Fname} ${user.Lname}`;
                     userRow.querySelector('td:nth-child(4)').innerText = user.email;
                     userRow.querySelector('td:nth-child(5)').innerHTML = `<span class="badge rounded-pill text-bg-primary ">${user.role}</span>`;
-                    const statusBadge = (user.latest_login_log.isLogged)? 'success' : 'danger';
-                    const statusText = (user.latest_login_log.isLogged)? 'Online' : 'Offline';
+                    const statusBadge = (user.latest_login_log && user.latest_login_log.isLogged)? 'success' : 'danger';
+                    const statusText = (user.latest_login_log && user.latest_login_log.isLogged)? 'Online' : 'Offline';
                     userRow.querySelector('td:nth-child(6)').innerHTML =
                         `<span class="badge rounded-pill text-bg-${statusBadge}">${statusText}</span>`;
 

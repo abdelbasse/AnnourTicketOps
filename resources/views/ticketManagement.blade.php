@@ -122,7 +122,7 @@
 @endsection
 
 @section('body')
-    <div class="container mt-5">
+    <div class="container mt-3">
         {{-- menu --}}
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item position-relative" role="presentation">
@@ -171,191 +171,202 @@
             </li>
         </ul>
 
-        {{-- Fitrage card --}}
-        <div class="card mt-0">
-            <div class="card-body">
-                <h3 class="card-title">Filtration Options</h3>
-                <form id="filterForm">
-                    <div class="accordion" id="dateAccordion">
-                        <!-- Created Date Filter -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingCreatedDate">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseCreatedDate" aria-expanded="false"
-                                    aria-controls="collapseCreatedDate">
-                                    Created Date
-                                </button>
-                            </h2>
-                            <div id="collapseCreatedDate" class="accordion-collapse collapse"
-                                aria-labelledby="headingCreatedDate" data-bs-parent="#dateAccordion">
-                                <div class="accordion-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="createdDateStart" class="form-label">Start Date & Time</label>
-                                            <input type="datetime-local" id="createdDateStart" name="createdDateStart"
-                                                class="form-control">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="createdDateEnd" class="form-label">End Date & Time</label>
-                                            <input type="datetime-local" id="createdDateEnd" name="createdDateEnd"
-                                                class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Incident Date Filter -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingIncidentDate">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseIncidentDate" aria-expanded="false"
-                                    aria-controls="collapseIncidentDate">
-                                    Incident Date
-                                </button>
-                            </h2>
-                            <div id="collapseIncidentDate" class="accordion-collapse collapse"
-                                aria-labelledby="headingIncidentDate" data-bs-parent="#dateAccordion">
-                                <div class="accordion-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="incidentDateStart" class="form-label">Start Date & Time</label>
-                                            <input type="datetime-local" id="incidentDateStart" name="incidentDateStart"
-                                                class="form-control">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="incidentDateEnd" class="form-label">End Date & Time</label>
-                                            <input type="datetime-local" id="incidentDateEnd" name="incidentDateEnd"
-                                                class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Closure Date Filter -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingClosureDate">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseClosureDate" aria-expanded="false"
-                                    aria-controls="collapseClosureDate">
-                                    Cloture Date
-                                </button>
-                            </h2>
-                            <div id="collapseClosureDate" class="accordion-collapse collapse"
-                                aria-labelledby="headingClosureDate" data-bs-parent="#dateAccordion">
-                                <div class="accordion-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="closureDateStart" class="form-label">Start Date & Time</label>
-                                            <input type="datetime-local" id="closureDateStart" name="closureDateStart"
-                                                class="form-control">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="closureDateEnd" class="form-label">End Date & Time</label>
-                                            <input type="datetime-local" id="closureDateEnd" name="closureDateEnd"
-                                                class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Other Filters -->
-                    <div class="row mt-3">
-                        <div class="col-md-3">
-                            <b><label for="equipmentFilter" class="form-label">Equipment</label></b>
-                            <select id="equipmentFilter" name="equipmentFilter" class="form-select" multiple>
-                                @foreach ($equipements as $item)
-                                    <option value="{{ $item->id }}">{{ $item->equipement }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <b><label for="airportFilter" class="form-label">Airport</label></b>
-                            <select id="airportFilter" name="airportFilter" class="form-select" multiple>
-                                @foreach ($airports as $item)
-                                    <option value="{{ $item->id }}">{{ $item->code }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <b><label for="natureAccidentFilter" class="form-label">Nature of Accident</label></b>
-                            <select id="natureAccidentFilter" name="natureAccidentFilter" class="form-select" multiple>
-                                @foreach ($problems as $item)
-                                    <option value="{{ $item->id }}">{{ $item->val }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <b><label for="natureSolutionFilter" class="form-label">Nature of Solution</label></b>
-                            <select id="natureSolutionFilter" name="natureSolutionFilter" class="form-select" multiple>
-                                @foreach ($solutions as $item)
-                                    <option value="{{ $item->id }}">{{ $item->val }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-md-12">
-                            <b><label for="statusFilter" class="form-label">Ticket Status</label></b>
-                            <div id="statusFilter" class="d-flex">
-                                <div class="form-check m-2 mt-0 mb-0">
-                                    <input class="form-check-input border" type="checkbox" value="0"
-                                        id="statusOpen">
-                                    <label class="form-check-label" for="statusOpen">Open</label>
-                                </div>
-                                <div class="form-check m-2 mt-0 mb-0">
-                                    <input class="form-check-input border" type="checkbox" value="1"
-                                        id="statusRecovered">
-                                    <label class="form-check-label" for="statusRecovered">Recovered</label>
-                                </div>
-                                <div class="form-check m-2 mt-0 mb-0">
-                                    <input class="form-check-input border" type="checkbox" value="2"
-                                        id="statusClosed">
-                                    <label class="form-check-label" for="statusClosed">Cloture</label>
-                                </div>
-                                @if (auth()->user()->role() <= 3)
-                                    <div class="form-check m-2 mt-0 mb-0">
-                                        <input class="form-check-input border" type="checkbox" value="3"
-                                            id="statusValidated">
-                                        <label class="form-check-label" for="statusValidated">Validated</label>
-                                    </div>
-                                    <div class="form-check m-2 mt-0 mb-0">
-                                        <input class="form-check-input border" type="checkbox" value="4"
-                                            id="statusNotValidated">
-                                        <label class="form-check-label" for="statusNotValidated">Not Validated</label>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-md-12 text-right d-flex justify-content-end">
-                            <div class="btn-container ">
-                                <button type="button" id="applyFilters" class="btn btn-primary m-2 mt-0 mb-0">Apply
-                                    Filters</button>
-                                <button type="button" id="clearFilters" class="btn btn-secondary m-2 mt-0 mb-0">Clear
-                                    Filters</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+        <style>
+            .offcanvas-end {
+                width: 400px; /* Adjust the width as needed */
+            }
+        </style>
 
+        {{-- Fitrage card --}}
 
         {{-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| --}}
         <!-- Tickets Table -->
-        <div class="card mt-4">
+        <div class="card mt-0">
             <div class="card-body">
                 <div class="row m-0 p-0 row-cols-1">
                     <div class="col p-2 pt-0 pb-0">
                         <div class="row m-1 mt-0 mb-0">
                             <div class="col m-0 p-0 align-content-center">
                                 <h3>Tickets List</h3>
+                                {{-- 2342234 --}}
                             </div>
                             <div class="col m-0 p-0 d-flex justify-content-end align-content-center">
-
-                                <div class="d-flex justify-content-end mt-3">
+                                <div class="justify-content-center align-content-center mt-0 mb-0 m-2">
+                                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Filter</button>
+                                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                                        <div class="offcanvas-header">
+                                            <h5 class="offcanvas-title" id="offcanvasRightLabel">Filtration Options</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                        </div>
+                                        <div class="offcanvas-body">
+                                            <form id="filterForm">
+                                                <div class="accordion" id="dateAccordion">
+                                                    <!-- Created Date Filter -->
+                                                    <div class="accordion-item">
+                                                        <h2 class="accordion-header" id="headingCreatedDate">
+                                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                                data-bs-target="#collapseCreatedDate" aria-expanded="false"
+                                                                aria-controls="collapseCreatedDate">
+                                                                Created Date
+                                                            </button>
+                                                        </h2>
+                                                        <div id="collapseCreatedDate" class="accordion-collapse collapse"
+                                                            aria-labelledby="headingCreatedDate" data-bs-parent="#dateAccordion">
+                                                            <div class="accordion-body">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <label for="createdDateStart" class="form-label">Start Date & Time</label>
+                                                                        <input type="datetime-local" id="createdDateStart" name="createdDateStart"
+                                                                            class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-12">
+                                                                        <label for="createdDateEnd" class="form-label">End Date & Time</label>
+                                                                        <input type="datetime-local" id="createdDateEnd" name="createdDateEnd"
+                                                                            class="form-control">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Incident Date Filter -->
+                                                    <div class="accordion-item">
+                                                        <h2 class="accordion-header" id="headingIncidentDate">
+                                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                                data-bs-target="#collapseIncidentDate" aria-expanded="false"
+                                                                aria-controls="collapseIncidentDate">
+                                                                Incident Date
+                                                            </button>
+                                                        </h2>
+                                                        <div id="collapseIncidentDate" class="accordion-collapse collapse"
+                                                            aria-labelledby="headingIncidentDate" data-bs-parent="#dateAccordion">
+                                                            <div class="accordion-body">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <label for="incidentDateStart" class="form-label">Start Date & Time</label>
+                                                                        <input type="datetime-local" id="incidentDateStart" name="incidentDateStart"
+                                                                            class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-12">
+                                                                        <label for="incidentDateEnd" class="form-label">End Date & Time</label>
+                                                                        <input type="datetime-local" id="incidentDateEnd" name="incidentDateEnd"
+                                                                            class="form-control">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Closure Date Filter -->
+                                                    <div class="accordion-item">
+                                                        <h2 class="accordion-header" id="headingClosureDate">
+                                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                                data-bs-target="#collapseClosureDate" aria-expanded="false"
+                                                                aria-controls="collapseClosureDate">
+                                                                Cloture Date
+                                                            </button>
+                                                        </h2>
+                                                        <div id="collapseClosureDate" class="accordion-collapse collapse"
+                                                            aria-labelledby="headingClosureDate" data-bs-parent="#dateAccordion">
+                                                            <div class="accordion-body">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <label for="closureDateStart" class="form-label">Start Date & Time</label>
+                                                                        <input type="datetime-local" id="closureDateStart" name="closureDateStart"
+                                                                            class="form-control">
+                                                                    </div>
+                                                                    <div class="col-md-12">
+                                                                        <label for="closureDateEnd" class="form-label">End Date & Time</label>
+                                                                        <input type="datetime-local" id="closureDateEnd" name="closureDateEnd"
+                                                                            class="form-control">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Other Filters -->
+                                                <div class="row mt-3">
+                                                    <div class="col-md-12">
+                                                        <b><label for="equipmentFilter" class="form-label">Equipment</label></b>
+                                                        <select id="equipmentFilter" name="equipmentFilter" class="form-select" multiple>
+                                                            @foreach ($equipements as $item)
+                                                                <option value="{{ $item->id }}">{{ $item->equipement }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <b><label for="airportFilter" class="form-label">Airport</label></b>
+                                                        <select id="airportFilter" name="airportFilter" class="form-select" multiple>
+                                                            @foreach ($airports as $item)
+                                                                <option value="{{ $item->id }}">{{ $item->code }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <b><label for="natureAccidentFilter" class="form-label">Nature of Accident</label></b>
+                                                        <select id="natureAccidentFilter" name="natureAccidentFilter" class="form-select" multiple>
+                                                            @foreach ($problems as $item)
+                                                                <option value="{{ $item->id }}">{{ $item->val }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <b><label for="natureSolutionFilter" class="form-label">Nature of Solution</label></b>
+                                                        <select id="natureSolutionFilter" name="natureSolutionFilter" class="form-select" multiple>
+                                                            @foreach ($solutions as $item)
+                                                                <option value="{{ $item->id }}">{{ $item->val }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-md-12" style="width: 100%;">
+                                                        <b><label for="statusFilter" class="form-label">Ticket Status</label></b>
+                                                        <div id="statusFilter" class="d-flex flex-wrap" style="width: 100%;">
+                                                            <div class="form-check m-2 mt- mb-2">
+                                                                <input class="form-check-input border" type="checkbox" value="0"
+                                                                    id="statusOpen">
+                                                                <label class="form-check-label" for="statusOpen">Open</label>
+                                                            </div>
+                                                            <div class="form-check m-2 mt- mb-2">
+                                                                <input class="form-check-input border" type="checkbox" value="1"
+                                                                    id="statusRecovered">
+                                                                <label class="form-check-label" for="statusRecovered">Recovered</label>
+                                                            </div>
+                                                            <div class="form-check m-2 mt- mb-2">
+                                                                <input class="form-check-input border" type="checkbox" value="2"
+                                                                    id="statusClosed">
+                                                                <label class="form-check-label" for="statusClosed">Cloture</label>
+                                                            </div>
+                                                            @if (auth()->user()->role() <= 3)
+                                                                <div class="form-check m-2 mt- mb-2">
+                                                                    <input class="form-check-input border" type="checkbox" value="3"
+                                                                        id="statusValidated">
+                                                                    <label class="form-check-label" for="statusValidated">Validated</label>
+                                                                </div>
+                                                                <div class="form-check m-2 mt- mb-2">
+                                                                    <input class="form-check-input border" type="checkbox" value="4"
+                                                                        id="statusNotValidated">
+                                                                    <label class="form-check-label" for="statusNotValidated">Not Validated</label>
+                                                                </div>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-md-12 text-right d-flex justify-content-end">
+                                                        <div class="btn-container ">
+                                                            <button type="button" id="applyFilters" class="btn btn-primary m-2 mt-0 mb-0">Apply
+                                                                Filters</button>
+                                                            <button type="button" id="clearFilters" class="btn btn-secondary m-2 mt-0 mb-0">Clear
+                                                                Filters</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end align-items-center">
                                     <div class="dropdown">
                                         <button class="btn btn-secondary dropdown-toggle" type="button"
                                             data-bs-toggle="dropdown" aria-expanded="false">
@@ -445,13 +456,13 @@
                                                         <label for="SupportNotification" class="form-label">Support De
                                                             Notification</label>
                                                         <input type="text" class="form-control"
-                                                            id="SupportNotification" name="SupportNotification" value="">
+                                                            id="SupportNotification" name="SupportNotification" value="Platforme Supervison">
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="ContactReclamation" class="form-label">Contact
                                                             Reclamation</label>
                                                         <input type="text" class="form-control"
-                                                            id="ContactReclamation" name="ContactReclamation">
+                                                            id="ContactReclamation" name="ContactReclamation" value="Operatore NOC-AT">
                                                     </div>
                                                     <!-- Add more fields as needed -->
                                                 </div>

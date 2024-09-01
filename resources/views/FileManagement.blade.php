@@ -12,14 +12,15 @@
             height: 24px;
         }
 
-        .theContainerForAddingNewItem{
+        .selectableItemsContainer{
             cursor: pointer;
         }
     </style>
 @endsection
 
 @section('body')
-    <div class="container">
+    <div class="container mt-5">
+        <h2>[Out Of Service]</h2>
         <!-- Breadcrumb -->
         <div class="row d-flex justify-content-between">
             <div class="col">
@@ -27,17 +28,7 @@
                     <ol class="breadcrumb d-flex align-items-center">
                         <li class="breadcrumb-item">
                             <a href="##" class="d-flex align-items-center">
-                                <img src="https://cdn-icons-png.flaticon.com/128/14034/14034653.png" alt="Home Icon" height="30px" class="m-2 mt-0 mb-0">Home
-                            </a>
-                        </li>
-                        <li class="breadcrumb-item">
-                            <a href="" class="d-flex align-items-center">
-                                <img src="https://cdn-icons-png.flaticon.com/128/14090/14090367.png" alt="Folder Icon" height="20px" class="m-2 mt-0 mb-0">Folders0
-                            </a>
-                        </li>
-                        <li class="breadcrumb-item">
-                            <a href="" class="d-flex align-items-center">
-                                <img src="https://cdn-icons-png.flaticon.com/128/14090/14090367.png" alt="Folder Icon" height="20px" class="m-2 mt-0 mb-0">Folders1
+                                <img src="https://cdn-icons-png.flaticon.com/128/14034/14034653.png" alt="Home Icon" height="30px" class="m-2 mt-0 mb-0">Root
                             </a>
                         </li>
                     </ol>
@@ -53,35 +44,11 @@
 
         <!-- Folders Section -->
         <h5><b>Folders</b></h5>
-        <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 row-cols-sm-2" id="FolderContainer">
-            <div class="col col-md-2 folder mb-3">
-                <div class="card shadow">
-                    <div class="row row-cols-3 d-flex align-items-center" style="height: 64px;">
-                        <div class="col col-3 d-flex align-items-center" style="height: 100%;">
-                            <img src="https://cdn-icons-png.flaticon.com/128/3735/3735057.png"
-                                class="folder-icon p-2 pt-0 pb-0" alt="Folder Icon" height="85%" width="auto">
-                        </div>
-                        <div class="col col-7">
-                            <span class="folder-name">1. Resource</span>
-                        </div>
-                        <div class="col col-2 d-flex align-items-center justify-content-end" style="height: 100%;">
-                            <div class="dropdown m-2 mt-0 mb-0">
-                                <button class="btn btn-secondary dropdown-toggle dropdown-btn p-0 m-0 d-flex justify-content-center align-items-center" type="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class='bx bx-sm bx-dots-horizontal-rounded p-0 m-0'></i>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#updateFolderModal">Update Folder Name</a></li>
-                                    <li><a class="dropdown-item text-danger DeleteFolderBtn" href="#" >Delete Folder</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="row row-cols-1 row-cols-lg-4 row-cols-lx-4 row-cols-md-2 row-cols-sm-2" id="FolderContainer">
+            {{-- List of foders --}}
             <!-- New Folder Button Modal -->
-            <div class="col col-md-2 folder mb-3">
-                <div class="card shadow theContainerForAddingNewItem" style="background-color: #F7F7F7;" id="createNewFolder">
+            <div class="col folder mb-3">
+                <div class="card shadow selectableItemsContainer" style="background-color: #F7F7F7;" id="createNewFolder">
                     <div class="row row-cols-2 d-flex align-items-center" style="height: 64px;">
                         <div class="col col-4 d-flex justify-content-end align-items-center" style="height: 100%;">
                             <img src="https://cdn-icons-png.flaticon.com/128/10337/10337471.png"
@@ -98,35 +65,11 @@
         <hr class="mt-3">
         <!-- Files Section -->
         <h5 class="mt-3"><b>Files</b></h5>
-        <div class="row" id="FileContainer">
-            <div class="col col-md-2 mb-3">
-                <div class="card shadow">
-                    <div class="row row-cols-1 d-flex align-items-center" style="height: 180px;">
-                        <div class="col d-flex justify-content-end align-items-center " style="height: 20%;">
-                            <div class="dropdown m-2 mt-3 mb-0">
-                                <button class="btn btn-secondary dropdown-toggle dropdown-btn p-0 m-0 d-flex justify-content-center align-items-center" type="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class='bx bx-sm bx-dots-horizontal-rounded p-0 m-0'></i>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#updateFileModal">Update File Name</a></li>
-                                    <li><a class="dropdown-item text-danger DeleteFileBtn" href="#">Delete File</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col d-flex justify-content-center align-items-center" style="height: 50%;">
-                            <img src="https://cdn-icons-png.flaticon.com/128/4726/4726010.png"
-                                class="folder-icon p-2" alt="File Icon" height="100%" width="auto">
-                        </div>
-                        <div class="col d-flex justify-content-center" style="height: 30%;">
-                            <a class="text-center" href="">1. Resource nsd jbsif wif bwfi y.pdf</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="row row-cols-lg-4 row-cols-lx-4 row-cols-md-2 row-cols-sm-2" id="FileContainer">
+            {{-- List of files --}}
             <!-- Upload New File Button Modal -->
-            <div class="col col-md-2 mb-3" >
-                <div class="card shadow theContainerForAddingNewItem" style="background-color: #F7F7F7;" id="UploadNewFile">
+            <div class="col mb-3" >
+                <div class="card shadow selectableItemsContainer" style="background-color: #F7F7F7;" id="UploadNewFile">
                     <div class="row pt-3 row-cols-1 d-flex align-items-center" style="height: 180px;">
                         <div class="col d-flex justify-content-center align-items-center" style="height: 60%;">
                             <img src="https://cdn-icons-png.flaticon.com/128/10819/10819554.png"
@@ -359,8 +302,8 @@
             children.forEach(child => {
                 if (child.type === 'folder') {
                     folderContainer.innerHTML += `
-                        <div class="col col-md-2 mb-3 folder">
-                            <div class="card shadow">
+                        <div class="col mb-3 folder">
+                            <div class="card shadow selectableItemsContainer">
                                 <div class="row row-cols-3 d-flex align-items-center" style="height: 64px;" onclick="updateFolderContent(${child.id})">
                                     <div class="col col-3 d-flex align-items-center" style="height: 100%;">
                                         <img src="https://cdn-icons-png.flaticon.com/128/3735/3735057.png"
@@ -387,7 +330,7 @@
                     `;
                 } else if (child.type === 'file') {
                     fileContainer.innerHTML += `
-                        <div class="col col-md-2 mb-3">
+                        <div class="col mb-3">
                             <div class="card shadow">
                                 <div class="row row-cols-1 d-flex align-items-center" style="height: 180px;">
                                     <div class="col d-flex justify-content-end align-items-center" style="height: 20%;">
@@ -418,8 +361,8 @@
 
             // Always add "Create New Folder" button at the end
             folderContainer.innerHTML += `
-                <div class="col col-md-2 folder mb-3">
-                    <div class="card shadow theContainerForAddingNewItem" style="background-color: #F7F7F7;" id="createNewFolder">
+                <div class="col folder mb-3">
+                    <div class="card shadow selectableItemsContainer" style="background-color: #F7F7F7;" id="createNewFolder">
                         <div class="row row-cols-2 d-flex align-items-center" style="height: 64px;">
                             <div class="col col-4 d-flex justify-content-end align-items-center" style="height: 100%;">
                                 <img src="https://cdn-icons-png.flaticon.com/128/10337/10337471.png"
@@ -435,7 +378,7 @@
 
 
             fileContainer.innerHTML += `
-                <div class="col col-md-2 mb-3">
+                <div class="col mb-3">
                     <div class="card shadow theContainerForAddingNewItem" style="background-color: #F7F7F7;" id="UploadNewFile">
                         <div class="row pt-3 row-cols-1 d-flex align-items-center" style="height: 180px;">
                             <div class="col d-flex justify-content-center align-items-center" style="height: 60%;">

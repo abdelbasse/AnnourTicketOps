@@ -630,7 +630,7 @@ class TicketManagementController extends Controller
     {
         if ($req->type === 'analyse') {
             $operatoreId = null;
-            if (!empty($req->operatorNTicket) || !empty($req->operatorName) || !empty($req->operatorMail) || !empty($req->operatorTell)) {
+            if (!empty($req->operatorNTicket) || !empty($req->operatorName)) {
                 // Check if an operator with the same NTicket exists
                 $existingOperator = OperatorTicket::where('NTicket', $req->operatorNTicket)
                     ->first();
@@ -638,9 +638,7 @@ class TicketManagementController extends Controller
                 if ($existingOperator) {
                     // If the NTicket exists, check if other fields match
                     if (
-                        $existingOperator->name === $req->operatorName &&
-                        $existingOperator->mail === $req->operatorMail &&
-                        $existingOperator->tell === $req->operatorTell
+                        $existingOperator->name === $req->operatorName
                     ) {
                         // If everything matches, use the existing operator
                         $operatoreId = $existingOperator->id;
@@ -649,8 +647,8 @@ class TicketManagementController extends Controller
                         $operatorTicket = OperatorTicket::create([
                             'NTicket' => $req->operatorNTicket,
                             'name' => $req->operatorName,
-                            'mail' => $req->operatorMail,
-                            'tell' => $req->operatorTell,
+                            'mail' => $req->operatorMail != null ? $req->operatorMail  : '',
+                            'tell' => $req->operatorTell != null ? $req->operatorTell  : '',
                         ]);
 
                         $operatoreId = $operatorTicket->id;

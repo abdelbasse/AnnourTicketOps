@@ -332,6 +332,9 @@
                                 <div class="col-md-6">
                                     <div class="row">
                                         <div class="col-12">
+                                            <p><strong>N Ticket:</strong> {{ $ticket->id }}</p>
+                                        </div>
+                                        <div class="col-12">
                                             <p><strong>Title:</strong> {{ $ticket->title }}</p>
                                         </div>
                                         <div class="col-12">
@@ -462,7 +465,7 @@
                                         <div class="accordion-body">
                                             <form id="operatorForm">
                                                 <div class="mb-3">
-                                                    <label for="nticket" class="form-label">NTicket</label>
+                                                    <label for="nticket" class="form-label">NTicket *</label>
                                                     <input type="text" class="form-control" id="operator_nticket"
                                                         placeholder="Enter NTicket"
                                                         value=@if ($ticket->hasAnalyseLogs()) @if ($ticket->latestAnalyseLog->operatoreID != null)
@@ -470,7 +473,7 @@
                                                         @endif>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="operatorName" class="form-label">Name</label>
+                                                    <label for="operatorName" class="form-label">Name *</label>
                                                     <input type="text" class="form-control" id="operator_name"
                                                         placeholder="Enter Name"
                                                         value=@if ($ticket->hasAnalyseLogs()) @if ($ticket->latestAnalyseLog->operatoreID != null)
@@ -1268,6 +1271,8 @@
                     },
                     error: function(xhr, status, error) {
                         // Handle error responses if needed
+                        console.log(xhr);
+                        console.log(error);
                         showAlertD('Failed to add analysis log. Please try again.');
                     }
                 });

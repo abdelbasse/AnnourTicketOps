@@ -161,6 +161,12 @@
     }
 @endphp
 
+<style>
+    img {
+        max-width: 400px; /* Adjust this value based on your needs */
+        height: auto; /* Maintains aspect ratio */
+    }
+</style>
 <body style="margin: 0; padding: 0px;">
     <header class="footer" style="margin: 0px; padding: 0px; margin-bottom: 8px;">
         <div style="text-align: left;">
@@ -250,7 +256,7 @@
             </tr>
             <tr>
                 <th>Nature de la solution</th>
-                <td>{{ $ticket->latestRecoveryLog->getNatureSolution->val }}</td>
+                <td>{{ $ticket->latestRecoveryLog->getNatureSolution->val }} @if ($ticket->hasAnalyseLogs()) @if ($ticket->latestAnalyseLog->operatoreID != null) sous Ticket N° : {{ $ticket->latestAnalyseLog->getOperatore->NTicket }} @endif @endif</td>
             </tr>
             <tr>
                 <th>Périmètre Incident</th>

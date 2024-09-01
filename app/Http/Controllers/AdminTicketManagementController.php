@@ -396,7 +396,7 @@ class AdminTicketManagementController extends Controller
         // Create a new ticket
         $ticket = Ticket::create([
             'title' => $req->title,
-            'desc' => $req->desc,
+            'desc' => $req->desc != null ? $req->desc : '',
             'AerportID' => $req->airport,
             'DateIncident' => $dateIncident,
             'contactReclamation' => $req->ContactReclamation,

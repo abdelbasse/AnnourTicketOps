@@ -33,7 +33,7 @@ class TableExport implements FromArray, WithHeadings, WithStyles, ShouldAutoSize
             $dateIncident = Carbon::parse($ticket->DateIncident);
             $dateRecovery = Carbon::parse($ticket->latestRecoveryLog->dateRecovery);
             $dateCloture = Carbon::parse($ticket->DateCloture);
-            $dateCreatedAt = Carbon::parse($ticket->created_at)->addHour(); // Add one hour
+            $dateCreatedAt = Carbon::parse($ticket->created_at); // Add one hour
 
             $durreIncident = $this->getDuration($dateIncident, $dateRecovery);
             $durreTicket = $this->getDuration($dateCreatedAt, $dateCloture);

@@ -4,6 +4,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
 @endsection
+
+<style>
+    .CARD_header_bgcolor{
+        background-color: var(--primary-color) !important;
+        /* color: var(--primary-color-light) !important; */
+    }
+</style>
 @section('body')
     {{-- Data visulation --}}
     <div class="alertsContainer container mt-3">
@@ -13,7 +20,7 @@
                 <div class="row" style="height: 100%;">
                     <div class="col-12 col-lg-6 col-md-12 mb-3 mb-lg-0">
                         <div class="card shadow-sm d-flex flex-row align-items-center"
-                            style="max-height: 70%; background-color: #ffffff; color: #333;">
+                            style="max-height: 70%; background-color: var(--sidebar-color); color: var(--text-primary);">
                             <div class="ms-auto p-3" style="max-width:30%;">
                                 <img src="https://cdn-icons-png.flaticon.com/128/7411/7411135.png" alt=""
                                     width="100%">
@@ -26,7 +33,7 @@
                     </div>
                     <div class="col-12 col-lg-6 col-md-12 mb-3 mb-lg-0">
                         <div class="card shadow-sm d-flex flex-row align-items-center"
-                            style="max-height: 70%; background-color: #ffffff; color: #333;">
+                            style="max-height: 70%; background-color: var(--sidebar-color); color: var(--text-primary);">
                             <div class="ms-auto p-3" style="max-width:30%;">
                                 <img src="https://cdn-icons-png.flaticon.com/128/12822/12822540.png" alt=""
                                     width="100%">
@@ -39,7 +46,7 @@
                     </div>
                     <div class="col-12 col-lg-12 col-md-12 mb-3 mb-lg-0">
                         <div class="card shadow-sm d-flex flex-row align-items-center"
-                            style="max-height: 120%; background-color: #ffffff; color: #333;">
+                            style="max-height: 120%; background-color: var(--sidebar-color); color: var(--text-primary);">
                             <div class="p-3">
                                 <h5 class="card-title">Tickets Not Closed</h5>
                                 <p class="card-text display-6 fw-bold">1234</p>
@@ -53,8 +60,8 @@
             </div>
 
             <div class="col-12 col-lg-6 col-md-12 profile-column mt-4">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-primary text-white">
+                <div class="card shadow-sm" style="background-color: var(--sidebar-color); color: var(--text-primary);">
+                    <div class="card-header CARD_header_bgcolor text-white">
                         <h5 class="card-title mb-0">Monthly Ticket Statistics <b>[RealTime]</b></h5>
                     </div>
                     <div class="card-body">
@@ -69,9 +76,9 @@
             {{-- heat map mororco --}}
             <div class="col-12 col-lg-5 col-md-12 profile-column mt-4">
                 <!-- Top Users Activity Card -->
-                <div class="card shadow-sm">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="card-title mb-0">Top Users Activity</h5>
+                <div class="card shadow-sm" style="background-color: var(--sidebar-color); color: var(--text-primary);">
+                    <div class="card-header CARD_header_bgcolor text-white">
+                        <h5 class="card-title mb-0">Top Users Activity<b>[RealTime]</b></h5>
                     </div>
                     <div class="card-body">
                         <p class="card-text">This card displays the top 5 users based on activity. You can filter the
@@ -103,9 +110,9 @@
 
             <div class="col-12 col-lg-7 col-md-12 profile-column mt-4">
                 <!-- Airport Ticket Statistics Card -->
-                <div class="card shadow-sm">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="card-title mb-0">Airport Ticket Statistics</h5>
+                <div class="card shadow-sm" style="background-color: var(--sidebar-color); color: var(--text-primary);">
+                    <div class="card-header CARD_header_bgcolor text-white">
+                        <h5 class="card-title mb-0">Airport Ticket Statistics <b>[RealTime]</b></h5>
                     </div>
                     <div class="card-body">
                         <label for="airportTimeRange" class="form-label">Select Time Range</label>
@@ -123,8 +130,8 @@
 
             <div class="col-12 col-lg-8 col-md-12 profile-column mt-4">
                 <!-- Line Chart for Ticket Metrics -->
-                <div class="card shadow-sm">
-                    <div class="card-header bg-primary text-white">
+                <div class="card shadow-sm" style="background-color: var(--sidebar-color); color: var(--text-primary);">
+                    <div class="card-header CARD_header_bgcolor text-white">
                         <h5 class="card-title mb-0">Ticket Metrics Over Time <b>[RealTime]</b></h5>
                     </div>
                     <div class="card-body">
@@ -145,8 +152,8 @@
 
             <div class="col-12 col-lg-4 col-md-12 profile-column mt-4">
                 <!-- User Ticket Statistics Card -->
-                <div class="card shadow-sm">
-                    <div class="card-header bg-primary text-white">
+                <div class="card shadow-sm" style="background-color: var(--sidebar-color); color: var(--text-primary);">
+                    <div class="card-header CARD_header_bgcolor text-white">
                         <h5 class="card-title mb-0">Ticket Lifecycle Summary <b>[RealTime]</b></h5>
                     </div>
                     <div class="card-body">
@@ -170,13 +177,13 @@
 
             {{-- ----------------- --}}
 
-            <div class="col-12 col-lg-6 col-md-12 profile-column mt-4">
+            <div class="col-12 col-lg-12 col-md-12 profile-column mt-4">
                 <!-- User Ticket Statistics Card -->
-                <div class="card shadow-sm">
-                    <div class="card-header bg-primary text-white">
+                <div class="card shadow-sm" style="background-color: var(--sidebar-color); color: var(--text-primary);">
+                    <div class="card-header CARD_header_bgcolor text-white">
                         <h5 class="card-title mb-0">Problem Nature Statistics<b>[RealTime]</b></h5>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" style="overflow: auto;">
                         <table id="problemTable" class="table table-striped table-bordered">
                             <thead>
                                 <tr>
@@ -196,13 +203,13 @@
                 </div>
             </div>
 
-            <div class="col-12 col-lg-6 col-md-12 profile-column mt-4">
+            <div class="col-12 col-lg-12 col-md-12 profile-column mt-4">
                 <!-- User Ticket Statistics Card -->
-                <div class="card shadow-sm">
-                    <div class="card-header bg-primary text-white">
+                <div class="card shadow-sm" style="background-color: var(--sidebar-color); color: var(--text-primary);">
+                    <div class="card-header CARD_header_bgcolor text-white">
                         <h5 class="card-title mb-0">Solution Nature Statistics<b>[RealTime]</b></h5>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" style="overflow: auto;">
                         <table id="solutionTable" class="table table-striped table-bordered">
                             <thead>
                                 <tr>
@@ -268,7 +275,10 @@
                     responsive: true,
                     plugins: {
                         legend: {
-                            position: 'top'
+                            position: 'top',
+                            labels: {
+                                color: '#4385ff' // Text color for legend labels
+                            }
                         }
                     }
                 }
@@ -341,21 +351,32 @@
                             display: true,
                             title: {
                                 display: true,
-                                text: 'Time'
+                                text: 'Time',
+                                color: '#4385ff'
+                            },
+                            ticks: {
+                                color: '#4385ff' // Color for x-axis ticks
                             }
                         },
                         y: {
                             display: true,
                             title: {
                                 display: true,
-                                text: 'Hours'
+                                text: 'Hours',
+                                color: '#4385ff'
                             },
-                            beginAtZero: true
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#4385ff' // Color for x-axis ticks
+                            }
                         }
                     },
                     plugins: {
                         legend: {
-                            position: 'top'
+                            position: 'top',
+                            labels: {
+                                color: '#4385ff' // Text color for legend labels
+                            }
                         }
                     }
                 }
@@ -420,20 +441,31 @@
                     responsive: true,
                     scales: {
                         x: {
-                            stacked: true
+                            stacked: true,
+                            color: '#4385ff',
+                            ticks: {
+                                color: '#4385ff' // Color for x-axis ticks
+                            }
                         },
                         y: {
                             stacked: true,
                             beginAtZero: true,
                             title: {
                                 display: true,
-                                text: 'Number of Tickets'
+                                text: 'Number of Tickets',
+                                color: '#4385ff'
+                            },
+                            ticks: {
+                                color: '#4385ff' // Color for x-axis ticks
                             }
                         }
                     },
                     plugins: {
                         legend: {
-                            position: 'top'
+                            position: 'top',
+                            labels: {
+                                color: '#4385ff' // Text color for legend labels
+                            }
                         },
                         tooltip: {
                             mode: 'index',
@@ -495,20 +527,31 @@
                             beginAtZero: true,
                             title: {
                                 display: true,
-                                text: 'Airport Locations'
+                                text: 'Airport Locations',
+                                color: '#4385ff'
+                            },
+                            ticks: {
+                                color: '#4385ff' // Color for x-axis ticks
                             }
                         },
                         y: {
                             beginAtZero: true,
                             title: {
                                 display: true,
-                                text: 'Number of Tickets'
+                                text: 'Number of Tickets',
+                                color: '#4385ff'
+                            },
+                            ticks: {
+                                color: '#4385ff' // Color for x-axis ticks
                             }
                         }
                     },
                     plugins: {
                         legend: {
-                            position: 'top'
+                            position: 'top',
+                            labels: {
+                                color: '#4385ff' // Text color for legend labels
+                            }
                         },
                         tooltip: {
                             mode: 'index',
@@ -560,8 +603,8 @@
                 userItem.innerHTML = `
                     <img src="${user.imgSrc}" alt="User Image" class="rounded-circle me-3" width="50">
                     <div>
-                        <h6 class="mb-1">${user.name}</h6>
-                        <p class="text-muted mb-0">${user.email}</p>
+                        <h6 class="mb-1" style="color:var(--text-primary);">${user.name}</h6>
+                        <p class="mb-0" style="color:var(--toggle-color2);">${user.email}</p>
                     </div>
                     <hr>
                 `;
