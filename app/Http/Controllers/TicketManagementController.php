@@ -39,6 +39,11 @@ class TicketManagementController extends Controller
         ])->where('TicketParent', null)->where('id', '!=', $id)
             ->get();
 
+        $canEdit = false;
+        if(auth()->user()->id == $ticket->currentOwnerRelation->id){
+            $canEdit = true;
+        }
+
 
         $parentTickets = collect([]);
         $currentTicket = $ticket;
@@ -154,7 +159,8 @@ class TicketManagementController extends Controller
             foreach ($logs as $existingLog) {
                 if ($existingLog['logType'] === 'Recovery Log' &&
                     $existingLog['LogData']->repportBody === $log->repportBody &&
-                    $existingLog['LogData']->naruteSolutionID === $log->naruteSolutionID) {
+                    $existingLog['LogData']->naruteSolutionID === $log->naruteSolutionID &&
+                    $existingLog['LogData']->dateRecovery === $log->dateRecovery) {
                     $exists = true;
                     break;
                 }
@@ -173,7 +179,7 @@ class TicketManagementController extends Controller
                         ],
                         'logTypeIndex' => 7,
                         'logType' => 'Recovery Log [Recovery]',
-                        'date' => Carbon::parse($log->dateRecovery)->format('Y-m-d H:i:s'),
+                        'date' => Carbon::parse($log->created_at,'Africa/Casablanca')->format('Y-m-d H:i:s'),
                         'LogData' => $log,
                     ];
 
@@ -204,7 +210,7 @@ class TicketManagementController extends Controller
                     ],
                     'logTypeIndex' => 8,
                     'logType' => 'Cloture Log',
-                    'date' => Carbon::parse($log->clotureDate)->format('Y-m-d H:i:s'),
+                    'date' => Carbon::parse($log->clotureDate,'Africa/Casablanca')->format('Y-m-d H:i:s'),
                     'LogData' => $log,
                 ];
 
@@ -228,7 +234,12 @@ class TicketManagementController extends Controller
 
 
         // Add Transfer Logs
+        $loopOne = true;
         foreach ($transferLogs as $log) {
+            if($loopOne){
+                $loopOne = false;
+                continue;
+            }
             $logs[] = [
                 'user' => [
                     'name' => $log->owner->Fname,
@@ -258,7 +269,7 @@ class TicketManagementController extends Controller
             $logs[] = [
                 'user' => [
                     'name' => $ticket->validation->user->Fname,
-                    'imgURL' => asset($ticket->validation->user->imgUrl),
+                    'imgURL' => $ticket->validation->user->profile_image,
                 ],
                 'logTypeIndex' => 5,
                 'logType' => 'Add Comments',
@@ -272,7 +283,7 @@ class TicketManagementController extends Controller
             $logs[] = [
                 'user' => [
                     'name' => $ticket->validation->user->Fname,
-                    'imgURL' => asset($ticket->validation->user->imgUrl),
+                    'imgURL' => $ticket->validation->user->profile_image,
                 ],
                 'logTypeIndex' => 6,
                 'logType' => 'Validation',
@@ -333,14 +344,20 @@ class TicketManagementController extends Controller
             'userID'=> $authUserId,
 
             'role'=>$userRole,
+
+
+            'CanEdit' => $canEdit,
         ]);
     }
-
 
     //
     public function index($id)
     {
         $ticket = Ticket::find($id);
+        $canEdit = false;
+        if(auth()->user()->id == $ticket->currentOwnerRelation->id){
+            $canEdit = true;
+        }
         $tickets = Ticket::with([
             'aerport',
         ])->where('TicketParent', null)->where('id', '!=', $id)
@@ -455,7 +472,8 @@ class TicketManagementController extends Controller
             foreach ($logs as $existingLog) {
                 if ($existingLog['logType'] === 'Recovery Log' &&
                     $existingLog['LogData']->repportBody === $log->repportBody &&
-                    $existingLog['LogData']->naruteSolutionID === $log->naruteSolutionID) {
+                    $existingLog['LogData']->naruteSolutionID === $log->naruteSolutionID &&
+                    $existingLog['LogData']->dateRecovery === $log->dateRecovery) {
                     $exists = true;
                     break;
                 }
@@ -474,7 +492,7 @@ class TicketManagementController extends Controller
                         ],
                         'logTypeIndex' => 7,
                         'logType' => 'Recovery Log [Recovery]',
-                        'date' => Carbon::parse($log->dateRecovery)->format('Y-m-d H:i:s'),
+                        'date' => Carbon::parse($log->created_at,'Africa/Casablanca')->format('Y-m-d H:i:s'),
                         'LogData' => $log,
                     ];
 
@@ -505,7 +523,7 @@ class TicketManagementController extends Controller
                     ],
                     'logTypeIndex' => 8,
                     'logType' => 'Cloture Log',
-                    'date' => Carbon::parse($log->clotureDate)->format('Y-m-d H:i:s'),
+                    'date' => Carbon::parse($log->clotureDate,'Africa/Casablanca')->format('Y-m-d H:i:s'),
                     'LogData' => $log,
                 ];
 
@@ -529,7 +547,12 @@ class TicketManagementController extends Controller
 
 
         // Add Transfer Logs
+        $loopOne = true;
         foreach ($transferLogs as $log) {
+            if($loopOne){
+                $loopOne = false;
+                continue;
+            }
             $logs[] = [
                 'user' => [
                     'name' => $log->owner->Fname,
@@ -623,6 +646,8 @@ class TicketManagementController extends Controller
             'users' => $ListOfUsersnormal,
 
             'TicketLogs' => $logs,
+
+            'CanEdit' => $canEdit,
         ]);
     }
 
@@ -720,7 +745,7 @@ class TicketManagementController extends Controller
         }
 
         // Update the closure date
-        $ticket->DateCloture = Carbon::now();
+        $ticket->DateCloture = Carbon::now('Africa/Casablanca');
         if ($ticket && $ticket->status < 2) {
             $ticket->status = 2;
         }

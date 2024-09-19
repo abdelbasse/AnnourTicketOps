@@ -91,7 +91,7 @@
     </head>
 
     <body>
-        <div class="container mt-5">
+        <div class="container-fluid px-5 mt-5">
             <div class="row row-cols-1 row-cols-md-1 row-cols-lg-2 row-cols-sm-1">
                 <div class="col-12 col-lg-4 col-md-4 profile-column">
                     <div class="profile-container card p-5">
@@ -231,7 +231,7 @@
         </div>
 
         {{-- Data visulation --}}
-        <div class="alertsContainer container mt-3">
+        <div class="alertsContainer container-fluid px-5 mt-3">
             <div class="row row-cols-1 row-cols-md-1 row-cols-lg-2 row-cols-sm-1">
                 <div class="col-12 col-lg-8 col-md-12 profile-column">
                     <!-- Line Chart for Ticket Metrics -->
@@ -305,7 +305,7 @@
             </div>
         </div>
 
-        <div class="alertsContainer container  mt-3">
+        <div class="alertsContainer container-fluid px-5 mt-3">
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white">
                     <h5 class="card-title mb-0">Ticket Overview: Detailed Logs and User Activity</h5>

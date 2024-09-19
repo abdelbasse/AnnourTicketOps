@@ -17,31 +17,34 @@ class AccuileController extends Controller
     //
     public function index(){
         $ListOfTickets = $this->getUserTicketLogs();
+        $now = Carbon::now('Africa/Casablanca');
+
         return view('HomePage')->with([
             'ListOfTickets' => $ListOfTickets,
-            'lifeCyleOfTickets' => $this->getTicketStats($ListOfTickets),
+            'lifeCyleOfTickets' => $this->getTicketStats($ListOfTickets,$now->format("Y/m/d")),
             'MonthlyTicketStats' => $this->getMonthlyTicketStats($ListOfTickets),
-            'AvergaeTimeOfTickets' => $this->getTicketDataLine($ListOfTickets),
+            'AvergaeTimeOfTickets' => $this->getTicketDataLine($ListOfTickets,$now->format("Y/m/d")),
             'ProblemStatistics' => $this->getProblemStatistics(),
             'SolutionStatistics' => $this->getSolutionStatistics(),
             'HeaderInfoNbrTotalTickets' => $this->getTicketStatistics(),
-            'AerportTicketRealtion' => $this->getTicketDataBar(),
-            'top5Users'=> $this->getUserActivityData(),
+            'AerportTicketRealtion' => $this->getTicketDataBar($now->format("Y/m/d")),
+            'top5Users'=> $this->getUserActivityData($now->format("Y/m/d")),
         ]);
     }
 
     public function fetch(){
         $ListOfTickets = $this->getUserTicketLogs();
+        $now = Carbon::now('Africa/Casablanca');
         return response()->json([
             'ListOfTickets' => $ListOfTickets,
-            'lifeCyleOfTickets' => $this->getTicketStats($ListOfTickets),
+            'lifeCyleOfTickets' => $this->getTicketStats($ListOfTickets,$now),
             'MonthlyTicketStats' => $this->getMonthlyTicketStats($ListOfTickets),
-            'AvergaeTimeOfTickets' => $this->getTicketDataLine($ListOfTickets),
+            'AvergaeTimeOfTickets' => $this->getTicketDataLine($ListOfTickets,$now),
             'ProblemStatistics' => $this->getProblemStatistics(),
             'SolutionStatistics' => $this->getSolutionStatistics(),
             'HeaderInfoNbrTotalTickets' => $this->getTicketStatistics(),
-            'AerportTicketRealtion' => $this->getTicketDataBar(),
-            'top5Users'=> $this->getUserActivityData(),
+            'AerportTicketRealtion' => $this->getTicketDataBar($now),
+            'top5Users'=> $this->getUserActivityData($now),
         ]);
     }
 
@@ -344,7 +347,10 @@ class AccuileController extends Controller
     // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     // fucntion for the  nbr of ticket created ect...
-    private function getTicketStats($userTicketsLogs) {
+    private function getTicketStats($userTicketsLogs , $now) {
+
+
+        $now = Carbon::parse($now);
         $stats = [
             'today' => ['created' => 0, 'closed' => 0, 'recovered' => 0, 'workedOn' => 0],
             'lastWeek' => ['created' => 0, 'closed' => 0, 'recovered' => 0, 'workedOn' => 0],
@@ -352,7 +358,9 @@ class AccuileController extends Controller
             'lastYear' => ['created' => 0, 'closed' => 0, 'recovered' => 0, 'workedOn' => 0],
         ];
 
-        $now = Carbon::now();
+        // $now = Carbon::now('Africa/Casablanca');
+
+
 
         foreach ($userTicketsLogs as $ticketLog) {
             $ticket = $ticketLog['ticket'];
@@ -465,8 +473,10 @@ class AccuileController extends Controller
     // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     // fucntion for the average time of ticket in h ....
-    function getTicketDataLine($userTicketsLogs)
+    function getTicketDataLine($userTicketsLogs , $now)
     {
+
+        $now = Carbon::parse($now);
         // Initialize data array
         $ticketDataLine = [
             'thisWeek' => [
@@ -500,12 +510,12 @@ class AccuileController extends Controller
         ];
 
         // Current date
-        $now = Carbon::now();
+        // $now = Carbon::now('Africa/Casablanca');
 
         // Determine the start of the current week, month, and year
-        $startOfWeek = $now->startOfWeek();
-        $startOfMonth = $now->startOfMonth();
-        $startOfYear = $now->startOfYear();
+        $startOfWeek = $now->copy()->startOfWeek();
+        $startOfMonth = $now->copy()->startOfMonth();
+        $startOfYear = $now->copy()->startOfYear();
 
         // Iterate through user tickets logs
         foreach ($userTicketsLogs as $item) {
@@ -721,8 +731,9 @@ class AccuileController extends Controller
     // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     // fucntion for the thicket and ear port relationgship
-    private function getTicketDataBar()
+    private function getTicketDataBar($now)
     {
+        $now = Carbon::parse($now);
         // Define the labels
         $labels = Aerport::pluck('location')->toArray();
 
@@ -732,23 +743,23 @@ class AccuileController extends Controller
         $thisYearTickets = [];
 
         // Get current date
-        $now = Carbon::now();
+        // $now = Carbon::now('Africa/Casablanca');
 
         // Iterate over each airport
         foreach (Aerport::all() as $aerport) {
             // Count tickets for this week
             $thisWeekTickets[] = $aerport->tickets()
-                ->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+                ->whereBetween('created_at', [$now->copy()->startOfWeek(), $now->copy()->endOfWeek()])
                 ->count();
 
             // Count tickets for this month
             $thisMonthTickets[] = $aerport->tickets()
-                ->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])
+                ->whereBetween('created_at', [$now->copy()->startOfMonth(), $now->copy()->endOfMonth()])
                 ->count();
 
             // Count tickets for this year
             $thisYearTickets[] = $aerport->tickets()
-                ->whereBetween('created_at', [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()])
+                ->whereBetween('created_at', [$now->copy()->startOfYear(), $now->copy()->endOfYear()])
                 ->count();
         }
 
@@ -767,8 +778,11 @@ class AccuileController extends Controller
     // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     // fucntion for the top 5 users activity
-    private function getUserActivityData()
+    private function getUserActivityData($now)
     {
+        $cureentDate = $now;
+        $now = Carbon::parse($now);
+
         // Retrieve all user ticket logs
         $userTicketsLogs = $this->getUserTicketLogs();
 
@@ -776,15 +790,15 @@ class AccuileController extends Controller
         $userActivityCounts = [];
 
         // Define the start of each time range
-        $now = Carbon::now();
-        $startOfWeek = $now->startOfWeek();
-        $startOfMonth = $now->startOfMonth();
-        $startOfYear = $now->startOfYear();
+        $startOfWeek = $now->copy()->startOfWeek();
+        $startOfMonth = $now->copy()->startOfMonth();
+        $startOfYear = $now->copy()->startOfYear();
 
+        $TMPlist = [];
         foreach ($userTicketsLogs as $ticketLog) {
             foreach ($ticketLog['logs'] as $log) {
                 $userId = $log['user']['id'];
-                if($userId == 0 || (User::find($userId)->role() < 2)){
+                if ($userId == 0 || (User::find($userId)->role() < 2)) {
                     continue;
                 }
                 $logDate = Carbon::parse($log['date']);
@@ -800,6 +814,11 @@ class AccuileController extends Controller
                     ];
                 }
 
+                $TMPlist[] = [
+                    'date' => $logDate->format("Y/m/d"),
+                    'user' => $userId,
+                ];
+
                 // Update activity counts based on log date
                 if ($logDate->greaterThanOrEqualTo($startOfWeek)) {
                     $userActivityCounts[$userId]['thisWeek']++;
@@ -813,25 +832,45 @@ class AccuileController extends Controller
             }
         }
 
+        // Remove users with zero activity for this week, month, or year
+        $userActivityCounts = array_filter($userActivityCounts, function($counts) {
+            return $counts['thisWeek'] > 0 || $counts['thisMonth'] > 0 || $counts['thisYear'] > 0;
+        });
+
+        // Convert associative array to indexed array for sorting
+        $indexedUserActivityCounts = array_values($userActivityCounts);
+
         // Function to get top 5 users by activity for a given time range
         function getTopUsers($activityCounts, $range)
         {
+            // Filter out users with zero activity for the specified range
+            $filteredActivityCounts = array_filter($activityCounts, function ($user) use ($range) {
+                return $user[$range] > 0;
+            });
+
             // Sort users by activity count in descending order
-            usort($activityCounts, function ($a, $b) use ($range) {
+            usort($filteredActivityCounts, function ($a, $b) use ($range) {
                 return $b[$range] <=> $a[$range];
             });
 
             // Get top 5 users
-            return array_slice($activityCounts, 0, 5);
+            return array_slice($filteredActivityCounts, 0, 5);
         }
+
+        // Remove users with zero activity for this week, month, or year
+        $userActivityCounts = array_filter($userActivityCounts, function ($counts) {
+            return $counts['thisWeek'] > 0 || $counts['thisMonth'] > 0 || $counts['thisYear'] > 0;
+        });
 
         // Prepare results for each time range
         $topUsers = [
-            'thisWeek' => getTopUsers($userActivityCounts, 'thisWeek'),
-            'thisMonth' => getTopUsers($userActivityCounts, 'thisMonth'),
-            'thisYear' => getTopUsers($userActivityCounts, 'thisYear'),
+            'thisWeek' => getTopUsers($indexedUserActivityCounts, 'thisWeek'),
+            'thisMonth' => getTopUsers($indexedUserActivityCounts, 'thisMonth'),
+            'thisYear' => getTopUsers($indexedUserActivityCounts, 'thisYear'),
         ];
 
         return $topUsers;
     }
+
+
 }

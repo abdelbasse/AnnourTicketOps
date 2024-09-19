@@ -130,7 +130,7 @@
 @endsection
 
 @section('body')
-    <div class="container mt-4">
+    <div class="container-fluid mt-4 px-5">
         <div class="card card-custom">
             <div class="card-header card-header-custom mb-2 pb-0">
                 <div class="mb-3 d-flex justify-content-between align-items-center">
@@ -142,7 +142,11 @@
                                     data-status="{{ $ticket->getStatusDesign() }}"> {{ $ticket->getStatus() }} </span>
                             </h5>
                         </div>
-                        <div class="dropdown">
+                        <div class="dropdown
+                        ItemShouldDesapairOwnership @if (!$CanEdit && auth()->user()->role() > 3)
+                            d-none disabled
+                        @endif
+                        ">
                             <button
                                 class="btn btn-secondary dropdown-toggle dropdown-btn p-0 m-0 d-flex justify-content-center align-items-center"
                                 data-toggle="dropdown" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown"
@@ -319,7 +323,12 @@
                             aria-controls="analyse" aria-selected="false">Analyse</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="recovery-tab" data-bs-toggle="tab"
+                        <button class="nav-link
+                        @if (!($ticket->hasAnalyseLogs() && $ticket->latestAnalyseLog->NSMStatu!=null && $ticket->latestAnalyseLog->equipementID!=null && $ticket->latestAnalyseLog->NSMStatu!=null))
+                        disabled
+                        @endif
+
+                        " id="recovery-tab" data-bs-toggle="tab"
                             data-bs-target="#recovery, #recovery-body" type="button" role="tab"
                             aria-controls="recovery" aria-selected="false">Recovery</button>
                     </li>
@@ -502,7 +511,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mt-3 mb-0 pb-0">
+                        <div class="row
+                        ItemShouldDesapairOwnership @if (!$CanEdit && auth()->user()->role() > 3)
+                            d-none disabled
+                        @endif mt-3 mb-0 pb-0">
                             <div class="col d-flex justify-content-end">
 
                                 @if ($ticket->status <= 1 || ($ticket->status >= 2 && auth()->user()->role() <= 3))
@@ -553,7 +565,10 @@
                             </div>
                         </div>
 
-                        <div class="row mt-4 mb-0 pb-0">
+                        <div class="row
+                        ItemShouldDesapairOwnership @if (!$CanEdit && auth()->user()->role() > 3)
+                            d-none disabled
+                        @endif mt-4 mb-0 pb-0">
                             <div class="col d-flex justify-content-end">
                                 <div class=" d-flex">
                                         <div id="close-button-container" style="display: none;"
@@ -862,7 +877,10 @@
                     </div>
                 </div>
                 @if ($ticket->status <= 1 || ($ticket->status >= 2 && auth()->user()->role() <= 3))
-                    <div class="card-footer d-flex justify-content-end">
+                    <div class="card-footer
+                        ItemShouldDesapairOwnership @if (!$CanEdit && auth()->user()->role() > 3)
+                            d-none disabled
+                        @endif d-flex justify-content-end">
                         <button id="save_final_analysis_report" class="btn btn-primary">Save Changes</button>
                     </div>
                 @endif
@@ -882,7 +900,10 @@
                     </div>
                 </div>
                 @if ($ticket->status <= 1 || ($ticket->status >= 2 && auth()->user()->role() <= 3))
-                    <div class="card-footer d-flex justify-content-end">
+                    <div class="card-footer
+                        ItemShouldDesapairOwnership @if (!$CanEdit && auth()->user()->role() > 3)
+                            d-none disabled
+                        @endif d-flex justify-content-end">
                         <button id="save_final_recovery_report" class="btn btn-primary">Save Changes</button>
                     </div>
                 @endif
@@ -890,7 +911,7 @@
         </div>
     </div>
     <script>
-        console.log(
+      // console.log(
             @json($TicketLogs)
         )
     </script>
@@ -1170,7 +1191,7 @@
                         // setTimeout(function() {
                         //     location.reload(); // Reloads the current page
                         // }, 1000);
-                        console.log(response);
+                      // console.log(response);
                     },
                     error: function(xhr, status, error) {
                         // Handle error responses if needed
@@ -1203,7 +1224,7 @@
                         setTimeout(function() {
                             location.reload(); // Reloads the current page
                         }, 1000);
-                        console.log(response);
+                      // console.log(response);
                     },
                     error: function(xhr, status, error) {
                         // Handle error responses if needed
@@ -1267,12 +1288,12 @@
                         setTimeout(function() {
                             location.reload(); // Reloads the current page
                         }, 1000);
-                        console.log(response);
+                      // console.log(response);
                     },
                     error: function(xhr, status, error) {
                         // Handle error responses if needed
-                        console.log(xhr);
-                        console.log(error);
+                      // console.log(xhr);
+                      // console.log(error);
                         showAlertD('Failed to add analysis log. Please try again.');
                     }
                 });
@@ -1314,7 +1335,7 @@
                         setTimeout(function() {
                             location.reload(); // Reloads the current page
                         }, 1000);
-                        console.log(response);
+                      // console.log(response);
                     },
                     error: function(xhr, status, error) {
                         // Handle error responses if needed
@@ -1341,17 +1362,8 @@
                 var now = new Date();
 
                 if (recoveryDateInput.data('dateRecovery')) {
-                    // Calculate the time difference in milliseconds
-                    var timeDifference = now - recoveryDate;
-                    var twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-
-                    if (timeDifference >= twentyFourHours) {
-                        closeButtonContainer.show();
-                        closeButton.prop('disabled', false); // Enable button if 24 hours have passed
-                    } else {
-                        closeButtonContainer.hide();
-                        closeButton.prop('disabled', true); // Disable button if 24 hours have not passed
-                    }
+                    closeButtonContainer.show();
+                    closeButton.prop('disabled', false);
                 } else {
                     closeButtonContainer.hide();
                 }
@@ -1418,7 +1430,7 @@
                         setTimeout(function() {
                             location.reload(); // Reloads the current page
                         }, 1000);
-                        console.log(response);
+                      // console.log(response);
                     },
                     error: function(xhr, status, error) {
                         showAlertD('Failed to update ticket status. Please try again.');
@@ -1498,7 +1510,7 @@
                             setTimeout(function() {
                                 location.reload(); // Reloads the current page
                             }, 1000);
-                            console.log(response);
+                          // console.log(response);
                         },
                         error: function(xhr, status, error) {
                             // Handle error responses
@@ -1534,7 +1546,7 @@
                 success: function(response) {
                     //  get all the data & update content
                     // ...
-                    console.log(response);
+                  // console.log(response);
                     updateHeaderTicket(response);
                     updateAdminListOfUsers(response);
                     updateTicketTableOptionSetParent(response);
@@ -1544,6 +1556,8 @@
                     updateAnalyseSection_ListOptions(response);
                     // Recovery update
                     updateRecoverySection(response);
+
+                    updateItemVisibilityDependOnOwnership(response);
                     // Validation log [not important]
 
                     if (response.role <= 3) {
@@ -1557,6 +1571,22 @@
                 }
             });
         }
+
+        function updateItemVisibilityDependOnOwnership(response) {
+            // Get all elements with the class 'ItemShouldDesapairOwnership'
+            const items = document.querySelectorAll('.ItemShouldDesapairOwnership');
+
+            items.forEach(item => {
+                if (!response.CanEdit && response.role > 3) {
+                    // Remove 'd-none' and 'disabled' classes if isVisible is true
+                    item.classList.add('d-none', 'disabled');
+                } else {
+                    // Add 'd-none' and 'disabled' classes if isVisible is false
+                    item.classList.remove('d-none', 'disabled');
+                }
+            });
+        }
+
 
         function getNSMStatus(nsmStatus) {
             switch (nsmStatus) {
@@ -1606,18 +1636,21 @@
         }
 
         function formatDate(inputDate) {
-            // Parse the input date string
-            var date = new Date(inputDate);
+            // Remove the fractional seconds and 'Z' if present
+            const cleanedInputDate = inputDate.split('.')[0].replace('Z', '');
+
+            // Parse the date string without time zone adjustments
+            const date = new Date(cleanedInputDate);
 
             // Extract year, month, day, hours, minutes, and seconds
-            var year = date.getFullYear();
-            var month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
-            var day = String(date.getDate()).padStart(2, '0');
-            var hours = String(date.getHours()).padStart(2, '0');
-            var minutes = String(date.getMinutes()).padStart(2, '0');
-            var seconds = String(date.getSeconds()).padStart(2, '0');
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
 
-            // varruct and return formatted date string
+            // Construct and return formatted date string
             return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
         }
 
@@ -1818,7 +1851,7 @@
 
             // Update Incident Date
             $('#info .container .row .col-md-6 .row .col-12 p:contains("Incident Date:")')
-                .html(`<strong>Incident Date:</strong> ${formatDate(ticket.DateIncident)}`);
+                .html(`<strong>Incident Date:</strong> ${ticket.DateIncident}`);
 
             // Update Description
             $('#info .container .row .col-md-6 .row p:contains("Description:")')

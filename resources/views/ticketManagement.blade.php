@@ -122,7 +122,7 @@
 @endsection
 
 @section('body')
-    <div class="container mt-3">
+    <div class="container-fluid mt-5 px-5">
         {{-- menu --}}
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item position-relative" role="presentation">
@@ -134,6 +134,14 @@
                         All Tickets
                     @endif
                 </a>
+                @if (auth()->user()->role() >= 3)
+                    <span
+                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger
+                    @if ($transeferTicket->count() != 0) d-none @endif"
+                        id="List-of-tickets-tab-Badge">
+                        999993
+                    </span>
+                @endif
             </li>
             <li class="nav-item position-relative" role="presentation">
                 <a class="nav-link" id="transferred-tickets-tab" data-bs-toggle="tab" href="#transferred-tickets"
@@ -852,7 +860,7 @@
     {{-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| --}}
 
     @if (auth()->user()->role() <= 2)
-        <div class="container">
+        <div class="container-fluid px-5">
             <div class="row">
                 <div class="col-md-6">
                     <div class="card mb-3">
@@ -1393,7 +1401,7 @@
             $('#submitAirportBtn').on('click', function() {
                 var formData = $('#addAirportForm').serialize();
                 var parsedData = parseFormData(formData);
-                console.log(parsedData);
+                // console.log(parsedData);
                 // // AJAX call to add airport
                 $.ajax({
                     url: '{{ route('admin.ticket.Add') }}', // Adjust the URL to your API endpoint for adding airports
@@ -1429,7 +1437,7 @@
             $('#submitEquipmentBtn').on('click', function() {
                 var formData = $('#addEquipmentForm').serialize();
                 var parsedData = parseFormData(formData);
-                console.log(parsedData);
+              ////  console.log(parsedData);
 
                 // AJAX call to add equipment
                 $.ajax({
@@ -1463,7 +1471,7 @@
             $('#submitProblemTypeBtn').on('click', function() {
                 var formData = $('#addProblemTypeForm').serialize();
                 var parsedData = parseFormData(formData);
-                console.log(parsedData);
+              ////  console.log(parsedData);
 
                 // AJAX call to add problem type
                 $.ajax({
@@ -1498,7 +1506,7 @@
             $('#submitSolutionTypeBtn').on('click', function() {
                 var formData = $('#addSolutionTypeForm').serialize();
                 var parsedData = parseFormData(formData);
-                console.log("----->>> " + parsedData['solutionType'] + " , " + parsedData[
+              ////  console.log("----->>> " + parsedData['solutionType'] + " , " + parsedData[
                     'solutionDescription']);
 
                 // AJAX call to add solution type
@@ -1589,7 +1597,7 @@
             var row = $(this).closest('tr');
             var itemType = row.data('type');
             var itemId = row.data('id');
-            console.log(row);
+          ////  console.log(row);
 
             swal({
                     title: "Are you sure?",
@@ -1617,7 +1625,7 @@
             var itemType = row.data('type');
             var itemId = row.data('id');
 
-            console.log("here the user id " + itemId + " , type : " + itemType);
+          ////  console.log("here the user id " + itemId + " , type : " + itemType);
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -1639,7 +1647,7 @@
                         success: function(response) {
                             showAlertS('Item Deleted successfully!');
                             // Optionally update UI or handle response as needed
-                            console.log(response);
+                          ////  console.log(response);
 
                             row.remove();
                             Swal.fire(
@@ -1649,7 +1657,7 @@
                             );
                         },
                         error: function(xhr, status, error) {
-                            console.log(error);
+                          //  console.log(error);
                             showAlertD('Error Deleting item: ' + error);
                         }
                     });
@@ -1748,7 +1756,7 @@
                 success: function(response) {
                     showAlertS('Airport Updated successfully!');
                     // Optionally update UI or handle response as needed
-                    console.log(response);
+                  //  console.log(response);
                     Swal.fire(
                         'Edited!',
                         'The Airport has been Updated.',
@@ -1756,7 +1764,7 @@
                     );
                 },
                 error: function(xhr, status, error) {
-                    console.log(error);
+                  //  console.log(error);
                     showAlertD('Error updating airport: ' + error);
                 }
             });
@@ -1783,7 +1791,7 @@
                 success: function(response) {
                     showAlertS('Equipment Updated successfully!');
                     // Optionally update UI or handle response as needed
-                    console.log(response);
+                  //  console.log(response);
                     Swal.fire(
                         'Edited!',
                         'The Equipment has been Updated.',
@@ -1791,7 +1799,7 @@
                     );
                 },
                 error: function(xhr, status, error) {
-                    console.log(error);
+                  //  console.log(error);
                     showAlertD('Error updating equipment: ' + error);
                 }
             });
@@ -1820,7 +1828,7 @@
                 success: function(response) {
                     showAlertS('Problem Type Updated successfully!');
                     // Optionally update UI or handle response as needed
-                    console.log(response);
+                  //  console.log(response);
                     Swal.fire(
                         'Edited!',
                         'The Problem Type has been Updated.',
@@ -1828,7 +1836,7 @@
                     );
                 },
                 error: function(xhr, status, error) {
-                    console.log(error);
+                  //  console.log(error);
                     showAlertD('Error updating problem type: ' + error);
                 }
             });
@@ -1857,7 +1865,7 @@
                 success: function(response) {
                     showAlertS('Solution Type Updated successfully!');
                     // Optionally update UI or handle response as needed
-                    console.log(response);
+                  //  console.log(response);
                     Swal.fire(
                         'Edited!',
                         'The Solution Type has been Updated.',
@@ -1865,7 +1873,7 @@
                     );
                 },
                 error: function(xhr, status, error) {
-                    console.log(error);
+                  //  console.log(error);
                     showAlertD('Error updating solution type: ' + error);
                 }
             });
@@ -1959,7 +1967,7 @@
                     success: function(response) {
                         showAlertS('Airport Updated successfully!');
                         // Optionally update UI or handle response as needed
-                        console.log(response);
+                      //  console.log(response);
                         Swal.fire(
                             'Edited!',
                             'The Airport has been Updated.',
@@ -1967,7 +1975,7 @@
                         );
                     },
                     error: function(xhr, status, error) {
-                        console.log(error);
+                      //  console.log(error);
                         showAlertD('Error updating airport: ' + error);
                     }
                 });
@@ -2053,7 +2061,7 @@
                 const ContactReclamation = document.getElementById('ContactReclamation').value;
 
                 // Log the collected data to the console
-                console.log({
+              //  console.log({
                     title,
                     description,
                     airport,
@@ -2184,7 +2192,7 @@
                     const rowNatureSolution = row.getAttribute('data-nSolution');
 
 
-                    console.log(
+                  //  console.log(
                         // `Status: ${rowStatus}, ` +
                         // `Airport: ${rowAirport}, ` +
                         // `Created Date: ${rowCreatedDate}, ` +
@@ -2301,7 +2309,7 @@
             });
 
             // Log the selected IDs to the console
-            console.log('Selected Ticket IDs:', selectedIds);
+          //  console.log('Selected Ticket IDs:', selectedIds);
 
             if (selectedIds.length > 0) {
                 // Send the selected IDs to the backend via AJAX
@@ -2314,8 +2322,8 @@
                     },
                     success: function(response) {
                         // Log success message and file URL
-                        console.log(response.message);
-                        console.log('Download URL:', response.fileUrl);
+                      //  console.log(response.message);
+                      //  console.log('Download URL:', response.fileUrl);
 
                         // Optionally, automatically download the file
                         window.location.href = response.fileUrl;
@@ -2403,7 +2411,7 @@
                     setTimeout(function() {
                         location.reload(); // Reloads the current page
                     }, 1000);
-                    console.log(response);
+                  //  console.log(response);
                 },
                 error: function(xhr, status, error) {
                     // Handle error responses if needed
@@ -2449,7 +2457,7 @@
                     // setTimeout(function() {
                     //     location.reload(); // Reloads the current page
                     // }, 1000);
-                    console.log(response);
+                  //  console.log(response);
                 },
                 error: function(xhr, status, error) {
                     $('#ticketIdContainerModalTransfer').val('');
@@ -2467,7 +2475,7 @@
             var status = $(this).data('statu');
             var tableId = $(this).closest('table').attr('id'); // Get the table ID
 
-            console.log('Ticket ID:', ticketId, ' || Status:', status);
+          //  console.log('Ticket ID:', ticketId, ' || Status:', status);
 
             $.ajax({
                 url: '{{ route('ticket.transform.Respondes') }}', // Ensure this URL matches your route definition
@@ -2479,7 +2487,7 @@
                 },
                 success: function(response) {
                     // Show alert with each piece of airport data
-                    console.log(response);
+                  //  console.log(response);
                     showAlertS('Ownership status updated successfully.');
 
                     // Remove the row from the specific table
@@ -2824,8 +2832,11 @@
         }
 
         function formatDate(inputDate) {
-            // Parse the input date string
-            const date = new Date(inputDate);
+            // Remove the fractional seconds and 'Z' if present
+            const cleanedInputDate = inputDate.split('.')[0].replace('Z', '');
+
+            // Parse the date string without time zone adjustments
+            const date = new Date(cleanedInputDate);
 
             // Extract year, month, day, hours, minutes, and seconds
             const year = date.getFullYear();
@@ -2955,7 +2966,7 @@
                     var ticketData = tickets.find(ticket => ticket.id === rowId);
 
 
-                    console.log(ticketData);
+                  //  console.log(ticketData);
 
                     // Ensure ticketData is defined
                     if (ticketData) {
@@ -2968,7 +2979,7 @@
                         $(row).find('td').eq(5).find('p').text(getStatus(ticketData.status));
                         $(row).find('td').eq(6).text(ticketData.aerport.code || 'N/A');
                         $(row).find('td').eq(7).text(formatDate(ticketData.created_at));
-                        $(row).find('td').eq(8).text(formatDate(ticketData.DateIncident));
+                        $(row).find('td').eq(8).text(ticketData.DateIncident);
 
                         $(row).attr('data-status', getStatusDesign(ticketData.status));
                         $(row).attr('data-status-org', ticketData.status);
@@ -3123,7 +3134,7 @@
                         $(row).find('td').eq(5).find('p').text(getStatus(ticketData.status));
                         $(row).find('td').eq(6).text(ticketData.aerport.code || 'N/A');
                         $(row).find('td').eq(7).text(formatDate(ticketData.created_at));
-                        $(row).find('td').eq(8).text(formatDate(ticketData.DateIncident));
+                        $(row).find('td').eq(8).text((ticketData.DateIncident));
 
                         $(row).attr('data-status', getStatusDesign(ticketData.status));
                         $(row).attr('data-status-org', ticketData.status);

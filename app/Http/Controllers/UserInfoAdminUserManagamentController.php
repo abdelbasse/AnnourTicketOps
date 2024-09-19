@@ -382,7 +382,7 @@ class UserInfoAdminUserManagamentController extends Controller
             'lastYear' => ['created' => 0, 'closed' => 0, 'recovered' => 0, 'workedOn' => 0],
         ];
 
-        $now = Carbon::now();
+        $now = Carbon::now('Africa/Casablanca');
 
         foreach ($userTicketsLogs as $ticketLog) {
             $ticket = $ticketLog['ticket'];
@@ -530,12 +530,12 @@ class UserInfoAdminUserManagamentController extends Controller
         ];
 
         // Current date
-        $now = Carbon::now();
+        $now = Carbon::now('Africa/Casablanca');
 
         // Determine the start of the current week, month, and year
-        $startOfWeek = $now->startOfWeek();
-        $startOfMonth = $now->startOfMonth();
-        $startOfYear = $now->startOfYear();
+        $startOfWeek = $now->copy()->startOfWeek();
+        $startOfMonth = $now->copy()->startOfMonth();
+        $startOfYear = $now->copy()->startOfYear();
 
         // Iterate through user tickets logs
         foreach ($userTicketsLogs as $item) {
@@ -608,7 +608,6 @@ class UserInfoAdminUserManagamentController extends Controller
 
     // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-    // fucntion for the hours and activity ....
     function getUserActivityHeatmapData($userTicketsLogs)
     {
         // Initialize the data array for the heatmap
@@ -621,6 +620,11 @@ class UserInfoAdminUserManagamentController extends Controller
             }
         }
 
+        // Define the start and end of the current week
+        $now = Carbon::now('Africa/Casablanca');
+        $startOfWeek = $now->copy()->startOfWeek();
+        $endOfWeek = $now->copy()->endOfWeek();
+
         // Process each ticket and its logs
         foreach ($userTicketsLogs as $item) {
             $logs = $item['logs'];
@@ -628,12 +632,16 @@ class UserInfoAdminUserManagamentController extends Controller
             // Process each log entry
             foreach ($logs as $log) {
                 $logDate = Carbon::parse($log['date']);
-                $dayOfWeek = $logDate->dayOfWeekIso - 1; // 0 = Monday, 6 = Sunday
-                $hourOfDay = $logDate->hour; // 0 to 23
 
-                // Increment the count for the corresponding day and hour
-                if (isset($data[$dayOfWeek][$hourOfDay])) {
-                    $data[$dayOfWeek][$hourOfDay]++;
+                // Only include logs from the current week
+                if ($logDate->between($startOfWeek, $endOfWeek)) {
+                    $dayOfWeek = $logDate->dayOfWeekIso - 1; // 0 = Monday, 6 = Sunday
+                    $hourOfDay = $logDate->hour; // 0 to 23
+
+                    // Increment the count for the corresponding day and hour
+                    if (isset($data[$dayOfWeek][$hourOfDay])) {
+                        $data[$dayOfWeek][$hourOfDay]++;
+                    }
                 }
             }
         }
@@ -648,6 +656,7 @@ class UserInfoAdminUserManagamentController extends Controller
 
         return $formattedData;
     }
+
 
 
 }

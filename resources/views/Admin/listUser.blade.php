@@ -50,7 +50,7 @@
 
 @section('body')
     <!-- Your table goes here -->
-    <div class="container mt-5">
+    <div class="container-fluid px-5 mt-5">
         <div class="">
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -330,7 +330,7 @@
                     reverseButtons: true
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        console.log("here the user id " + userId);
+                      // console.log("here the user id " + userId);
                         $.ajax({
                             url: "{{ route('admin.allUsersList.form') }}",
                             method: 'POST',
@@ -342,7 +342,7 @@
                             success: function(response) {
                                 showAlertS('User Deleted successfully!');
                                 // Optionally update UI or handle response as needed
-                                console.log(response);
+                              // console.log(response);
 
                                 row.remove();
                                 Swal.fire(
@@ -352,7 +352,7 @@
                                 );
                             },
                             error: function(xhr, status, error) {
-                                console.log(error);
+                              // console.log(error);
                                 showAlertD('Error Deleting user: ' + error);
                             }
                         });
@@ -402,7 +402,7 @@
                             checkbox.closest('tr').remove();
                         });
                         // here the user's id !!!!!!
-                        console.log(selectedIds);
+                      // console.log(selectedIds);
                         $.ajax({
                             url: "{{ route('admin.allUsersList.form') }}",
                             method: 'POST',
@@ -487,7 +487,7 @@
             var parsedData = parseFormData(formData);
 
             // Debugging: Log the parsedData object to check if all fields are present
-            console.log(parsedData);
+          // console.log(parsedData);
 
             $.ajax({
                 url: "{{ route('admin.allUsersList.form') }}",
@@ -503,7 +503,7 @@
                 },
                 success: function(response) {
                     showAlertS('User added successfully!');
-                    console.log(response);
+                  // console.log(response);
 
                     // Reload the page after a short delay (optional)
                     setTimeout(function() {
@@ -511,7 +511,7 @@
                     }, 1000);
                 },
                 error: function(xhr, status, error) {
-                    console.log(error);
+                  // console.log(error);
                     showAlertD('Error adding user: ' + error);
                 }
             });
@@ -536,12 +536,12 @@
                     },
                     success: function(response) {
                         showAlertS('Excel file imported successfully!');
-                        console.log(response);
+                      // console.log(response);
                         // Optionally update UI or handle response as needed
                     },
                     error: function(xhr, status, error) {
                         showAlertD('Error importing Excel file: ' + error);
-                        console.log(error);
+                      // console.log(error);
                     }
                 });
             });
@@ -571,7 +571,7 @@
                         updateUsersTable(response.users);
                     },
                     error: function(xhr, status, error) {
-                        console.log(error);
+                      // console.log(error);
                     }
                 });
             }
@@ -586,7 +586,7 @@
                 // Find the row with the user's ID and update it
                 const userRow = document.querySelector(`tr[data-userId="${user.id}"]`);
                 if (userRow) {
-                    console.log(user);
+                  // console.log(user);
                     userRow.querySelector('td:nth-child(2)').innerHTML =
                         `<img src="{{ asset('') }}${user.imgUrl}" alt="Profile Image" class="profile-img">`;
                     userRow.querySelector('td:nth-child(3)').innerText = `${user.Fname} ${user.Lname}`;

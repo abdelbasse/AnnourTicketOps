@@ -411,7 +411,7 @@ class AdminTicketManagementController extends Controller
             'ownerID' => 0,
             'reseverID' => auth()->user()->id,
             'statu' => true,
-            'respond_at' => Carbon::now(),
+            'respond_at' => Carbon::now('Africa/Casablanca'),
             'forced' => true
         ]);
 
@@ -445,7 +445,7 @@ class AdminTicketManagementController extends Controller
                 'reseverID' => $req->UserId,
                 'forced' => $isForce,
                 'statu' => $isForce ? true : null,
-                'respond_at' => $isForce ? Carbon::now() : null,
+                'respond_at' => $isForce ? Carbon::now('Africa/Casablanca') : null,
             ]);
         }
 
@@ -463,7 +463,7 @@ class AdminTicketManagementController extends Controller
             'ownerID' => 0,
             'reseverID' => auth()->user()->id,
             'statu' => true,
-            'respond_at' => Carbon::now(),
+            'respond_at' => Carbon::now('Africa/Casablanca'),
             'forced' => true
         ]);
 
@@ -486,7 +486,7 @@ class AdminTicketManagementController extends Controller
             // Update the ownership record
             TicketOwnership::find($ownership->id)->update([
                 'statu' => $req->status,
-                'respond_at' => Carbon::now()
+                'respond_at' => Carbon::now('Africa/Casablanca')
             ]);
 
             return response()->json([

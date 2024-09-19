@@ -85,6 +85,55 @@
         --background-color: #1e1e2f;
     }
 
+    /* General styling for the toggle switch */
+    .toggle-switch {
+        position: absolute;
+        right: 0;
+        height: 100%;
+        min-width: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    /* Styling for the switch itself */
+    .toggle-switch .switch {
+        position: relative; /* Ensures the switch is positioned inside the container */
+        cursor: pointer; /* Cursor pointer for better UX */
+        height: 22px;
+        width: 40px;
+        border-radius: 25px;
+        background-color: var(--toggle-color);
+        transition: var(--tran-05);
+    }
+
+    /* Styling for the switch knob */
+    .toggle-switch .switch::before {
+        content: "";
+        position: absolute;
+        height: 15px;
+        width: 15px;
+        border-radius: 50%;
+        top: 50%;
+        left: 5px;
+        transform: translateY(-50%); /* Center the knob vertically */
+        background: var(--sidebar-color); /* Background color using CSS variable */
+        transition: var(--tran-04); /* Transition effect for the knob */
+    }
+
+    /* Dark mode styling for the switch background */
+    .dark-mode .toggle-switch .switch {
+        background-color: #2196F3; /* Dark mode background color */
+    }
+
+    /* Dark mode styling for the knob position */
+    .dark-mode .toggle-switch .switch::before {
+        left: 50%;
+        /* transform: translateX(16px); /Move the knob to the right in dark mode */
+    }
+
     /* Apply the variables */
     body {
         background-color: var(--body-color) !important;
@@ -178,49 +227,6 @@
                         {{-- Supervisor menu --}}
                     @elseif (auth()->user()->role() > 3)
                         {{-- Operatore menu --}}
-                    @else
-                        unkonws menu
-                        <li class="nav-link">
-                            <a href="#">
-                                <i class='bx bx-home-alt icon'></i>
-                                <span class="text nav-text">Dashboard</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-link">
-                            <a href="#">
-                                <i class='bx bx-bar-chart-alt-2 icon'></i>
-                                <span class="text nav-text">Revenue</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-link">
-                            <a href="#">
-                                <i class='bx bx-bell icon'></i>
-                                <span class="text nav-text">Notifications</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-link">
-                            <a href="#">
-                                <i class='bx bx-pie-chart-alt icon'></i>
-                                <span class="text nav-text">Analytics</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-link">
-                            <a href="#">
-                                <i class='bx bx-heart icon'></i>
-                                <span class="text nav-text">Likes</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-link">
-                            <a href="#">
-                                <i class='bx bx-wallet icon'></i>
-                                <span class="text nav-text">Wallets</span>
-                            </a>
-                        </li>
                     @endif
                     <li class="nav-link">
                         <a href="{{ route('ticket.index') }}">
@@ -231,35 +237,26 @@
                 </ul>
             </div>
 
-            <header>
+            <header class="bottom-content">
                 <div class="bottom-content mb-3">
+                    <hr>
                     <li class="">
                         <a href="{{ route('logout') }}">
                             <i class='bx bx-log-out icon'></i>
                             <span class="text nav-text">Logout</span>
                         </a>
                     </li>
-                </div>
-                <a href="{{ route('personal-profile') }}" class="profile_c">
-                    <div class="image-text" style="border-radius: 17px;">
-                        <span class="image">
-                            <img src="{{ asset(Auth()->user()->imgUrl) }}" alt="">
-                        </span>
-
-                        <div class="text logo-text">
-                            <span class="name">{{ Auth()->user()->Fname }} {{ Auth()->user()->Lname }}</span>
-                            @php
-                                $roleName = 'User';
-                                if (Auth()->user()->role() <= 2) {
-                                    $roleName = 'Admin';
-                                } elseif (Auth()->user()->role() == 3) {
-                                    $roleName = 'Supervisor';
-                                }
-                            @endphp
-                            <span class="profession">{{ $roleName }}</span>
+                    <li class="mode" id="themeToggle">
+                        <div class="sun_moon_container">
+                            <i class="bx bx-moon icon moon" style="position: absolute;"></i>
+                            <i class="bx bx-sun icon sun" style="position: absolute;"></i>
                         </div>
-                    </div>
-                </a>
+                        <span class="mode-text text">Dark mode</span>
+                        <div class="toggle-switch">
+                            <span class="switch"></span>
+                        </div>
+                    </li>
+                </div>
             </header>
         </div>
 
@@ -328,9 +325,33 @@
     <section class="home" style="height: 100%">
         <div class="container_layout pb-5">
             @yield('script1')
-                <div class="text">Dashboard Sidebar <div><!-- Add this button to your HTML where you want the toggle to appear -->
-                    <button id="themeToggle" class="btn btn-light">Toggle Dark Mode</button>
-                    </div></div>
+                <div class="d-flex justify-content-between shadow" style=" max-hight:45px;">
+                    <div class="text">
+                        Dashboard Sidebar
+                    </div>
+                    <header class="d-flex justify-content-end">
+                        <a href="{{ route('personal-profile') }}" class="profile_c">
+                            <div class="image-text d-flex justify-content-between align-items-center m-3 mt-0 mb-0" style="border-radius: 17px;">
+                                <div class="text logo-text" style="text-align: right; padding-right:10px;">
+                                    <span class="name">{{ Auth()->user()->Fname }} {{ Auth()->user()->Lname }}</span>
+                                    @php
+                                        $roleName = 'User';
+                                        if (Auth()->user()->role() <= 2) {
+                                            $roleName = 'Admin';
+                                        } elseif (Auth()->user()->role() == 3) {
+                                            $roleName = 'Supervisor';
+                                        }
+                                    @endphp
+                                    <span class="profession">{{ $roleName }}</span>
+                                </div>
+                                <span class="image">
+                                    <img src="{{ asset(Auth()->user()->imgUrl) }}" alt="" style="max-height: 55px; max-width:55px;">
+                                </span>
+
+                            </div>
+                        </a>
+                    </header>
+                </div>
             @yield('body')
         </div>
     </section>
@@ -340,6 +361,18 @@
 
 </body>
 <script>
+    function updateIcons(theme) {
+        var moonIcon = document.querySelector('.moon');
+        var sunIcon = document.querySelector('.sun');
+
+        if (theme === 'dark') {
+            moonIcon.style.opacity = '1'; // Show moon icon
+            sunIcon.style.opacity = '0';   // Hide sun icon
+        } else {
+            moonIcon.style.opacity = '0';  // Hide moon icon
+            sunIcon.style.opacity = '1';  // Show sun icon
+        }
+    }
     // Function to set the theme based on user preference
     function setTheme(theme) {
         if (theme === 'dark') {
@@ -349,16 +382,21 @@
             document.body.classList.remove('dark-mode');
             localStorage.setItem('theme', 'light');
         }
+        updateIcons(theme);
+        updateModeText();
     }
 
     // Function to toggle between dark and light mode
     function toggleTheme() {
         const currentTheme = localStorage.getItem('theme');
-        if (currentTheme === 'dark') {
-            setTheme('light');
-        } else {
-            setTheme('dark');
-        }
+        setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    }
+
+    // Function to update the mode text based on the current theme
+    function updateModeText() {
+        const modeText = document.querySelector('.mode-text');
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        modeText.innerText = isDarkMode ? 'Light mode' : 'Dark mode';
     }
 
     // Set the theme on page load based on user preference
@@ -375,6 +413,7 @@
     // Attach event listener to the toggle button
     document.getElementById('themeToggle').addEventListener('click', toggleTheme);
 </script>
+
 
 </html>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

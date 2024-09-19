@@ -80,7 +80,7 @@
     </head>
 
     <body>
-        <div class="container mt-5">
+        <div class="container-fluid mt-5 px-5">
             <div class="row row-cols-1 row-cols-md-1 row-cols-lg-2 row-cols-sm-1">
                 <div class="col-12 col-lg-4 col-md-4 profile-column">
                     <div class="profile-container card p-5">

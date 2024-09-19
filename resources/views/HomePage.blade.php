@@ -13,7 +13,7 @@
 </style>
 @section('body')
     {{-- Data visulation --}}
-    <div class="alertsContainer container mt-3">
+    <div class="alertsContainer container-fluid px-5 mt-3">
         <div class="row row-cols-1 row-cols-md-1 row-cols-lg-2 row-cols-sm-1">
 
             <div class="col-12 col-lg-6 col-md-12 profile-column mt-4">
@@ -645,6 +645,7 @@
                     updateBarChartAirport();
 
                     userData = response.top5Users;
+                  // console.log(userData);
                     updateUserActivityList()
 
                     updateBarChart(response.MonthlyTicketStats);

@@ -210,22 +210,9 @@ body.dark .sidebar li a:hover .text{
     transition: var(--tran-05);
 }
 
-.menu-bar .mode .sun-moon{
+.sun_moon_container{
     height: 50px;
     width: 60px;
-}
-
-.mode .sun-moon i{
-    position: absolute;
-}
-.mode .sun-moon i.sun{
-    opacity: 0;
-}
-body.dark .mode .sun-moon i.sun{
-    opacity: 1;
-}
-body.dark .mode .sun-moon i.moon{
-    opacity: 0;
 }
 
 .menu-bar .bottom-content .toggle-switch{
