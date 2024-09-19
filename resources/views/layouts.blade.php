@@ -9,6 +9,7 @@
 
     <!----======== CSS ======== -->
     <link rel="stylesheet" href="{{ asset('css/layouts/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/layouts/darkModeStyle.css') }}">
 
     <!----===== Boxicons CSS ===== -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -176,6 +177,7 @@
         text-decoration: none;
     }
 </style>
+
 @yield('style')
 
 <body>

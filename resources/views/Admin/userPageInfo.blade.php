@@ -594,7 +594,10 @@
                     responsive: true,
                     plugins: {
                         legend: {
-                            position: 'top'
+                            position: 'top',
+                            labels: {
+                                color: '#539be9' // Change label color to light blue
+                            }
                         }
                     }
                 }
@@ -630,7 +633,8 @@
                 type: 'line',
                 data: {
                     labels: ticketDataLine.thisWeek.labels,
-                    datasets: [{
+                    datasets: [
+                        {
                             label: 'Average Time to Close a Ticket (Hours)',
                             data: ticketDataLine.thisWeek.avgCloseTime,
                             fill: false,
@@ -667,21 +671,32 @@
                             display: true,
                             title: {
                                 display: true,
-                                text: 'Time'
+                                text: 'Time',
+                                color: '#539be9' // Color of the X-axis title
+                            },
+                            ticks: {
+                                color: '#539be9' // Color of the X-axis labels
                             }
                         },
                         y: {
                             display: true,
                             title: {
                                 display: true,
-                                text: 'Hours'
+                                text: 'Hours',
+                                color: '#539be9' // Color of the Y-axis title
+                            },
+                            ticks: {
+                                color: '#539be9' // Color of the Y-axis labels
                             },
                             beginAtZero: true
                         }
                     },
                     plugins: {
                         legend: {
-                            position: 'top'
+                            position: 'top',
+                            labels: {
+                                color: '#539be9' // Color of the legend labels
+                            }
                         }
                     }
                 }
@@ -747,20 +762,35 @@
                     responsive: true,
                     scales: {
                         x: {
-                            stacked: true
+                            stacked: true,
+                            title: {
+                                display: true,
+                                text: 'Months',
+                                color: '#539be9' // Color of the X-axis title
+                            },
+                            ticks: {
+                                color: '#539be9' // Color of the X-axis labels
+                            }
                         },
                         y: {
                             stacked: true,
                             beginAtZero: true,
                             title: {
                                 display: true,
-                                text: 'Number of Tickets'
+                                text: 'Number of Tickets',
+                                color: '#539be9' // Color of the Y-axis title
+                            },
+                            ticks: {
+                                color: '#539be9' // Color of the Y-axis labels
                             }
                         }
                     },
                     plugins: {
                         legend: {
-                            position: 'top'
+                            position: 'top',
+                            labels: {
+                                color: '#539be9' // Color of the legend labels
+                            }
                         },
                         tooltip: {
                             mode: 'index',
@@ -770,6 +800,7 @@
                 }
             });
         }
+
 
         // Function to update bar chart data based on new data
         function updateBarChart(newData) {

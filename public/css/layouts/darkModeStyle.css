@@ -1,0 +1,382 @@
+:root {
+    --body-color: #E4E9F7;
+    --sidebar-color: #FFF;
+    --primary-color: #695CFE;
+    --primary-color-light: #F6F5FF;
+    --toggle-color: #DDD;
+    --toggle-color2: #555; /* Dark grey for toggle switch */
+    --text-primary: #707070;
+    /* ===== Colors ===== */
+    --card-background-color: #fff; /* Light card background */
+    --card-text-color: #333; /* Dark card text */
+    /* Normal mode colors */
+    --donut-chart-bg-color-1: #007bff;
+    --donut-chart-bg-color-2: #28a745;
+    --donut-chart-bg-color-3: #ffc107;
+    --donut-chart-bg-color-4: #dc3545;
+    --line-chart-border-color-1: rgb(75, 192, 192);
+    --line-chart-border-color-2: rgb(255, 99, 132);
+    --line-chart-border-color-3: rgb(54, 162, 235);
+    --line-chart-border-color-4: rgb(255, 206, 86);
+    --bar-chart-bg-color-1: #007bff;
+    --bar-chart-bg-color-2: #28a745;
+    --bar-chart-bg-color-3: #ffc107;
+    --bar-chart-border-color: #007bff;
+    --toggle-color: #ddd;
+    --text-color: #707070;
+    --background-color: #E4E9F7;
+}
+
+/* Define CSS variables for dark mode */
+.dark-mode {
+    --body-color: #1e1e2f; /* Dark blue background */
+    --sidebar-color: #2b2b4f; /* Darker blue for sidebar */
+    --primary-color: #483bd6; /* Dark grey for primary elements */
+    --primary-color-light: #2b2b4f; /* Darker blue for lighter accents */
+    --toggle-color: #555; /* Dark grey for toggle switch */
+    --toggle-color2: #DDD;
+    --text-primary: #e0e0e0; /* Light text color */
+    /* ===== Colors ===== */
+    --card-background-color: #33354a; /* Darker blue for card background */
+    --card-text-color: #e0e0e0; /* Light card text */
+    /* Dark mode colors */
+    --donut-chart-bg-color-1: #3a3b3c;
+    --donut-chart-bg-color-2: #4caf50;
+    --donut-chart-bg-color-3: #ffeb3b;
+    --donut-chart-bg-color-4: #f44336;
+    --line-chart-border-color-1: rgb(255, 182, 193);
+    --line-chart-border-color-2: rgb(255, 105, 180);
+    --line-chart-border-color-3: rgb(100, 149, 237);
+    --line-chart-border-color-4: rgb(255, 215, 0);
+    --bar-chart-bg-color-1: #3a3b3c;
+    --bar-chart-bg-color-2: #4caf50;
+    --bar-chart-bg-color-3: #ffeb3b;
+    --bar-chart-border-color: #3a3b3c;
+    --toggle-color: #555;
+    --text-color: #e0e0e0;
+    --background-color: #1e1e2f;
+}
+
+    /* Dark mode for Bootstrap cards */
+    .dark-mode .card {
+        background-color: var(--card-background-color); /* Dark card background */
+        color: var(--card-text-color); /* Light text color */
+        border-color: var(--card-text-color);
+    }
+
+    .dark-mode .card-header {
+        background-color: var(--primary-color-light);
+        color: var(--card-text-color);
+        border-bottom-color: var(--primary-color);
+    }
+
+    .dark-mode .card-body {
+        color: var(--card-text-color);
+    }
+
+    .dark-mode .card-footer {
+        background-color: var(--primary-color-light);
+        color: var(--card-text-color);
+        border-top-color: var(--primary-color);
+    }
+
+
+
+
+    /* Dark mode for Bootstrap accordion */
+    .dark-mode .accordion-item {
+        background-color: var(--card-background-color); /* Dark background */
+        color: var(--card-text-color); /* Light text */
+        border: none; /* Remove border */
+    }
+
+    .dark-mode .accordion-header {
+        background-color: var(--primary-color-light); /* Dark header background */
+        color: var(--card-text-color); /* Light text */
+        border: none; /* Remove border */
+    }
+
+    .dark-mode .accordion-button {
+        background-color: var(--primary-color-light); /* Dark button background */
+        color: var(--card-text-color); /* Light text */
+        border: none; /* Remove border */
+    }
+
+    .dark-mode .accordion-button:not(.collapsed) {
+        background-color: var(--primary-color); /* Darker background for expanded state */
+        color: var(--text-color); /* Light text */
+        border: none; /* Remove border */
+    }
+
+    .dark-mode .accordion-body {
+        background-color: var(--card-background-color); /* Dark body background */
+        color: var(--card-text-color); /* Light text */
+    }
+
+
+
+
+    /* Dark mode select input styles */
+    .dark-mode select {
+        background-color: var(--card-background-color); /* Dark background */
+        color: var(--card-text-color); /* Light text */
+        border: 1px solid var(--primary-color); /* Primary color border */
+    }
+
+    .dark-mode option {
+        background-color: var(--card-background-color); /* Dark background */
+        color: var(--card-text-color); /* Light text */
+    }
+
+
+
+
+    /* Dark mode offcanvas styles */
+    .dark-mode .offcanvas {
+        background-color: var(--sidebar-color); /* Dark sidebar background */
+        color: var(--text-primary); /* Text color */
+    }
+
+    .dark-mode .offcanvas-header {
+        background-color: var(--primary-color-light); /* Header background */
+        color: var(--text-primary); /* Header text color */
+        border-bottom: 1px solid var(--primary-color); /* Bottom border */
+    }
+
+    .dark-mode .offcanvas-body {
+        background-color: var(--card-background-color); /* Dark body background */
+        color: var(--card-text-color); /* Body text color */
+    }
+
+    .dark-mode .offcanvas-close {
+        color: var(--text-primary); /* Close button color */
+    }
+
+
+
+
+    /* Dark mode checkbox styles */
+    .dark-mode .form-check-input {
+        background-color: var(--card-background-color); /* Dark background */
+        border-color: var(--text-color); /* Dark border color */
+    }
+
+    .dark-mode .form-check-input:checked {
+        background-color: var(--primary-color); /* Checked background in dark mode */
+        border-color: var(--primary-color); /* Checked border in dark mode */
+    }
+
+    .dark-mode .form-check-input:hover,
+    .dark-mode .form-check-input:focus {
+        border-color: var(--primary-color-light); /* Dark mode hover/focus */
+    }
+
+    /* Dark mode textarea styles */
+    .dark-mode .form-control {
+        background-color: var(--card-background-color); /* Dark background for textarea */
+        color: var(--card-text-color); /* Light text color */
+        border: 1px solid var(--text-color); /* Dark border color */
+    }
+
+    .dark-mode .form-control:focus {
+        border-color: var(--primary-color); /* Dark mode focus border color */
+        box-shadow: 0 0 0 0.2rem rgba(72, 123, 232, 0.25); /* Dark mode focus shadow */
+    }
+
+
+
+    /* Dark mode input styles */
+    .dark-mode input[type="text"], .dark-mode input[type="datetime-local"] {
+        background-color: var(--card-background-color); /* Dark background */
+        border: 1px solid var(--text-color); /* Dark border color */
+        color: var(--text-color); /* Light text color */
+    }
+
+    /* Hover effect for inputs (Dark mode) */
+    .dark-mode input[type="text"]:hover, .dark-mode input[type="datetime-local"]:hover {
+        border-color: var(--primary-color-light); /* Slight border color change */
+    }
+
+    /* Focus effect for inputs (Dark mode) */
+    .dark-mode input[type="text"]:focus, .dark-mode input[type="datetime-local"]:focus {
+        border-color: var(--primary-color-light); /* Border color on focus */
+        box-shadow: 0 0 5px var(--primary-color); /* Subtle shadow on focus */
+        outline: none; /* Remove default outline */
+    }
+
+
+
+    /* Dark mode styling */
+    .dark-mode .modal-content {
+        background-color: var(--card-background-color); /* Dark background */
+        color: var(--text-color); /* Light text */
+    }
+
+    .dark-mode .modal-header, .dark-mode .modal-footer {
+        background-color: var(--sidebar-color); /* Darker sidebar color for header/footer */
+        color: var(--text-color); /* Light text */
+    }
+
+
+
+
+    /* Dark mode nav styles */
+    .nav-link {
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+    .dark-mode .nav-link {
+        color: var(--toggle-color); /* Light text color for nav links */
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+
+    .dark-mode .nav-link.active {
+        color: var(--primary-color); /* Highlight color for active nav link */
+        background-color: var(--primary-color-light); /* Background for active nav link */
+        border-bottom: 0px solid var(--card-text-color); /* Bottom border for active nav link */
+    }
+
+    .dark-mode .nav-link:hover,
+    .dark-mode .nav-link:focus {
+        color: var(--primary-color); /* Color on hover/focus */
+        background-color: var(--background-color); /* Background on hover/focus */
+    }
+
+    /* Dark mode tabs styles */
+    .dark-mode .nav-tabs .nav-link {
+        border-radius: 0.25rem; /* Rounded corners for tabs */
+    }
+
+    .dark-mode .nav-tabs .nav-link.active {
+        color: var(--card-text-color); /* Active tab text color */
+        background-color: var(--card-background-color); /* Active tab background */
+    }
+
+    .dark-mode .nav-tabs .nav-link:hover,
+    .dark-mode .nav-tabs .nav-link:focus {
+        color: var(--card-text-color); /* Color on hover/focus */
+        background-color: var(--primary-color-light); /* Background on hover/focus */
+    }
+
+    /* Dark mode tab pane styles */
+    .dark-mode .tab-content {
+        background-color: var(--card-background-color); /* Background color for tab content */
+        color: var(--card-text-color); /* Text color for tab content */
+    }
+
+
+
+    /* Dark mode dropdown styles */
+    .dark-mode .dropdown-menu {
+        background-color: var(--card-background-color); /* Dark background for dropdown */
+        color: var(--card-text-color); /* Light text color for dropdown items */
+        border: 1px solid var(--text-color); /* Border color for dropdown */
+    }
+
+    .dark-mode .dropdown-item {
+        color: var(--card-text-color); /* Text color for dropdown items */
+    }
+
+    .dark-mode .dropdown-item:hover,
+    .dark-mode .dropdown-item:focus {
+        background-color: var(--primary-color); /* Background color on hover/focus */
+        color: var(--card-background-color); /* Text color on hover/focus */
+    }
+
+    .dark-mode .dropdown-item.active,
+    .dark-mode .dropdown-item:active {
+        background-color: var(--primary-color); /* Background color for active item */
+        color: var(--card-background-color); /* Text color for active item */
+    }
+
+    .dark-mode .dropdown-toggle::after {
+        filter: invert(1); /* Invert arrow color to match dark mode */
+    }
+
+
+
+    /* Dark mode pagination styles */
+    .dark-mode .dt-paging .pagination {
+        background-color: var(--background-color) !important; /* Background color for pagination container */
+        color: var(--card-text-color) !important; /* Text color for pagination container */
+    }
+
+    .dark-mode .dt-paging .pagination .page-item {
+        background-color: var(--card-background-color) !important; /* Background color for pagination items */
+    }
+
+    .dark-mode .dt-paging .pagination .page-link {
+        color: var(--card-text-color) !important; /* Text color for pagination links */
+        background-color: var(--card-background-color) !important; /* Background color for pagination links */
+    }
+
+    .dark-mode .dt-paging .pagination .page-link:hover,
+    .dark-mode .dt-paging .pagination .page-link:focus {
+        background-color: var(--primary-color) !important; /* Background color on hover/focus */
+        color: var(--card-background-color) !important; /* Text color on hover/focus */
+    }
+
+    .dark-mode .dt-paging .pagination .page-item.active .page-link {
+        background-color: var(--primary-color) !important; /* Background color for the current page */
+        color: var(--card-background-color) !important; /* Text color for the current page */
+    }
+
+    .dark-mode .dt-paging .pagination .page-item.disabled .page-link {
+        background-color: var(--background-color) !important; /* Background color for disabled buttons */
+        color: var(--text-color) !important; /* Text color for disabled buttons */
+        cursor: not-allowed !important; /* Change cursor to indicate disabled state */
+    }
+
+
+
+    /* Dark mode for the entire table */
+    .dark-mode .dataTable {
+        background-color: var(--background-color) !important; /* Background color for the table */
+        color: var(--card-text-color) !important; /* Text color for the table */
+    }
+
+    /* Dark mode for table headers */
+    .dark-mode .dataTable thead {
+        background-color: var(--card-background-color) !important; /* Background color for table headers */
+        color: var(--card-text-color) !important; /* Text color for table headers */
+    }
+
+    /* Dark mode for table rows */
+    .dark-mode .dataTable tbody tr td {
+        background-color: var(--card-background-color) !important; /* Background color for table rows */
+    }
+
+    .dark-mode .dataTable th {
+        background-color: var(--body-color) !important; /* Background color for table rows */
+        color: var(--card-text-color) !important;
+    }
+
+    .dark-mode .dataTable tbody tr:nth-child(even) {
+        background-color: var(--background-color) !important; /* Alternating row background color */
+    }
+
+    .dark-mode .dataTable tbody td {
+        color: var(--card-text-color) !important;
+    }
+
+
+
+    /* Dark mode for select elements */
+    .dark-mode select {
+        background-color: var(--card-background-color) !important; /* Background color for select dropdown */
+        color: var(--card-text-color) !important; /* Text color for select dropdown */
+        border: 1px solid var(--text-color) !important; /* Border color for select dropdown */
+        padding: 0.5em !important; /* Padding inside select dropdown */
+    }
+
+    .dark-mode select option {
+        background-color: var(--card-background-color) !important; /* Background color for options */
+        color: var(--card-text-color) !important; /* Text color for options */
+    }
+
+    .dark-mode select option:hover {
+        background-color: var(--primary-color) !important; /* Background color on hover */
+        color: var(--card-background-color) !important; /* Text color on hover */
+    }
+
