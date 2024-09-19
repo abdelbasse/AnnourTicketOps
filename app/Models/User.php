@@ -76,6 +76,24 @@ class User extends Authenticatable
         return $this->reservedTickets()->where('statu', 1)->with('ticket')->get()->pluck('ticket');
     }
 
+    public function getOwnedTickets()
+    {
+        // Use a subquery to get the latest ownership records for each ticket
+        $latestOwnerships = TicketOwnership::select('ticketID')
+            ->where('reseverID', $this->id)
+            ->where('statu', 1)
+            ->latest('created_at')
+            ->distinct('ticketID')
+            ->get();
+
+        // Get the IDs of these tickets
+        $ticketIDs = $latestOwnerships->pluck('ticketID');
+
+        // Retrieve the tickets associated with these IDs
+        return Ticket::whereIn('id', $ticketIDs)->get();
+    }
+
+
     // Get all tickets transferred to the user but not yet accepted or declined
     public function getPendingTickets()
     {

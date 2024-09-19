@@ -127,6 +127,8 @@ class AdminTicketManagementController extends Controller
             'JSONTicketsPendingCloture' => $JSONlistPendingCloture,
 
             'role'=>$userRole,
+
+            'getNbrOwnedticket' => User::find(auth()->user()->id)->getAssignedTickets()->count(),
         ]);
     }
 
@@ -167,7 +169,9 @@ class AdminTicketManagementController extends Controller
             'tickets' => $listOfTickets,
             'users' => $ListOfUsersnormal,
             'transeferTicket' => $listTransferedTickets,
-            'TicketsPendingCloture' => $listPendingCloture
+            'TicketsPendingCloture' => $listPendingCloture,
+
+            'getNbrOwnedticket' => User::find(auth()->user()->id)->getOwnedTickets(),
         ]);
     }
 

@@ -137,12 +137,22 @@
                 @if (auth()->user()->role() >= 3)
                     <span
                         class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger
-                    @if ($transeferTicket->count() != 0) d-none @endif"
+                    @if ($getNbrOwnedticket->count() == 0) d-none @endif"
                         id="List-of-tickets-tab-Badge">
-                        999993
+                        {{ $getNbrOwnedticket->count() }}
                     </span>
                 @endif
             </li>
+
+            @if (auth()->user()->role() >= 3)
+                <li class="nav-item position-relative" role="presentation">
+                    <a class="nav-link" id="user-other-tickets-tab" data-bs-toggle="tab" href="#user-other-tickets" role="tab"
+                        aria-controls="user-other-tickets" aria-selected="false">
+                        All Tickets
+                    </a>
+                </li>
+            @endif
+
             <li class="nav-item position-relative" role="presentation">
                 <a class="nav-link" id="transferred-tickets-tab" data-bs-toggle="tab" href="#transferred-tickets"
                     role="tab" aria-controls="transferred-tickets" aria-selected="false">Transferred Tickets</a>
@@ -683,6 +693,76 @@
                                             id="exportSelected">Export
                                             Selected</button>
                                     @endif
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade m-0 p-0" id="user-other-tickets" role="tabpanel"
+                            aria-labelledby="user-other-tickets-tab" tabindex="0">
+                            <div class="">
+                                <hr>
+                                <div style="overflow-x:auto">
+                                    <table id="otherTicketTable" class="table table-striped" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Title</th>
+                                                <th>Description</th>
+                                                <th>Owner</th>
+                                                <th>Status</th>
+                                                <th>Aerport</th>
+                                                <th>Created On</th>
+                                                <th>Incident Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($tickets as $item)
+                                                @if (auth()->user()->role() <= 3 ||
+                                                        (auth()->user()->role() > 3 && $item->currentOwnerRelation->reserver->id != auth()->user()->id))
+                                                    <!-- Example rows (replace with your data) -->
+                                                    <tr data-ticketId="{{ $item->id }}" class="clickable-row"
+                                                        data-status="{{ $item->getStatusDesign() }}"
+                                                        data-status-org="{{ $item->status }}"
+                                                        data-aerport="{{ $item->aerport->id }}"
+                                                        data-equipement="{{ $item->hasAnalyseLogs() ? $item->latestAnalyseLog->equipementID : '' }}"
+                                                        data-nIncident="{{ $item->hasAnalyseLogs() ? $item->latestAnalyseLog->naruteIncidentID : '' }}"
+                                                        data-nSolution="{{ $item->hasRecoveryLogs() ? $item->latestRecoveryLog->naruteSolutionID : '' }}"
+                                                        data-created_at="{{ $item->created_at }}"
+                                                        data-inicident_date="{{ $item->DateIncident }}"
+                                                        data-cloture_date="{{ $item->DateCloture }}">
+                                                        <td>{{ $item->id }}</td>
+                                                        <td>
+                                                            <span class="d-inline-block text-truncate"
+                                                                style="max-width: 90px;">
+                                                                {{ $item->title }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="d-inline-block text-truncate"
+                                                                style="max-width: 150px;">
+                                                                {{ $item->desc }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <div class="user-info">
+                                                                <img src="{{ $item->currentOwnerRelation->reserver->imgUrl }}"
+                                                                    alt="{{ $item->currentOwnerRelation->reserver->Fname }}"
+                                                                    class="profile-picture">
+                                                                <span>{{ $item->currentOwnerRelation->reserver->Fname }}</span>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <p class="badge rounded-pill status-circle">
+                                                                {{ $item->getStatus() }}
+                                                            </p>
+                                                        </td>
+                                                        <td>{{ $item->aerport->code }}</td>
+                                                        <td>{{ $item->created_at }}</td>
+                                                        <td>{{ $item->DateIncident }}</td>
+                                                    </tr>
+                                                @endif
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -1391,6 +1471,7 @@
 
             // Initialize DataTable for Ticket Table
             $('#ticketTable').DataTable();
+            $('#otherTicketTable').DataTable();
             $('#ticketTableTransfered').DataTable();
             $('#ticketTablePendingCloture').DataTable();
 
@@ -1507,7 +1588,7 @@
                 var formData = $('#addSolutionTypeForm').serialize();
                 var parsedData = parseFormData(formData);
               ////  console.log("----->>> " + parsedData['solutionType'] + " , " + parsedData[
-                    'solutionDescription']);
+                    // 'solutionDescription']);
 
                 // AJAX call to add solution type
                 $.ajax({
@@ -2061,14 +2142,14 @@
                 const ContactReclamation = document.getElementById('ContactReclamation').value;
 
                 // Log the collected data to the console
-              //  console.log({
-                    title,
-                    description,
-                    airport,
-                    datetime,
-                    ContactReclamation,
-                    SupportNotification
-                });
+                //  console.log({
+                //     title,
+                //     description,
+                //     airport,
+                //     datetime,
+                //     ContactReclamation,
+                //     SupportNotification
+                // });
 
                 $.ajax({
                     url: '{{ route('ticket.Add.Ticket') }}', // Adjust the URL to your API endpoint for adding airports
@@ -2176,7 +2257,7 @@
                 // console.log('Status Selected:', statusSelected);
 
                 const rows = document.querySelectorAll(
-                    '#ticketTable tbody tr , #ticketTablePendingCloture tbody tr , #ticketTableTransfered tbody tr'
+                    '#ticketTable tbody tr , #ticketTablePendingCloture tbody tr , #ticketTableTransfered tbody tr , #otherTicketTable tbody tr '
                 );
 
                 // console.log(rows)
@@ -2192,7 +2273,7 @@
                     const rowNatureSolution = row.getAttribute('data-nSolution');
 
 
-                  //  console.log(
+                    // console.log(
                         // `Status: ${rowStatus}, ` +
                         // `Airport: ${rowAirport}, ` +
                         // `Created Date: ${rowCreatedDate}, ` +
@@ -2201,7 +2282,7 @@
                         // `Nature of Accident: ${rowNatureAccident}, ` +
                         // `Nature of Solution: ${rowNatureSolution}, ` +
                         // `Equipment: ${rowEquipment}`
-                    );
+                    // );
 
 
                     let showRow = true;

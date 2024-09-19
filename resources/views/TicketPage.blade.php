@@ -167,6 +167,11 @@
                                         </a>
                                     </li>
                                     <li>
+                                        <a class="dropdown-item " href="#" data-bs-toggle="modal" data-bs-target="#modalAddOperatorTicket">
+                                            ISP Information[ADD]
+                                        </a>
+                                    </li>
+                                    <li>
                                         <hr class="m-2 p-0">
                                     </li>
                                     <li><a class="dropdown-item
@@ -180,6 +185,60 @@
                                             data-ticket-id="{{ $ticket->id }}">Set a Parent</a></li>
                                 @endif
                             </ul>
+                                <!-- Modal Add Operato information-->
+                                <div class="modal fade" id="modalAddOperatorTicket" tabindex="-1" aria-labelledby="modalAddOperatorTicketLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="modalAddOperatorTicketLabel">ISP Information</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div>
+                                                <form id="operatorForm">
+                                                    <div class="mb-3">
+                                                        <label for="nticket" class="form-label">NTicket *</label>
+                                                        <input type="text" class="form-control" id="operator_nticket"
+                                                            placeholder="Enter NTicket"
+                                                            value=@if ($ticket->hasAnalyseLogs()) @if ($ticket->latestAnalyseLog->operatoreID != null)
+                                                                    {{ $ticket->latestAnalyseLog->getOperatore->NTicket }} @endif
+                                                            @endif>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="operatorName" class="form-label">Name *</label>
+                                                        <input type="text" class="form-control" id="operator_name"
+                                                            placeholder="Enter Name"
+                                                            value=@if ($ticket->hasAnalyseLogs()) @if ($ticket->latestAnalyseLog->operatoreID != null)
+                                                                    {{ $ticket->latestAnalyseLog->getOperatore->name }} @endif
+                                                            @endif>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="operatorEmail" class="form-label">Email</label>
+                                                        <input type="email" class="form-control" id="operator_mail"
+                                                            placeholder="Enter Email"
+                                                            value=@if ($ticket->hasAnalyseLogs()) @if ($ticket->latestAnalyseLog->operatoreID != null)
+                                                                    {{ $ticket->latestAnalyseLog->getOperatore->mail }} @endif
+                                                            @endif>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="operatorPhone" class="form-label">Phone</label>
+                                                        <input type="tel" class="form-control" id="operator_tell"
+                                                            placeholder="Enter Phone Number"
+                                                            value=@if ($ticket->hasAnalyseLogs()) @if ($ticket->latestAnalyseLog->operatoreID != null)
+                                                                    {{ $ticket->latestAnalyseLog->getOperatore->tell }} @endif
+                                                            @endif>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger">Remove ISP</button>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
                         </div>
                         <!-- Modal To Select a user to transfer -->
                         <div class="modal fade" id="listUsersModalSelect" tabindex="-1"
@@ -457,57 +516,6 @@
                                                 @endif>{{ $item->val }}</option>
                                         @endforeach
                                     </select>
-                                </div>
-                            </div>
-
-                            <div class="accordion mt-4" id="dateAccordion">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingOperator">
-                                        <button class="accordion-button collapsed" type="button"
-                                            data-bs-toggle="collapse" data-bs-target="#collapseOperator"
-                                            aria-expanded="false" aria-controls="collapseOperator">
-                                            <b>Operator Information</b>
-                                        </button>
-                                    </h2>
-                                    <div id="collapseOperator" class="accordion-collapse collapse"
-                                        aria-labelledby="headingOperator" data-bs-parent="#accordionExample">
-                                        <div class="accordion-body">
-                                            <form id="operatorForm">
-                                                <div class="mb-3">
-                                                    <label for="nticket" class="form-label">NTicket *</label>
-                                                    <input type="text" class="form-control" id="operator_nticket"
-                                                        placeholder="Enter NTicket"
-                                                        value=@if ($ticket->hasAnalyseLogs()) @if ($ticket->latestAnalyseLog->operatoreID != null)
-                                                                {{ $ticket->latestAnalyseLog->getOperatore->NTicket }} @endif
-                                                        @endif>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="operatorName" class="form-label">Name *</label>
-                                                    <input type="text" class="form-control" id="operator_name"
-                                                        placeholder="Enter Name"
-                                                        value=@if ($ticket->hasAnalyseLogs()) @if ($ticket->latestAnalyseLog->operatoreID != null)
-                                                                {{ $ticket->latestAnalyseLog->getOperatore->name }} @endif
-                                                        @endif>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="operatorEmail" class="form-label">Email</label>
-                                                    <input type="email" class="form-control" id="operator_mail"
-                                                        placeholder="Enter Email"
-                                                        value=@if ($ticket->hasAnalyseLogs()) @if ($ticket->latestAnalyseLog->operatoreID != null)
-                                                                {{ $ticket->latestAnalyseLog->getOperatore->mail }} @endif
-                                                        @endif>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="operatorPhone" class="form-label">Phone</label>
-                                                    <input type="tel" class="form-control" id="operator_tell"
-                                                        placeholder="Enter Phone Number"
-                                                        value=@if ($ticket->hasAnalyseLogs()) @if ($ticket->latestAnalyseLog->operatoreID != null)
-                                                                {{ $ticket->latestAnalyseLog->getOperatore->tell }} @endif
-                                                        @endif>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
