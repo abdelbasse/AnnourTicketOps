@@ -30,4 +30,9 @@ class RecoveryLog extends Model
     {
         return $this->belongsTo(NatureSolution::class, 'naruteSolutionID');
     }
+
+    public function comments()
+    {
+        return $this->hasMany(RepportComment::class, 'RecoveryIdLog', 'id');
+    }
 }

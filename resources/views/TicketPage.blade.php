@@ -127,6 +127,35 @@
             /* Ensure the image covers the entire circle */
         }
     </style>
+    <style>
+        .comment {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eaeaea;
+        }
+        .comment img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+        .comment-body {
+            flex-grow: 1;
+        }
+        .comment-name {
+            font-weight: bold;
+        }
+        .comment-date {
+            font-size: 0.85rem;
+            color: #888;
+        }
+        .comment-text {
+            margin-top: 5px;
+            color: #333;
+        }
+    </style>
 @endsection
 
 @section('body')
@@ -704,7 +733,7 @@
                     <div class="card-body">
                         <h5 class="card-title mb-4">Ticket Log</h5>
                         <div style="overflow-y: auto;">
-                            <div class="accordion" id="accordionExample">
+                            <div class="accordion" id="accordionExample" style="max-height: 500px; overflow:auto;">
                                 @foreach ($TicketLogs as $log)
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
@@ -712,8 +741,8 @@
                                                 data-bs-target="#corden_ticket_log_{{ $loop->count - $loop->index  }}" data-indexOfItemLog="{{ $loop->count - $loop->index  }}" aria-expanded="true"
                                                 aria-controls="corden_ticket_log_{{ $loop->count - $loop->index  }}">
                                                 {{-- Show date-time bold + user name + " : " + "log title " --}}
-                                                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-2">
-                                                    <div class="col row m-0 p-0 row-cols-1 col-4" style="max-width: 230px;">
+                                                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-2" style="width: 50%">
+                                                    <div class="col row m-0 p-0 row-cols-1 col-4" style="width: 30%">
                                                         <div class="col">
                                                             <div class="user-info d-flex align-items-center">
                                                                 <img src="{{ asset($log['user']['imgURL']) }}"
@@ -726,10 +755,12 @@
                                                             <p class="fw-light">{{ $log['date'] }}</p>
                                                         </div>
                                                     </div>
-                                                    <div class="col d-flex align-items-center" style="overflow:hidden;">
-                                                        <strong>
+                                                    <div class="col d-flex align-items-center" style="overflow:hidden; width:70%;">
+                                                        <b>
+                                                            [ Act {{ $loop->count - $loop->index  }} ]
+                                                            .
                                                             {{ $log['logType'] }}
-                                                        </strong>
+                                                        </b>
                                                     </div>
                                                 </div>
                                             </button>
@@ -749,9 +780,9 @@
                                                         <p>Ticket ownership was transferred on <strong>{{ $log['date'] }}</strong>.</p>
 
                                                         @if ($log['LogData']->owner->id == $log['LogData']->reserver->id || $log['LogData']->owner->id == 0)
-                                                            <p>User <strong>{{ $log['LogData']->reserver->Fname }}</strong> transferred the ticket to themselves.</p>
+                                                            <p>User <strong>{{ $log['LogData']->reserver->Fname }}</strong> assigned the ticket to themselves.</p>
                                                         @elseif ($log['LogData']->forced == 1)
-                                                            <p>Ticket was transferred to <strong>{{ $log['LogData']->reserver->Fname }}</strong> by a supervisor.</p>
+                                                            <p>Ticket was transferred to <strong>{{ $log['LogData']->reserver->Fname }}</strong> by a supervisor<b>[forced]</b>.</p>
                                                         @else
                                                             <p>Old Owner: <strong>{{ $log['LogData']->owner->Fname }}</strong></p>
                                                             <p>New Owner: <strong>{{ $log['LogData']->reserver->Fname }}</strong></p>
@@ -912,10 +943,79 @@
                         ItemShouldDesapairOwnership @if (!$CanEdit && auth()->user()->role() > 3)
                             d-none disabled
                         @endif d-flex justify-content-end">
+                        <button id="Add_comment_To_recovery_report" class="btn btn-secondary m-2 mt-0 mb-0" data-bs-toggle="modal" data-bs-target="#AddComment2RapportModal">Add Comment</button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="AddComment2RapportModal" tabindex="-1" aria-labelledby="AddComment2RapportModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="addCommentModalLabel">Add New Comment</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="commentText" class="form-label">Your Comment</label>
+                                        <textarea class="form-control" id="commentRapportText" rows="4" placeholder="Write your comment" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary" id="submitCommentRapportFormula">Submit Comment</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
                         <button id="save_final_recovery_report" class="btn btn-primary">Save Changes</button>
                     </div>
                 @endif
             </div>
+            {{-- @if (auth()->user()->role() <= 3)
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5 class="card-title">Comments</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- List of Comments -->
+                        <div class="comment">
+                            <img src="https://via.placeholder.com/45" alt="User Profile">
+                            <div class="comment-body">
+                                <div class="d-flex justify-content-between">
+                                    <div class="comment-name">John Doe</div>
+                                    <div class="comment-date">2024-09-20 10:15 AM</div>
+                                </div>
+                                <div class="comment-text">
+                                    This is a comment from John Doe. It’s a very insightful thought on the topic!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="comment">
+                            <img src="https://via.placeholder.com/45" alt="User Profile">
+                            <div class="comment-body">
+                                <div class="d-flex justify-content-between">
+                                    <div class="comment-name">Jane Smith</div>
+                                    <div class="comment-date">2024-09-19 5:45 PM</div>
+                                </div>
+                                <div class="comment-text">
+                                    I totally agree with this! This is a great example of thoughtful input.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="comment">
+                            <img src="https://via.placeholder.com/45" alt="User Profile">
+                            <div class="comment-body">
+                                <div class="d-flex justify-content-between">
+                                    <div class="comment-name">Mike Johnson</div>
+                                    <div class="comment-date">2024-09-18 12:30 PM</div>
+                                </div>
+                                <div class="comment-text">
+                                    Interesting perspective, thanks for sharing your thoughts!
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Add more comments as needed -->
+                    </div>
+                </div>
+            @endif --}}
         </div>
     </div>
     <script>
@@ -1541,6 +1641,39 @@
 
             // Redirect to the desired URL
             window.location.href = "/" + ticketId + "/ticket"; // Change to your desired URL structure
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#submitCommentRapportFormula').click(function() {
+                // Get the values from the form
+                var comment = $('#commentRapportText').val();
+
+                // Make sure the comment is not empty
+                if (comment) {
+                    $.ajax({
+                        url: '{{route('ticket.add.commet.recovery.repport')}}', // The endpoint to handle the request
+                        type: 'POST',
+                        data: {
+                            comment: comment,
+                            ticketId: {{$ticket->id}},
+                            _token: '{{ csrf_token() }}' // Add CSRF token for security
+                        },
+                        success: function(response) {
+                            // Handle success (e.g., show a success message, close the modal, etc.)
+                            showAlertS('Comment submitted successfully!');
+                            $('#commentRapportText').val(''); // Clear the textarea
+                            $('#addCommentModal').modal('hide'); // Hide the modal
+                        },
+                        error: function(xhr) {
+                            // Handle errors (e.g., show an error message)
+                            showAlertD('Error submitting comment: ' + xhr.responseJSON.message);
+                        }
+                    });
+                } else {
+                    showAlertD('Please enter a comment.');
+                }
+            });
         });
     </script>
     {{-- |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| --}}

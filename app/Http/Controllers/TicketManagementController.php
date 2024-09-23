@@ -12,6 +12,7 @@ use App\Models\RecoveryLog;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Models\Validation;
+use App\Models\RepportComment;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -269,7 +270,7 @@ class TicketManagementController extends Controller
             $logs[] = [
                 'user' => [
                     'name' => $ticket->validation->user->Fname,
-                    'imgURL' => $ticket->validation->user->profile_image,
+                    'imgURL' => asset($ticket->validation->user->profile_image),
                 ],
                 'logTypeIndex' => 5,
                 'logType' => 'Add Comments',
@@ -283,7 +284,7 @@ class TicketManagementController extends Controller
             $logs[] = [
                 'user' => [
                     'name' => $ticket->validation->user->Fname,
-                    'imgURL' => $ticket->validation->user->profile_image,
+                    'imgURL' => asset($ticket->validation->user->profile_image),
                 ],
                 'logTypeIndex' => 6,
                 'logType' => 'Validation',
@@ -582,7 +583,7 @@ class TicketManagementController extends Controller
             $logs[] = [
                 'user' => [
                     'name' => $ticket->validation->user->Fname,
-                    'imgURL' => $ticket->validation->user->profile_image,
+                    'imgURL' => asset($ticket->validation->user->profile_image),
                 ],
                 'logTypeIndex' => 5,
                 'logType' => 'Add Comments',
@@ -596,7 +597,7 @@ class TicketManagementController extends Controller
             $logs[] = [
                 'user' => [
                     'name' => $ticket->validation->user->Fname,
-                    'imgURL' => $ticket->validation->user->profile_image,
+                    'imgURL' => asset($ticket->validation->user->profile_image),
                 ],
                 'logTypeIndex' => 6,
                 'logType' => 'Validation',
@@ -782,6 +783,26 @@ class TicketManagementController extends Controller
             'body' => $req->comment,
         ]);
         return response()->json(['message' => 'Comment Added successfully'], 200);
+    }
+
+    public function addCommentRapport(Request $req)
+    {
+        $ticket = Ticket::findOrFail($req->ticketId);
+        // Check if the ticket has a recovery log
+        if ($ticket->hasRecoveyLog()) {
+            $idRecoveryLog = $ticket->latestRecoveryLog->id;
+
+            // Create a new comment
+            RepportComment::create([
+                'RecoveryIdLog' => $idRecoveryLog, // Use $idRecoveryLog here
+                'comment' => $req->comment,
+                'userID' => auth()->user()->id,
+            ]);
+
+            return response()->json(['message' => 'Comment submitted successfully!']);
+        } else {
+            return response()->json(['message' => 'No recovery log found for this ticket.'], 404);
+        }
     }
 
     public function setParent(Request $req)

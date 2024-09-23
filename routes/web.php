@@ -78,6 +78,7 @@ Route::middleware('login')->group(function () {
     Route::post('/ticket/cloture', [TicketManagementController::class, 'clotureTicket'])->name('ticket.cloture');
     Route::post('/ticket/validation', [TicketManagementController::class, 'ValidationTicket'])->name('ticket.validation');
     Route::post('/ticket/add/comment', [TicketManagementController::class, 'addComment'])->name('ticket.add.commet.validation');
+    Route::post('/ticket/recoveryRapport/add/comment', [TicketManagementController::class, 'addCommentRapport'])->name('ticket.add.commet.recovery.repport');
     Route::post('/ticket/setParent', [TicketManagementController::class, 'setParent'])->name('ticket.set.parent');
 
     Route::get('/ticket/Rapport/{id}', [TicketManagementController::class, 'getRapport'])->name('ticket.pdf.rapport');

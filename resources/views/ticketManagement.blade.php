@@ -2741,7 +2741,7 @@
             // Track which rows should remain in the table
             const currentRows = [];
 
-            // Update existing rows and remove rows not in the response
+            var currentPage = table.page();
             table.rows().every(function() {
                 const row = this.node();
                 const rowId = parseInt($(row).attr('data-id'));
@@ -2779,7 +2779,7 @@
             });
 
             // Draw the table to reflect changes
-            table.draw();
+            table.page(currentPage).draw(false);
         }
 
         function updateAdminListOfOptionsEquipments(response) {
@@ -2795,7 +2795,7 @@
             // Track which rows should remain in the table
             const currentRows = [];
 
-            // Update existing rows and remove rows not in the response
+            var currentPage = table.page();
             table.rows().every(function() {
                 const row = this.node();
                 const rowId = parseInt($(row).attr('data-id'));
@@ -2829,7 +2829,7 @@
             });
 
             // Draw the table to reflect changes
-            table.draw();
+            table.page(currentPage).draw(false);
         }
 
 
@@ -2838,7 +2838,7 @@
             const table = $('#problemTypeTable').DataTable();
             const responseIds = new Set(problems.map(problem => problem.id));
             const currentRows = [];
-
+            var currentPage = table.page();
             table.rows().every(function() {
                 const row = this.node();
                 const rowId = parseInt($(row).attr('data-id'));
@@ -2869,7 +2869,7 @@
                 }
             });
 
-            table.draw();
+            table.page(currentPage).draw(false);
         }
 
         function updateAdminListOfOptionsSolutions(response) {
@@ -2877,7 +2877,7 @@
             const table = $('#solutionTypeTable').DataTable();
             const responseIds = new Set(solutions.map(solution => solution.id));
             const currentRows = [];
-
+            var currentPage = table.page();
             table.rows().every(function() {
                 const row = this.node();
                 const rowId = parseInt($(row).attr('data-id'));
@@ -2909,7 +2909,7 @@
             });
 
 
-            table.draw();
+                        table.page(currentPage).draw(false);
         }
 
         function formatDate(inputDate) {
@@ -2937,7 +2937,7 @@
             var responseIds = new Set(users.map(user => user.id));
             var currentRows = [];
 
-            // Iterate over the existing rows in the table
+            var currentPage = table.page();
             table.rows().every(function() {
                 var row = this.node();
                 var rowId = parseInt($(row).attr('data-userid'));
@@ -2987,7 +2987,7 @@
             });
 
             // Redraw the table to reflect any changes
-            table.draw();
+            table.page(currentPage).draw(false);
         }
 
         function getStatus(status) {
@@ -3037,6 +3037,9 @@
                 tickets = ticketsTmp;
             }
             // console.log(tickets);
+
+            // Store the current page
+            var currentPage = table.page();
 
             // Iterate over existing rows to update or remove them
             table.rows().every(function() {
@@ -3145,7 +3148,7 @@
                 }
             });
 
-            table.draw();
+            table.page(currentPage).draw(false);
         }
 
         function updateTicketTableTransfered(response) {
@@ -3178,6 +3181,7 @@
             }
 
             // console.log(tickets);
+            var currentPage = table.page();
 
             // Iterate over existing rows to update or remove them
             table.rows().every(function() {
@@ -3294,7 +3298,8 @@
                 }
             });
 
-            table.draw();
+            table.page(currentPage).draw(false);
+
         }
 
         function updatePendingClotureTable(response) {
@@ -3312,7 +3317,7 @@
                 tickets = ticketsTmp;
             }
 
-            // Iterate over existing rows to update or remove them
+            var currentPage = table.page();
             table.rows().every(function() {
                 var row = this.node();
                 var rowId = parseInt($(row).attr('data-ticketId'), 10);
@@ -3391,7 +3396,7 @@
                 }
             });
 
-            table.draw();
+            table.page(currentPage).draw(false);
             updateTableTimeSpans();
         }
 

@@ -61,7 +61,6 @@
     .dark-mode .card {
         background-color: var(--card-background-color); /* Dark card background */
         color: var(--card-text-color); /* Light text color */
-        border-color: var(--card-text-color);
     }
 
     .dark-mode .card-header {

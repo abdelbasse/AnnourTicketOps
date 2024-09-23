@@ -22,7 +22,7 @@
                         <div class="card shadow-sm d-flex flex-row align-items-center"
                             style="max-height: 70%; background-color: var(--sidebar-color); color: var(--text-primary);">
                             <div class="ms-auto p-3" style="max-width:30%;">
-                                <img src="https://cdn-icons-png.flaticon.com/128/7411/7411135.png" alt=""
+                                <img src="{{asset('img/icons/ticket.png')}}" alt=""
                                     width="100%">
                             </div>
                             <div class="p-3" style="width: 70%;">
@@ -35,7 +35,7 @@
                         <div class="card shadow-sm d-flex flex-row align-items-center"
                             style="max-height: 70%; background-color: var(--sidebar-color); color: var(--text-primary);">
                             <div class="ms-auto p-3" style="max-width:30%;">
-                                <img src="https://cdn-icons-png.flaticon.com/128/12822/12822540.png" alt=""
+                                <img src="{{asset('img/icons/Nticket.png')}}" alt=""
                                     width="100%">
                             </div>
                             <div class="p-3" style="width: 70%;">
