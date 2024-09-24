@@ -23,8 +23,8 @@ class UsersTableSeeder extends Seeder
                 'role' => 1,
                 'imgUrl' => 'img/users/user.png',
                 'remember_token' => null,
-                'created_at' => null,
-                'updated_at' => null
+                'created_at' => now(),
+                'updated_at' => now()
             ],
             [
                 'id' => 1,
@@ -37,8 +37,8 @@ class UsersTableSeeder extends Seeder
                 'role' => 1,
                 'imgUrl' => 'img/users/user.png',
                 'remember_token' => null,
-                'created_at' => '2024-08-27 14:52:01',
-                'updated_at' => null
+                'created_at' => now(),
+                'updated_at' => now()
             ],
         ]);
     }
