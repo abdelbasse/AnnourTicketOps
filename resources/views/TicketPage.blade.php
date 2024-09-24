@@ -864,6 +864,29 @@
                                                                 </div>
                                                             </div>
                                                         @endif
+
+                                                        @if(!empty($log['LogData']->comments))
+                                                            <div class="report-body-container p-2">
+                                                                <h5 class="report-body-title">Report Comments:</h5>
+                                                                <div class="card-body">
+                                                                    <!-- List of Comments -->
+                                                                    @foreach ($log['LogData']->comments as $comment)
+                                                                        <div class="comment">
+                                                                            <div class="comment-body">
+                                                                                <div class="d-flex justify-content-between">
+                                                                                    <div class="comment-name">{{$comment->user->Fname}} {{$comment->user->Lname}}</div>
+                                                                                    <div class="comment-date">{{$comment->created_at}}</div>
+                                                                                </div>
+                                                                                <div class="comment-text">
+                                                                                    {{$comment->comment}}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endforeach
+                                                                    <!-- Add more comments as needed -->
+                                                                </div>
+                                                            </div>
+                                                        @endif
                                                         @break
 
                                                     @case(5)
@@ -1019,7 +1042,7 @@
         </div>
     </div>
     <script>
-      // console.log(
+        console.log(
             @json($TicketLogs)
         )
     </script>
@@ -2200,6 +2223,25 @@
                                         <div class="report-body-content p-2" style="border: 2px solid black;">
                                             ${log.LogData.repportBody}
                                         </div>
+                                    </div>`;
+                    }
+                    // Comments section
+                    if (log.LogData.comments && log.LogData.comments.length > 0) {
+                        logHtml += `<div class="report-comments-container p-2">
+                                        <h5 class="report-comments-title">Report Comments:</h5>
+                                        <div class="card-body">`;
+                        log.LogData.comments.forEach(comment => {
+                            logHtml += `<div class="comment">
+                                            <div class="comment-body">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="comment-name">${comment.user.Fname} ${comment.user.Lname}</div>
+                                                    <div class="comment-date">${formatDate(comment.created_at)}</div>
+                                                </div>
+                                                <div class="">${comment.comment}</div>
+                                            </div>
+                                        </div>`;
+                        });
+                        logHtml += `</div>
                                     </div>`;
                     }
                     break;

@@ -86,6 +86,7 @@ class TicketManagementController extends Controller
         $RecoveryLogs = $ticket->recoveryLogs()->with([
             'getNatureSolution',
             'user',
+            'comments',
         ])->get();
 
         $transferLogs = $ticket->ticketOwnerShip()->with([
@@ -399,6 +400,7 @@ class TicketManagementController extends Controller
         $RecoveryLogs = $ticket->recoveryLogs()->with([
             'getNatureSolution',
             'user',
+            'comments',
         ])->get();
 
         $transferLogs = $ticket->ticketOwnerShip()->with([
@@ -787,9 +789,9 @@ class TicketManagementController extends Controller
 
     public function addCommentRapport(Request $req)
     {
-        $ticket = Ticket::findOrFail($req->ticketId);
+        $ticket = Ticket::find($req->ticketId);
         // Check if the ticket has a recovery log
-        if ($ticket->hasRecoveyLog()) {
+        if ($ticket->hasRecoveryLogs()) {
             $idRecoveryLog = $ticket->latestRecoveryLog->id;
 
             // Create a new comment

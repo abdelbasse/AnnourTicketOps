@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             AerportsTableSeeder::class,
             NatureIncidentsTableSeeder::class,
             NatureSolutionsTableSeeder::class,
+            FileFolderSeeder::class,
         ]);
     }
 }

@@ -33,6 +33,6 @@ class RecoveryLog extends Model
 
     public function comments()
     {
-        return $this->hasMany(RepportComment::class, 'RecoveryIdLog', 'id');
+        return $this->hasMany(RepportComment::class, 'RecoveryIdLog', 'id')->with('user');
     }
 }

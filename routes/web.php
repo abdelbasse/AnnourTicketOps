@@ -109,7 +109,10 @@ Route::middleware('login')->group(function () {
     // |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     // |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
+    Route::get('/files/json',[FileManagementController::class,'fetch'])->name('fileM.json.fetch');
+
     Route::get('/files',[FileManagementController::class,'index'])->name('fileM.index');
+    Route::post('/files',[FileManagementController::class,'submit'])->name('fileM.submit');
 
     // Routes only for Supervisorrs
     // Route::middleware('Supervisor')->group(function () {

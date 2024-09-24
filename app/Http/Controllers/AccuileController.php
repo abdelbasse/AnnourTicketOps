@@ -533,10 +533,10 @@ class AccuileController extends Controller
             }
 
             // Calculate times
-            $creationTime = $dateIncident->diffInHours($createdAt);
-            $closeTime = $dateCloture->diffInHours($dateRecovery);
-            $incidentDuration = $dateIncident->diffInHours($dateRecovery);
-            $lifespan = $dateCloture->diffInHours($createdAt);
+            $creationTime = abs($dateIncident->diffInHours($createdAt));
+            $closeTime = abs($dateCloture->diffInHours($dateRecovery));
+            $incidentDuration = abs($dateIncident->diffInHours($dateRecovery));
+            $lifespan = abs($dateCloture->diffInHours($createdAt));
 
             // Determine day of the week, week of the month, and month of the year
             $dayOfWeek = $createdAt->dayOfWeekIso - 1; // 0 = Monday, 6 = Sunday
