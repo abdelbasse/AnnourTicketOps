@@ -229,41 +229,33 @@
                                                         <label for="nticket" class="form-label">NTicket *</label>
                                                         <input type="text" class="form-control" id="operator_nticket"
                                                             placeholder="Enter NTicket"
-                                                            value=@if ($ticket->hasAnalyseLogs()) @if ($ticket->latestAnalyseLog->operatoreID != null)
-                                                                    {{ $ticket->latestAnalyseLog->getOperatore->NTicket }} @endif
-                                                            @endif>
+                                                            value="@if($ticket->hasAnalyseLogs() && $ticket->latestAnalyseLog->operatoreID != null){{ $ticket->latestAnalyseLog->getOperatore->NTicket }}@endif">
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="operatorName" class="form-label">Name *</label>
                                                         <input type="text" class="form-control" id="operator_name"
                                                             placeholder="Enter Name"
-                                                            value=@if ($ticket->hasAnalyseLogs()) @if ($ticket->latestAnalyseLog->operatoreID != null)
-                                                                    {{ $ticket->latestAnalyseLog->getOperatore->name }} @endif
-                                                            @endif>
+                                                            value="@if($ticket->hasAnalyseLogs() && $ticket->latestAnalyseLog->operatoreID != null){{ $ticket->latestAnalyseLog->getOperatore->name }}@endif">
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="operatorEmail" class="form-label">Email</label>
                                                         <input type="email" class="form-control" id="operator_mail"
                                                             placeholder="Enter Email"
-                                                            value=@if ($ticket->hasAnalyseLogs()) @if ($ticket->latestAnalyseLog->operatoreID != null)
-                                                                    {{ $ticket->latestAnalyseLog->getOperatore->mail }} @endif
-                                                            @endif>
+                                                            value="@if($ticket->hasAnalyseLogs() && $ticket->latestAnalyseLog->operatoreID != null){{ $ticket->latestAnalyseLog->getOperatore->mail }}@endif">
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="operatorPhone" class="form-label">Phone</label>
                                                         <input type="tel" class="form-control" id="operator_tell"
                                                             placeholder="Enter Phone Number"
-                                                            value=@if ($ticket->hasAnalyseLogs()) @if ($ticket->latestAnalyseLog->operatoreID != null)
-                                                                    {{ $ticket->latestAnalyseLog->getOperatore->tell }} @endif
-                                                            @endif>
+                                                            value="@if($ticket->hasAnalyseLogs() && $ticket->latestAnalyseLog->operatoreID != null){{ $ticket->latestAnalyseLog->getOperatore->tell }}@endif">
                                                     </div>
                                                 </form>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-danger">Remove ISP</button>
+                                            <button type="button" class="btn btn-danger" id="RemoveOperatoreFromTheTicket">Remove ISP</button>
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                            <button type="button" class="btn btn-primary" id="saveOperatoreTicket">Save changes</button>
                                         </div>
                                     </div>
                                     </div>
@@ -1372,7 +1364,7 @@
     <script>
         $(document).ready(function() {
             // Attach click event handlers to the buttons
-            $('#save_analyse_changes, #save_final_analysis_report').click(function() {
+            $('#save_analyse_changes, #save_final_analysis_report, #saveOperatoreTicket').click(function() {
 
                 // Get values from select elements
                 var equipementAnalyse = $('#equipement_analyse').val();
@@ -1387,10 +1379,10 @@
                 var operatorMail = $('#operator_mail').val();
                 var operatorTell = $('#operator_tell').val();
                 // Alert the values
-                // alert("Equipement: " + equipementAnalyse + "\n" +
-                //     "NSM Status: " + nsmStatusAnalyse + "\n" +
-                //     "Nature Incident: " + natureIncidentAnalyse + "\n" +
-                //     "Final Analysis Report: " + finalAnalysisReport);
+                // alert("operatorNTicket: " + operatorNTicket + "\n" +
+                //     "operatorName: " + operatorName + "\n" +
+                //     "operatorMail: " + operatorMail + "\n" +
+                //     "operatorTell: " + operatorTell);
 
                 $.ajax({
                     url: '{{ route('ticket.Log.Add') }}', // Adjust the URL to your API endpoint for adding airports
@@ -1426,6 +1418,37 @@
                       // console.log(xhr);
                       // console.log(error);
                         showAlertD('Failed to add analysis log. Please try again.');
+                    }
+                });
+            });
+
+            $('#RemoveOperatoreFromTheTicket').click(function() {
+                $.ajax({
+                    url: '{{ route('ticket.Log.Add') }}', // Adjust the URL to your API endpoint for adding airports
+                    method: 'POST',
+                    data: {
+                        ticketId: '{{ $ticket->id }}',
+                        type: 'remove',
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        // Show alert with each piece of airport data
+                        showAlertS('Operatore Removed successfully!');
+
+                        // -----------------------------------------
+                        // only be commeted if i add every 100milisec to refrech the data of the tickets [after]
+                        // -----------------------------------------
+                        // Reload the page after a short delay (optional)
+                        setTimeout(function() {
+                            location.reload(); // Reloads the current page
+                        }, 1000);
+                    // console.log(response);
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error responses if needed
+                    // console.log(xhr);
+                    // console.log(error);
+                        showAlertD('Failed to Remove Operatore. Please try again.');
                     }
                 });
             });
@@ -1749,6 +1772,9 @@
                     item.classList.remove('d-none', 'disabled');
                 }
             });
+            if(response.CanAddOperatore){
+                items[2].classList.remove('d-none', 'disabled');
+            }
         }
 
 
@@ -1898,6 +1924,7 @@
             var dropdownItems = $('#ticketMainInfoOptionHeader .dropdown .dropdown-menu .dropdown-item');
 
             // Transfer Ticket
+            console.log(dropdownItems)
             if (status >= 2) {
                 $(dropdownItems[0]).addClass('disabled');
             } else {
@@ -1914,16 +1941,23 @@
 
                 // Generate Rapport
                 if (status >= 2) {
-                    $(dropdownItems[2]).removeClass('disabled');
+                    $(dropdownItems[3]).removeClass('disabled');
                 } else {
-                    $(dropdownItems[2]).addClass('disabled');
+                    $(dropdownItems[3]).addClass('disabled');
                 }
 
                 // Set a Parent
                 if (response.ticket.parent) {
-                    $(dropdownItems[3]).addClass('disabled');
+                    $(dropdownItems[4]).addClass('disabled');
                 } else {
-                    $(dropdownItems[3]).removeClass('disabled');
+                    $(dropdownItems[4]).removeClass('disabled');
+                }
+
+                // Add Operatore ISP
+                if (response.CanAddOperatore) {
+                    $(dropdownItems[2]).removeClass('disabled');
+                } else {
+                    $(dropdownItems[2]).addClass('disabled');
                 }
             }
         }
@@ -2314,80 +2348,6 @@
         // fucntion only for Analyse Update
         function updateAnalyseSection_ListOptions(response) {
             var { equipements, problems, ticket, role } = response;
-
-            // // Update Equipement Options
-            // var equipementSelect = document.getElementById('equipement_analyse');
-            // equipementSelect.innerHTML = '<option value="" selected></option>'; // Clear existing options
-            // equipements.forEach(equipement => {
-            //     var option = document.createElement('option');
-            //     option.value = equipement.id;
-            //     option.textContent = equipement.equipement;
-            //     if (ticket.latest_analyse_log && ticket.latest_analyse_log.equipementID === equipement.id) {
-            //         option.selected = true;
-            //     }
-            //     equipementSelect.appendChild(option);
-            // });
-
-            // // Update Nature Incident Options
-            // var natureIncidentSelect = document.getElementById('nature_incident_analyse');
-            // natureIncidentSelect.innerHTML = '<option value=""></option>'; // Clear existing options
-            // problems.forEach(problem => {
-            //     var option = document.createElement('option');
-            //     option.value = problem.id;
-            //     option.textContent = problem.val;
-            //     if (ticket.latest_analyse_log && ticket.latest_analyse_log.get_nature_incident && ticket.latest_analyse_log.get_nature_incident.id === problem.id) {
-            //         option.selected = true;
-            //     }
-            //     natureIncidentSelect.appendChild(option);
-            // });
-
-            // // Update NSM Statu Options
-            // var nsmStatuSelect = document.getElementById('nsm_statu_analyse');
-            // var nsmStatuses = [
-            //     { value: 1, label: 'Host DOWN' },
-            //     { value: 2, label: 'Host UP' },
-            //     { value: 3, label: 'Service Critical' },
-            //     { value: 4, label: 'Service OK' },
-            //     { value: 5, label: 'Unknown Status' }
-            // ];
-            // nsmStatuSelect.innerHTML = '<option value=""></option>'; // Clear existing options but keep the null option
-            // nsmStatuses.forEach(status => {
-            //     var option = document.createElement('option');
-            //     option.value = status.value;
-            //     option.textContent = status.label;
-            //     if (ticket.latest_analyse_log && ticket.latest_analyse_log.NSMStatu === status.value) {
-            //         option.selected = true;
-            //     }
-            //     nsmStatuSelect.appendChild(option);
-            // });
-
-            // // Update Operator Information
-            // var operatorNticket = document.getElementById('operator_nticket');
-            // var operatorName = document.getElementById('operator_name');
-            // var operatorMail = document.getElementById('operator_mail');
-            // var operatorTell = document.getElementById('operator_tell');
-
-            // if (ticket.latest_analyse_log && ticket.latest_analyse_log.operatoreID) {
-            //     var operator = ticket.latest_analyse_log.get_operatore || {};
-
-            //     operatorNticket.value = operator.NTicket || '';
-            //     operatorName.value = operator.name || '';
-            //     operatorMail.value = operator.mail || '';
-            //     operatorTell.value = operator.tell || '';
-            // } else {
-            //     // Clear the operator fields if no operator data is available
-            //     operatorNticket.value = '';
-            //     operatorName.value = '';
-            //     operatorMail.value = '';
-            //     operatorTell.value = '';
-            // }
-
-            // //update the rapport stuff for analyse
-            // if (ticket.latest_analyse_log){
-            //     editorForAnalyse.setData(ticket.latest_analyse_log.repportBody);
-            // }else{
-            //     editorForAnalyse.setData('');
-            // }
 
             // Update Save Changes Button
             var saveButton = document.getElementById('save_analyse_changes');

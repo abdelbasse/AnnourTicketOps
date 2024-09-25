@@ -31,7 +31,7 @@ class TicketExporterController extends Controller
             'userId' => auth()->user()->id,
             'name' => $fileName,
             'isFile' => true,
-            'path' => 'storage/' . $fileName,
+            'path' => $fileName,
             'extension' => 'xlsx',
             'parentId' => 1,
         ]);

@@ -98,7 +98,7 @@ class FileManagementController extends Controller
             }
 
             // If the item is a file, delete the file from storage
-            if ($item->isFile) {
+            if ($item->isFile == 1) {
                 // Construct the full path (prepend 'public/' to the file name)
                 $filePath = 'public/' . $item->path;
 

@@ -351,6 +351,7 @@ class TicketManagementController extends Controller
 
 
             'CanEdit' => $canEdit,
+            'CanAddOperatore' => $ticket->hasAnalyseLogs(),
         ]);
     }
 
@@ -662,14 +663,11 @@ class TicketManagementController extends Controller
             $operatoreId = null;
             if (!empty($req->operatorNTicket) || !empty($req->operatorName)) {
                 // Check if an operator with the same NTicket exists
-                $existingOperator = OperatorTicket::where('NTicket', $req->operatorNTicket)
-                    ->first();
+                $existingOperator = OperatorTicket::where('NTicket', $req->operatorNTicket)->first();
 
-                if ($existingOperator) {
+                if ($existingOperator->count() != 0) {
                     // If the NTicket exists, check if other fields match
-                    if (
-                        $existingOperator->name === $req->operatorName
-                    ) {
+                    if ($existingOperator->name === $req->operatorName) {
                         // If everything matches, use the existing operator
                         $operatoreId = $existingOperator->id;
                     } else {
@@ -696,6 +694,7 @@ class TicketManagementController extends Controller
                 }
             }
 
+            // $analyseLog = "hello";
             // Create a new AnalyseLog record
             $analyseLog = AnalyseLog::create([
                 'TicketID' => $req->ticketId,
@@ -729,6 +728,16 @@ class TicketManagementController extends Controller
 
             // Return a success response
             return response()->json(['message' => 'Recovery log added successfully!', 'data' => $recoveryLog], 200);
+        } else if ($req->type === 'remove') {
+            $ticket = Ticket::find($req->ticketId);
+            if($ticket->hasAnalyseLogs()){
+                // Update the latest AnalyseLog associated with the ticket
+                AnalyseLog::where('TicketID', $req->ticketId)
+                ->latest()
+                ->update(['operatoreID' => null]);
+            }
+            // Return a success response
+            return response()->json(['message' => 'Recovery log added successfully!'], 200);
         }
 
         // If the type is not 'analyse', handle other types or return an error

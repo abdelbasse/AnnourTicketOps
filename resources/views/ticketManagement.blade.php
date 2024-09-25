@@ -135,12 +135,12 @@
                     @endif
                 </a>
                 @if (auth()->user()->role() >= 3)
-                    <span
+                    {{-- <span
                         class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger
                     @if ($getNbrOwnedticket->count() == 0) d-none @endif"
                         id="List-of-tickets-tab-Badge">
                         {{ $getNbrOwnedticket->count() }}
-                    </span>
+                    </span> --}}
                 @endif
             </li>
 
@@ -2230,39 +2230,36 @@
                 const natureAccidentSelected = natureAccidentFilter.getValue().map(item => item.value);
                 const natureSolutionSelected = natureSolutionFilter.getValue().map(item => item.value);
 
-                // Get selected checkbox values
                 const statusCheckboxes = document.querySelectorAll('#statusFilter .form-check-input');
                 const statusSelected = Array.from(statusCheckboxes)
                     .filter(checkbox => checkbox.checked)
                     .map(checkbox => checkbox.value);
 
-
                 function convertDate(dateString) {
                     if (!dateString) return null;
                     const date = new Date(dateString);
-                    return date.toISOString().replace('T', ' ').split('.')[
-                        0]; // Convert to "YYYY-MM-DD HH:MM:SS" format
+                    return date.toISOString().replace('T', ' ').split('.')[0];
                 }
-                // console.log('Filter Data:');
-                // console.log('Created Date Start:', createdDateStart);
-                // console.log('Created Date End:', createdDateEnd);
-                // console.log('Incident Date Start:', incidentDateStart);
-                // console.log('Incident Date End:', incidentDateEnd);
-                // console.log('Closure Date Start:', closureDateStart);
-                // console.log('Closure Date End:', closureDateEnd);
-                // console.log('Equipment Selected:', equipmentSelected);
-                // console.log('Airport Selected:', airportSelected);
-                // console.log('Nature of Accident Selected:', natureAccidentSelected);
-                // console.log('Nature of Solution Selected:', natureSolutionSelected);
-                // console.log('Status Selected:', statusSelected);
 
-                const rows = document.querySelectorAll(
-                    '#ticketTable tbody tr , #ticketTablePendingCloture tbody tr , #ticketTableTransfered tbody tr , #otherTicketTable tbody tr '
-                );
+                const tableSelectors = [
+                    '#ticketTable',
+                    '#ticketTablePendingCloture',
+                    '#ticketTableTransfered',
+                    '#otherTicketTable'
+                ];
 
-                // console.log(rows)
+                let allRows = [];
 
-                rows.forEach(row => {
+                tableSelectors.forEach(selector => {
+                    const table = $(selector).DataTable();
+                    const rows = table.rows().nodes();
+
+                    Array.from(rows).forEach(row => {
+                        allRows.push(row);
+                    });
+                });
+
+                allRows.forEach(row => {
                     const rowStatus = row.getAttribute('data-status-org');
                     const rowAirport = row.getAttribute('data-aerport');
                     const rowCreatedDate = row.getAttribute('data-created_at');
@@ -2272,64 +2269,46 @@
                     const rowNatureAccident = row.getAttribute('data-nIncident');
                     const rowNatureSolution = row.getAttribute('data-nSolution');
 
-
-                    // console.log(
-                        // `Status: ${rowStatus}, ` +
-                        // `Airport: ${rowAirport}, ` +
-                        // `Created Date: ${rowCreatedDate}, ` +
-                        // `Incident Date: ${rowIncidentDate}, ` +
-                        // `Closure Date: ${rowClosureDate}, ` //+
-                        // `Nature of Accident: ${rowNatureAccident}, ` +
-                        // `Nature of Solution: ${rowNatureSolution}, ` +
-                        // `Equipment: ${rowEquipment}`
-                    // );
-
-
                     let showRow = true;
 
-                    // Status filter with OR logic
+                    // Status filter
                     if (statusSelected.length > 0 && !statusSelected.includes(rowStatus)) {
                         showRow = false;
                     }
 
-                    // Airport filter with AND logic
+                    // Airport filter
                     if (airportSelected.length > 0 && !airportSelected.includes(rowAirport)) {
                         showRow = false;
                     }
 
-                    if (natureAccidentSelected.length > 0 && (!rowNatureAccident || !
-                            natureAccidentSelected.includes(rowNatureAccident))) {
+                    // Nature of Accident filter
+                    if (natureAccidentSelected.length > 0 && (!rowNatureAccident || !natureAccidentSelected.includes(rowNatureAccident))) {
                         showRow = false;
                     }
 
-                    if (natureSolutionSelected.length > 0 && (!rowNatureSolution || !
-                            natureSolutionSelected.includes(rowNatureSolution))) {
+                    // Nature of Solution filter
+                    if (natureSolutionSelected.length > 0 && (!rowNatureSolution || !natureSolutionSelected.includes(rowNatureSolution))) {
                         showRow = false;
                     }
 
-                    if (equipmentSelected.length > 0 && (!rowEquipment || !equipmentSelected
-                            .includes(rowEquipment))) {
+                    // Equipment filter
+                    if (equipmentSelected.length > 0 && (!rowEquipment || !equipmentSelected.includes(rowEquipment))) {
                         showRow = false;
                     }
 
-                    // Created Date filter
+                    // Date filters
                     if (createdDateStart && new Date(rowCreatedDate) < new Date(createdDateStart)) {
                         showRow = false;
                     }
                     if (createdDateEnd && new Date(rowCreatedDate) > new Date(createdDateEnd)) {
                         showRow = false;
                     }
-
-                    // Incident Date filter
-                    if (incidentDateStart && new Date(rowIncidentDate) < new Date(
-                            incidentDateStart)) {
+                    if (incidentDateStart && new Date(rowIncidentDate) < new Date(incidentDateStart)) {
                         showRow = false;
                     }
                     if (incidentDateEnd && new Date(rowIncidentDate) > new Date(incidentDateEnd)) {
                         showRow = false;
                     }
-
-                    // Closure Date filter
                     if (closureDateStart && new Date(rowClosureDate) < new Date(closureDateStart)) {
                         showRow = false;
                     }
@@ -2337,11 +2316,24 @@
                         showRow = false;
                     }
 
-                    // More date filters for incidentDate and closureDate as needed
-
-                    // Show or hide row based on the filters
-                    row.style.display = showRow ? '' : 'none';
+                    // Show or hide row and manage class
+                    if (showRow) {
+                        row.classList.remove('thisRowisNotVisible'); // Remove the hidden class
+                        row.style.display = ''; // Show the row
+                    } else {
+                        row.classList.add('thisRowisNotVisible'); // Add the hidden class
+                        row.style.display = 'none'; // Hide the row
+                    }
                 });
+
+                // Update selection based on visible rows
+                const visibleRows = Array.from(allRows).filter(row => !row.classList.contains('thisRowisNotVisible'));
+                const selectedCheckboxes = visibleRows.map(row => {
+                    const checkbox = row.querySelector('.select-row');
+                    return checkbox ? checkbox.checked : false;
+                });
+
+                console.log('Selected Checkboxes from Visible Rows:', selectedCheckboxes);
             });
 
             document.getElementById('clearFilters').addEventListener('click', function() {
@@ -2377,20 +2369,26 @@
             // Initialize an array to store the IDs
             var selectedIds = [];
 
-            // Find all checked checkboxes in the table
-            $('#ticketTable .select-row:checked').each(function() {
-                // Get the row of the checked checkbox
-                var row = $(this).closest('tr');
+            // Use the DataTables API to get all rows
+            var table = $('#ticketTable').DataTable();
 
-                // Extract the ticket ID from the row's data attribute
-                var ticketId = row.data('ticketid');
+            // Loop through all rows in the DataTable
+            table.rows().every(function() {
+                var row = this.node(); // Get the current row node
 
-                // Add the ticket ID to the array
-                selectedIds.push(ticketId);
+                // Check if the checkbox in the current row is checked
+                var checkbox = $(row).find('.select-row');
+                if (checkbox.is(':checked')) {
+                    // Extract the ticket ID from the row's data attribute
+                    var ticketId = $(row).data('ticketid');
+
+                    // Add the ticket ID to the array
+                    selectedIds.push(ticketId);
+                }
             });
 
             // Log the selected IDs to the console
-          //  console.log('Selected Ticket IDs:', selectedIds);
+            console.log('Selected Ticket IDs:', selectedIds);
 
             if (selectedIds.length > 0) {
                 // Send the selected IDs to the backend via AJAX
@@ -2454,16 +2452,22 @@
             // Initialize an array to store the IDs
             var selectedIds = [];
 
-            // Find all checked checkboxes in the table
-            $('#ticketTable .select-row:checked').each(function() {
-                // Get the row of the checked checkbox
-                var row = $(this).closest('tr');
+            // Use the DataTables API to get all rows
+            var table = $('#ticketTable').DataTable();
 
-                // Extract the ticket ID from the row's data attribute
-                var ticketId = row.data('ticketid');
+            // Loop through all rows in the DataTable
+            table.rows().every(function() {
+                var row = this.node(); // Get the current row node
 
-                // Add the ticket ID to the array
-                selectedIds.push(ticketId);
+                // Check if the checkbox in the current row is checked
+                var checkbox = $(row).find('.select-row');
+                if (checkbox.is(':checked')) {
+                    // Extract the ticket ID from the row's data attribute
+                    var ticketId = $(row).data('ticketid');
+
+                    // Add the ticket ID to the array
+                    selectedIds.push(ticketId);
+                }
             });
 
             // Set the selected ticket IDs in the hidden input field in the modal
