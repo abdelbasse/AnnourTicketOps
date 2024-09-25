@@ -20,7 +20,6 @@
 
 @section('body')
     <div class="container mt-5">
-        <h2>[Out Of Service]</h2>
         <!-- Breadcrumb -->
         <div class="row d-flex justify-content-between">
             <div class="col">
@@ -196,7 +195,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save Changes</button>
+                    <button type="button" class="btn btn-primary" id="saveChangesBtn">Save Changes</button>
                 </div>
             </div>
         </div>
@@ -275,7 +274,7 @@
                             showAlertS(response.parentId); // Assuming response includes the parent folder ID
                         },
                         error: function(xhr, status, error) {
-                            alert('Error deleting folder:', error);
+                            showAlertD("Error deleting folder:" + error);
                         }
                     });
                 }
@@ -301,7 +300,7 @@
                     var fileId = id;
 
                     // Add your logic here to delete the file via an API call or other action
-                    alert("File ID to delete:" + fileId);
+                    // alert("File ID to delete:" + fileId);
 
                     // Example: AJAX request to delete file
                     $.ajax({
@@ -322,7 +321,7 @@
                             showAlertS(response.parentId); // Assuming response includes the parent folder ID
                         },
                         error: function(xhr, status, error) {
-                            alert('Error deleting folder:', error);
+                            showAlertD("Error deleting folder : " + error);
                         }
                     });
                 }
@@ -353,6 +352,19 @@
             }
         }
 
+        // Exctre function to get img exentntion
+        function getFileIcon(extension) {
+            let iconPath = "{{asset('img/icons/FileManagement/file.png')}}"; // Default file icon
+
+            if (extension === 'pdf') {
+                iconPath = "{{asset('img/icons/FileManagement/pdf.png')}}";
+            } else if (extension === 'xlsx' || extension === 'xls' || extension === 'xlsm' || extension === 'csv') {
+                iconPath = "{{asset('img/icons/FileManagement/xls.png')}}";
+            }
+
+            return `<img src="${iconPath}" class="folder-icon p-2" alt="File Icon" height="100%" width="auto">`;
+        }
+
         function updateFolderContent(parentId) {
             var folderContainer = document.getElementById('FolderContainer');
             var fileContainer = document.getElementById('FileContainer');
@@ -368,6 +380,7 @@
             document.getElementById('currentFolderId').value = parentId;
 
             var children = getChildren(parentId);
+            const baseUrl = "{{ route('download.file', ['filename' => '']) }}";
 
             // Add folders and files
             children.forEach(child => {
@@ -417,11 +430,10 @@
                                         </div>
                                     </div>
                                     <div class="col d-flex justify-content-center align-items-center" style="height: 50%;">
-                                        <img src="{{asset('img/icons/FileManagement/pdf.png')}}"
-                                            class="folder-icon p-2" alt="File Icon" height="100%" width="auto">
+                                        ${getFileIcon(child.extension)}
                                     </div>
                                     <div class="col d-flex justify-content-center" style="height: 30%;">
-                                        <a class="text-center" href="#">${child.name}</a>
+                                        <a class="text-center" href="${baseUrl}/${child.path}">${child.name}</a>
                                     </div>
                                 </div>
                             </div>
@@ -515,9 +527,12 @@
                 var icon = item.isFile ? "jstree-file" : "jstree-folder";
                 nodesMap[item.id] = {
                     text: item.name,
+                    idOrg: item.id,  // Store the original ID
+                    id: item.id,     // Use the original ID directly for jsTree
                     children: [],
                     icon: icon,
-                    isFile: item.isFile
+                    isFile: item.isFile,
+                    parentId: item.parentId // Store parentId in the node
                 };
             });
 
@@ -525,14 +540,15 @@
             var jstreeData = [];
             for (var id in nodesMap) {
                 var node = nodesMap[id];
-                var parentId = treeData.find(item => item.id == id).parentId; // Correctly get parentId
+                var parentId = node.parentId; // Use stored parentId directly
                 if (parentId === null) {
                     jstreeData.push(node); // Root nodes
                 } else {
                     nodesMap[parentId].children.push(node); // Add child to parent
                 }
             }
-            return jstreeData;
+
+            return { jstreeData, nodesMap }; // Return both jstreeData and nodesMap
         }
 
         // Convert and initialize jsTree
@@ -542,24 +558,12 @@
         });
 
         $(document).ready(function() {
-            // Sample data for the jsTree with isFile property
-            const data = convertToJSTreeFormat(treeData);
-            // [
-            //     { "text": "Folder 1", "children": [
-            //         { "text": "File 1-1", "icon": "jstree-file", "isFile": true },
-            //         { "text": "File 1-2", "icon": "jstree-file", "isFile": true }
-            //     ], "icon": "jstree-folder", "isFile": false },
-            //     { "text": "Folder 2", "children": [
-            //         { "text": "File 2-1", "icon": "jstree-file", "isFile": true },
-            //         { "text": "File 2-2", "icon": "jstree-file", "isFile": true }
-            //     ], "icon": "jstree-folder", "isFile": false },
-            //     { "text": "Folder 3", "children": [], "icon": "jstree-folder", "isFile": false }
-            // ];
+            const { jstreeData, nodesMap } = convertToJSTreeFormat(treeData);
 
             // Initialize jsTree
             $('#fileTree').jstree({
                 'core': {
-                    'data': data,
+                    'data': jstreeData,
                     'check_callback': function (operation, node, parent, position, more) {
                         // Allow adding folders and files
                         if (operation === "create_node") {
@@ -570,45 +574,52 @@
                         return true; // Allow other operations
                     }
                 },
-                'plugins': ['dnd'], // Enable drag and drop
-                'dnd': {
-                    'check_while_dragging': true,
-                    'is_draggable': function(node) {
-                        return true; // Allow all nodes to be draggable
-                    }
-                }
-            }).on("ready.jstree", function() {
-                // Set icons based on isFile attribute
-                $('#fileTree').jstree(true).get_json('#', { flat: true }).forEach(function(node) {
-                    if (node.a_attr && node.a_attr.isFile) {
-                        $('#fileTree').jstree(true).rename_node(node.id, node.text);
+                'plugins': ['dnd']
+            });
+
+            // Log on Save Changes button click
+            $('#saveChangesBtn').on('click', function () {
+                // Get the current jsTree map with id, parent, and text
+                const jsTreeData = $('#fileTree').jstree(true).get_json('#', { flat: true });
+
+                const formattedData = jsTreeData.map(node => {
+                    // Accessing the original ID from nodesMap using the node's id
+                    const originalId = nodesMap[node.id]?.idOrg || null; // Use optional chaining to prevent errors
+
+                    return {
+                        id: Number(node.id), // This now uses the original numeric ID
+                        parent: Number(node.parent) || null, // '#' indicates the root node
+                        idOrg: originalId !== null ? Number(originalId) : null,
+                        parentOrg: nodesMap[node.id]?.parentId || null, // Get the original parent ID
+                        text: node.text
+                    };
+                });
+                $.ajax({
+                    url: '{{route('fileM.submit.newFilesOrder')}}',  // Your endpoint for creating a folder
+                    method: 'POST',
+                    data: {
+                        data: JSON.stringify(formattedData),
+                        _token: '{{ csrf_token() }}',
+                    },
+                    success: function(response) {
+                        // Handle success response
+                        showAlertS("Data saved successfully: " + response);
+                        console.log(response.data);
+                        location.reload(); // Reload the page
+                        // Optionally, you can refresh the tree or show a success message
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        // Handle error response
+                        showAlertD("Error saving data: " + textStatus + " " + errorThrown);
                     }
                 });
-            });
 
-            // Prevent dropping files into files or folders into folders
-            $('#fileTree').on("move_node.jstree", function (e, data) {
-                const node = data.node;
-                const parentNode = data.parent;
-
-                if (node.a_attr && node.a_attr.isFile && (parentNode.a_attr && parentNode.a_attr.isFile)) {
-                    // If trying to drop a file into a file, revert the action
-                    $('#fileTree').jstree("move_node", node, data.old_parent, data.old_position);
-                    alert("Cannot move files into other files!");
-                    return; // Prevent further execution
-                } else if (!node.a_attr.isFile && (parentNode.a_attr && parentNode.a_attr.isFile)) {
-                    // If trying to drop a folder into a file, revert the action
-                    $('#fileTree').jstree("move_node", node, data.old_parent, data.old_position);
-                    alert("Cannot move folders into files!");
-                    return; // Prevent further execution
-                }
-
-                // Optional: Change icon of the parent node if valid drop occurs
-                if (parentNode.a_attr && !parentNode.a_attr.isFile) {
-                    $('#fileTree').jstree().get_node(parentNode).icon = "jstree-folder";
-                }
             });
         });
+
+        // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+        // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+        // Logique to make jsTree wokr fin
 
         // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
         // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -677,6 +688,7 @@
                 if (!existingItem) {
                     const parentContainer = document.getElementById(child.isFile === 1 ? 'FileContainer' : 'FolderContainer'); // Get the parent container based on the child's parentId
                     let newItemHTML;
+                    const baseUrl = "{{ route('download.file', ['filename' => '']) }}";
 
                     // Create HTML for the new item based on whether it is a file or folder
                     if (child.isFile === 0) { // Folder
@@ -725,11 +737,10 @@
                                             </div>
                                         </div>
                                         <div class="col d-flex justify-content-center align-items-center" style="height: 50%;">
-                                            <img src="{{asset('img/icons/FileManagement/pdf.png')}}"
-                                                class="folder-icon p-2" alt="File Icon" height="100%" width="auto">
+                                            ${getFileIcon(child.extension)}
                                         </div>
                                         <div class="col d-flex justify-content-center" style="height: 30%;">
-                                            <a class="text-center" href="#">${child.name}</a>
+                                            <a class="text-center" href="${baseUrl}/${child.path}">${child.name}</a>
                                         </div>
                                     </div>
                                 </div>

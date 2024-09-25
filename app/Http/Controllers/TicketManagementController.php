@@ -17,6 +17,8 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
+use App\Models\FileFolder;
 
 class TicketManagementController extends Controller
 {
@@ -831,6 +833,7 @@ class TicketManagementController extends Controller
 
     public function getRapport($id)
     {
+        // Retrieve the ticket and its latest recovery log
         $ticket = Ticket::find($id);
         $reportBody = $ticket->latestRecoveryLog->repportBody;
 
@@ -841,7 +844,27 @@ class TicketManagementController extends Controller
             $reportBody
         );
 
+        // Load the view into the PDF
         $pdf = PDF::loadView('report', ['ticket' => $ticket, 'reportBody' => $reportBody]);
-        return $pdf->download('ticket_report_' . $id . '.pdf');
+
+        // Generate a unique file name for the PDF
+        $uniqueFileName = 'ticket_report_' . $id . '_' . uniqid() . '.pdf';
+        $filePath = 'Rapports/' . $uniqueFileName;  // Path relative to 'storage/app/public'
+
+        // Store the PDF in the 'storage/app/public/Rapports' directory
+        Storage::disk('public')->put($filePath, $pdf->output());
+
+        // Save file information in the database using the FileFolder model
+        FileFolder::create([
+            'userId' => auth()->user()->id,  // Assuming authenticated user
+            'name' => $uniqueFileName,       // Stored file name
+            'isFile' => true,
+            'path' => $filePath, // The public path for the file
+            'extension' => 'pdf',            // File extension
+            'parentId' => 1,                 // Set parent ID if applicable (e.g., the folder)
+        ]);
+
+        // Return the PDF file for download
+        return $pdf->download($uniqueFileName);
     }
 }

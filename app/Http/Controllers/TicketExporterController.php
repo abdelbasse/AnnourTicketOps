@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\TableExport;
+use App\Models\FileFolder;
 
 class TicketExporterController extends Controller
 {
@@ -24,6 +25,16 @@ class TicketExporterController extends Controller
 
         // Store the Excel file in the public storage
         Excel::store(new TableExport($ids), $filePath);
+
+        // Save the file information in the database using the FileFolder model
+        FileFolder::create([
+            'userId' => auth()->user()->id,
+            'name' => $fileName,
+            'isFile' => true,
+            'path' => 'storage/' . $fileName,
+            'extension' => 'xlsx',
+            'parentId' => 1,
+        ]);
 
         // Return the file download URL
         return response()->json([

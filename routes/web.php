@@ -29,7 +29,10 @@ use Maatwebsite\Excel\Facades\Excel;
 */
 
 Route::post('/upload.image', [ImageUploadController::class, 'upload'])->name('upload.image');
-Route::get('/download/{filename}', function ($filename) {
+Route::get('/download/{filename?}', function ($filename) {
+    if (is_null($filename)) {
+        return response()->json(['success' => false, 'message' => 'Filename is required.'], 400);
+    }
     $filePath = 'public/' . $filename;
 
     if (Storage::exists($filePath)) {
@@ -113,6 +116,7 @@ Route::middleware('login')->group(function () {
 
     Route::get('/files',[FileManagementController::class,'index'])->name('fileM.index');
     Route::post('/files',[FileManagementController::class,'submit'])->name('fileM.submit');
+    Route::post('/files/order',[FileManagementController::class,'OrderSubmit'])->name('fileM.submit.newFilesOrder');
 
     // Routes only for Supervisorrs
     // Route::middleware('Supervisor')->group(function () {

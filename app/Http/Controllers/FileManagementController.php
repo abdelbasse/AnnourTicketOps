@@ -27,12 +27,13 @@ class FileManagementController extends Controller
     public function submit(Request $req){
         if($req->type === "NFile"){
             $req->validate([
-                'file' => 'required|file|mimes:jpg,jpeg,png,pdf,docx',
+                'file' => 'required|file|mimes:jpg,jpeg,png,pdf,txt,docx,xls,xlsx,xlsm,xlsb,xlt,xltx,xltm,csv',
                 'folder_id' => 'required|integer',
             ]);
 
             $file = $req->file('file');
             $originalFileName = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
 
             $uniqueFileName = uniqid() . '_' . time() . '.' . $file->getClientOriginalExtension();
 
@@ -44,6 +45,7 @@ class FileManagementController extends Controller
                 'isFile' => true,
                 'path' => $path,
                 'parentId' => $req->folder_id,
+                'extension' => $extension,
             ]);
 
             return response()->json(['success' => true,'message' => 'File uploaded successfully !!!',201]);
@@ -123,6 +125,22 @@ class FileManagementController extends Controller
             return response()->json(['message' => 'Somthing went wrong'], 401);
         }
         return response()->json(['message' => 'Somthing went wrong'], 401);
+    }
+
+    public function OrderSubmit(Request $req){
+        $data = json_decode($req->data, true);
+
+        foreach ($data as $item) {
+            $record = FileFolder::find($item['id']);
+
+            if ($record) {
+                if ($item['parentOrg'] !== null) {
+                    $record->parentId = $item['parent'];
+                }
+                $record->save();
+            }
+        }
+        return response()->json(['success' => true,'message' => 'File uploaded successfully !!!','data' => $req->data,201]);
     }
 
     // |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
