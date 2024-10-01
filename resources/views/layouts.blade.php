@@ -20,9 +20,10 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/35.3.0/classic/ckeditor.js"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <!----===== Favicon ===== -->
+    <link rel="icon" type="image/png" href="{{ asset('img/icons/Logo/DoubleT_Logo.png') }}"> <!-- Replace with your icon path -->
 
-
-    <title>Dashboard Sidebar Menu</title>
+    <title>TickTrak</title> <!-- Set the application name here -->
 </head>
 
 <style>
@@ -185,11 +186,11 @@
         <header>
             <div class="image-text">
                 <span class="image">
-                    <img src="{{ asset('img/layouts/logo.png') }}" alt="">
+                    <img src="{{ asset('img/icons/Logo/DoubleT_Logo.png') }}" alt="">
                 </span>
 
                 <div class="text logo-text">
-                    <span class="name">Codinglab</span>
+                    <span class="name">TickTrak</span>
                 </div>
             </div>
 

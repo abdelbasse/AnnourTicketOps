@@ -98,7 +98,7 @@
                                                 <li><a class="dropdown-item" href="" data-bs-toggle="modal"
                                                         data-bs-target="#modalAddNewUser">Add User</a></li>
                                                 <li>
-                                                    <label for="fileUpload" class="dropdown-item" style="cursor: pointer;">
+                                                    <label for="fileUpload" class="dropdown-item disabled" style="cursor: pointer;">
                                                         Import Excel
                                                         <input type="file" id="fileUpload" style="display: none;"
                                                             accept=".xls,.xlsx">
@@ -107,7 +107,7 @@
                                                 <li>
                                                     <hr class="dropdown-divider">
                                                 </li>
-                                                <li><a class="dropdown-item" href="" id="exportExcel">Export
+                                                <li><a class="dropdown-item disabled" href="" id="exportExcel">Export
                                                         Excel</a></li>
                                             </ul>
                                         </div>
@@ -295,10 +295,10 @@
                                     </table>
                                 </div>
                                 <div class="d-flex justify-content-end mt-3">
-                                    <button type="button" class="btn btn-danger m-3 mt-0 mb-0"
+                                    <button type="button" class="btn btn-danger m-3 mt-0 mb-0 disabled"
                                         id="deleteSelected">Delete
                                         Selected</button>
-                                    <button type="button" class="btn btn-success mt-0 mb-0"
+                                    <button type="button" class="btn btn-success mt-0 mb-0 disabled"
                                         id="exportSelected">Export
                                         Selected</button>
                                 </div>

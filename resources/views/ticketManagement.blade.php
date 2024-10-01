@@ -355,18 +355,16 @@
                                                                     id="statusClosed">
                                                                 <label class="form-check-label" for="statusClosed">Cloture</label>
                                                             </div>
-                                                            @if (auth()->user()->role() <= 3)
-                                                                <div class="form-check m-2 mt- mb-2">
-                                                                    <input class="form-check-input border" type="checkbox" value="3"
-                                                                        id="statusValidated">
-                                                                    <label class="form-check-label" for="statusValidated">Validated</label>
-                                                                </div>
-                                                                <div class="form-check m-2 mt- mb-2">
-                                                                    <input class="form-check-input border" type="checkbox" value="4"
-                                                                        id="statusNotValidated">
-                                                                    <label class="form-check-label" for="statusNotValidated">Not Validated</label>
-                                                                </div>
-                                                            @endif
+                                                            <div class="form-check m-2 mt- mb-2">
+                                                                <input class="form-check-input border" type="checkbox" value="3"
+                                                                    id="statusValidated">
+                                                                <label class="form-check-label" for="statusValidated">Validated</label>
+                                                            </div>
+                                                            <div class="form-check m-2 mt- mb-2">
+                                                                <input class="form-check-input border" type="checkbox" value="4"
+                                                                    id="statusNotValidated">
+                                                                <label class="form-check-label" for="statusNotValidated">Not Validated</label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -400,7 +398,7 @@
                                             </li>
                                             @if (auth()->user()->role() <= 3)
                                                 <li>
-                                                    <a class="dropdown-item" href="#" id="exportALll">Export
+                                                    <a class="dropdown-item disabled" href="#" id="exportALll">Export
                                                         All</a>
                                                 </li>
                                             @endif
@@ -1444,6 +1442,11 @@
 @endsection
 
 @section('script2')
+    @if (isset($errorTicketRapport))
+        <script>
+            showAlertD(errorTicketRapport);
+        </script>
+    @endif
     <script defer src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script defer src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
     <script defer src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
@@ -1468,12 +1471,35 @@
             // Initialize DataTable for Equipment Table
             $('#equipmentTable').DataTable();
 
+            // Initialize DataTable for Ticket Table with scrolling
+            $('#ticketTable').DataTable({
+                paging: false, // Disable pagination
+                scrollY: '500px', // Set a max height for the container
+                scrollCollapse: true, // Allow the table to reduce height when fewer rows
+                info: false // Disable the information display
+            });
 
-            // Initialize DataTable for Ticket Table
-            $('#ticketTable').DataTable();
-            $('#otherTicketTable').DataTable();
-            $('#ticketTableTransfered').DataTable();
-            $('#ticketTablePendingCloture').DataTable();
+            $('#otherTicketTable').DataTable({
+                paging: false,
+                scrollY: '500px',
+                scrollCollapse: true,
+                info: false
+            });
+
+            $('#ticketTableTransfered').DataTable({
+                paging: false,
+                scrollY: '500px',
+                scrollCollapse: true,
+                info: false
+            });
+
+            $('#ticketTablePendingCloture').DataTable({
+                paging: false,
+                scrollY: '500px',
+                scrollCollapse: true,
+                info: false
+            });
+
 
 
 
@@ -1964,66 +1990,6 @@
         });
 
         $(document).ready(function() {
-            // Function to handle edit button click and show ID in modal
-            // $('.editBtn').on('click', function() {
-            //     var row = $(this).closest('tr');
-            //     var itemType = row.data('type');
-            //     var itemId = row.data('id');
-
-            //     if (itemType === "airport") {
-            //         var airportCode = row.find('td:eq(0)').text()
-            //             .trim(); // Get airport IATA Code from table cell
-            //         var airportLocation = row.find('td:eq(1)').text()
-            //             .trim(); // Get airport location from table cell
-            //         var airportAddress = row.find('td:eq(2)').text()
-            //             .trim(); // Get airport address from table cell
-
-            //         // Populate modal fields
-            //         $('#editAirportModal #editAirportId').val(itemId);
-            //         $('#editAirportModal #editAirportCode').val(airportCode);
-            //         $('#editAirportModal #editAirportLocation').val(airportLocation);
-            //         $('#editAirportModal #editAirportAddress').val(airportAddress);
-
-            //         // Show the modal
-            //         $('#editAirportModal').modal('show');
-            //     } else if (itemType === "equipment") {
-            //         var equipmentName = row.find('td:eq(0)').text()
-            //             .trim(); // Get equipment name from table cell
-
-            //         // Populate modal fields
-            //         $('#editEquipmentModal #editEquipmentId').val(itemId);
-            //         $('#editEquipmentModal #editEquipmentName').val(equipmentName);
-
-            //         // Show the modal
-            //         $('#editEquipmentModal').modal('show');
-            //     } else if (itemType === "problem") {
-            //         var problemType = row.find('td:eq(0)').text()
-            //             .trim(); // Get problem type from table cell
-            //         var problemDescription = row.find('td:eq(1)').text()
-            //             .trim(); // Get problem description from table cell
-
-            //         // Populate modal fields
-            //         $('#editProblemModal #problemId').val(itemId);
-            //         $('#editProblemModal #problemType').val(problemType);
-            //         $('#editProblemModal #problemDescription').val(problemDescription);
-
-            //         // Show the modal
-            //         $('#editProblemModal').modal('show');
-            //     } else if (itemType === "solution") {
-            //         var solutionType = row.find('td:eq(0)').text()
-            //             .trim(); // Get solution type from table cell
-            //         var solutionDescription = row.find('td:eq(1)').text()
-            //             .trim(); // Get solution description from table cell
-
-            //         // Populate modal fields
-            //         $('#editSolutionModal #solutionId').val(itemId);
-            //         $('#editSolutionModal #solutionType').val(solutionType);
-            //         $('#editSolutionModal #solutionDescription').val(solutionDescription);
-
-            //         // Show the modal
-            //         $('#editSolutionModal').modal('show');
-            //     }
-            // });
 
             // Function to handle save changes button click for Airport
             $('#saveAirportChanges').on('click', function() {

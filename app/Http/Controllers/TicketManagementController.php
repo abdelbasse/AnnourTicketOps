@@ -844,6 +844,9 @@ class TicketManagementController extends Controller
     {
         // Retrieve the ticket and its latest recovery log
         $ticket = Ticket::find($id);
+        if(!$ticket->ticketIsValid()){
+            return redirect()->back()->withErrors(['errorTicketRapport' => 'The ticket is not valid.']);
+        }
         $reportBody = $ticket->latestRecoveryLog->repportBody;
 
         // Replace image URLs with public path

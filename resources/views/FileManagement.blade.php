@@ -15,16 +15,27 @@
         .selectableItemsContainer{
             cursor: pointer;
         }
+
+        .breadcrumb-item + .breadcrumb-item::before {
+            color: var(--primary-color); /* Change this to your desired color */
+        }
+
+        .folder-name-item{
+            max-width: 90%;          /* Maximum width of the folder name */
+            overflow: hidden;         /* Hide overflowing text */
+            white-space: nowrap;      /* Prevent text from wrapping to a new line */
+            text-overflow: ellipsis;
+        }
     </style>
 @endsection
 
 @section('body')
-    <div class="container mt-5">
+    <div class="alertsContainer container-fluid px-5 mt-3">
         <!-- Breadcrumb -->
-        <div class="row d-flex justify-content-between">
+        <div class="row d-flex justify-content-between" style="color: var(--primary-color);">
             <div class="col">
                 <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb d-flex align-items-center">
+                    <ol class="breadcrumb d-flex align-items-center" style="color: var(--primary-color);">
                         <li class="breadcrumb-item">
                             <a href="#" class="d-flex align-items-center">
                                 <img src="{{asset('img/icons/FileManagement/building.png')}}" alt="Home Icon" height="30px" class="m-2 mt-0 mb-0">Root
@@ -33,7 +44,7 @@
                     </ol>
                 </nav>
             </div>
-            <div class="col d-flex justify-content-end">
+            <div class="col d-flex justify-content-end" >
                 <!-- Change Files Button -->
                 <div class="text-right upload-btn">
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#saveChangesModal">Change Files</button>
@@ -43,7 +54,7 @@
 
         <!-- Folders Section -->
         <h5><b>Folders</b></h5>
-        <div class="row row-cols-1 row-cols-lg-4 row-cols-lx-4 row-cols-md-2 row-cols-sm-2" id="FolderContainer">
+        <div class="row row-cols-1 row-cols-lg-5 row-cols-lx-5 row-cols-md-3 row-cols-sm-2" id="FolderContainer">
             {{-- List of foders --}}
             <!-- New Folder Button Modal -->
             <div class="col folder mb-3">
@@ -64,7 +75,7 @@
         <hr class="mt-3">
         <!-- Files Section -->
         <h5 class="mt-3"><b>Files</b></h5>
-        <div class="row row-cols-lg-4 row-cols-lx-4 row-cols-md-2 row-cols-sm-2" id="FileContainer">
+        <div class="row row-cols-lg-5 row-cols-lx-5 row-cols-md-3 row-cols-sm-2" id="FileContainer">
             {{-- List of files --}}
             <!-- Upload New File Button Modal -->
             <div class="col mb-3" >
@@ -393,8 +404,8 @@
                                         <img src="{{asset('img/icons/FileManagement/folder.png')}}"
                                             class="folder-icon p-2 pt-0 pb-0" alt="Folder Icon" height="85%" width="auto">
                                     </div>
-                                    <div class="col col-7">
-                                        <span class="folder-name">${child.name}</span>
+                                    <div class="col col-7" >
+                                        <span class="folder-name-item">${child.name}</span>
                                     </div>
                                     <div class="col col-2 d-flex align-items-center justify-content-end" style="height: 100%;">
                                         <div class="dropdown m-2 mt-0 mb-0">
@@ -433,7 +444,7 @@
                                         ${getFileIcon(child.extension)}
                                     </div>
                                     <div class="col d-flex justify-content-center" style="height: 30%;">
-                                        <a class="text-center" href="${baseUrl}/${child.path}">${child.name}</a>
+                                        <a class="text-center folder-name-item" href="${baseUrl}/${child.path}" >${child.name}</a>
                                     </div>
                                 </div>
                             </div>
@@ -462,7 +473,7 @@
 
             fileContainer.innerHTML += `
                 <div class="col mb-3">
-                    <div class="card shadow theContainerForAddingNewItem" style="background-color: var(--primary-color-light);;" id="UploadNewFile">
+                    <div class="card shadow theContainerForAddingNewItem" style="background-color: var(--primary-color-light);" id="UploadNewFile">
                         <div class="row pt-3 row-cols-1 d-flex align-items-center" style="height: 180px;">
                             <div class="col d-flex justify-content-center align-items-center" style="height: 60%;">
                                 <img src="{{asset('img/icons/FileManagement/new-file.png')}}"
@@ -497,7 +508,7 @@
             path.forEach((node, index) => {
                 if (index > 0) {
                     breadcrumb.innerHTML += `
-                        <li class="breadcrumb-item">
+                        <li class="breadcrumb-item" style="color: var(--primary-color);">
                             <a href="#" onclick="updateFolderContent(${node.id})" class="d-flex align-items-center">
                                 <img src="${node.isFile === 0 ? '{{asset('img/icons/FileManagement/folderBlue.png')}}' : '{{asset('img/icons/FileManagement/building.png')}}'}" alt="Icon" height="20px" class="m-2 mt-0 mb-0">${node.name}
                             </a>
@@ -505,7 +516,7 @@
                     `;
                 } else {
                     breadcrumb.innerHTML += `
-                        <li class="breadcrumb-item active" aria-current="page">
+                        <li class="breadcrumb-item active" aria-current="page" style="color: var(--primary-color);">
                             <a href="#" onclick="updateFolderContent(${node.id})" class="d-flex align-items-center">
                                 <img src="{{asset('img/icons/FileManagement/building.png')}}" alt="Home Icon" height="30px" class="m-2 mt-0 mb-0">Root
                             </a>

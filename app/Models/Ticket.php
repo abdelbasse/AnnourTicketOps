@@ -186,5 +186,19 @@ class Ticket extends Model
 
     // Recursive method to get all parent tickets
 
+    public function ticketIsValid(){
+        // Ensure that we are working with the current ticket instance
+        $ticket = $this; // Use the current instance of Ticket
+
+        return (
+            $ticket->status >= 2 &&
+            $ticket->hasRecoveryLogs() &&
+            $ticket->hasAnalyseLogs() &&
+            ($ticket->DateIncident ? true : false) && // Valid DateIncident
+            (($ticket->hasRecoveryLogs() && $ticket->latestRecoveryLog->dateRecovery) ? true : false) && // Valid latestRecoveryLog date
+            ($ticket->DateCloture ? true : false) && // Valid DateCloture
+            $ticket->aerport // Aerport exists
+        );
+    }
 
 }
