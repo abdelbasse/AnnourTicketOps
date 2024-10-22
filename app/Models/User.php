@@ -78,16 +78,16 @@ class User extends Authenticatable
 
     public function getOwnedTickets()
     {
-        // Use a subquery to get the latest ownership records for each ticket
-        $latestOwnerships = TicketOwnership::select('ticketID')
+        // Subquery to get the latest ownership records for each distinct ticket
+        $latestOwnerships = TicketOwnership::select('ticketID', 'created_at') // Include 'created_at' in SELECT
             ->where('reseverID', $this->id)
             ->where('statu', 1)
-            ->latest('created_at')
-            ->distinct('ticketID')
+            ->orderBy('created_at', 'desc') // Order by 'created_at' 
+            ->distinct() // Get distinct ticketID
             ->get();
-
+    
         // Get the IDs of these tickets
-        $ticketIDs = $latestOwnerships->pluck('ticketID');
+        $ticketIDs = $latestOwnerships->pluck('ticketID') ;
 
         // Retrieve the tickets associated with these IDs
         return Ticket::whereIn('id', $ticketIDs)->get();

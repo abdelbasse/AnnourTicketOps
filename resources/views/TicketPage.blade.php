@@ -771,7 +771,7 @@
                                                         {{-- Transfer Owner Log --}}
                                                         <p>Ticket ownership was transferred on <strong>{{ $log['date'] }}</strong>.</p>
 
-                                                        @if ($log['LogData']->owner->id == $log['LogData']->reserver->id || $log['LogData']->owner->id == 0)
+                                                        @if ($log['LogData']->owner->id == $log['LogData']->reserver->id || $log['LogData']->owner->id == 1)
                                                             <p>User <strong>{{ $log['LogData']->reserver->Fname }}</strong> assigned the ticket to themselves.</p>
                                                         @elseif ($log['LogData']->forced == 1)
                                                             <p>Ticket was transferred to <strong>{{ $log['LogData']->reserver->Fname }}</strong> by a supervisor<b>[forced]</b>.</p>

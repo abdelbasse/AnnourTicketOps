@@ -348,7 +348,7 @@
                                     <span class="profession">{{ $roleName }}</span>
                                 </div>
                                 <span class="image">
-                                    <img src="{{ asset(Auth()->user()->imgUrl) }}" alt="" style="max-height: 55px; max-width:55px;">
+                                    <img src="{{ asset(Auth()->user()->imgUrl) }}" alt="" style="height: 55px; width:55px;">
                                 </span>
 
                             </div>

@@ -412,7 +412,7 @@ class AdminTicketManagementController extends Controller
 
         TicketOwnership::create([
             'ticketID' => $ticket->id,
-            'ownerID' => 0,
+            'ownerID' => 1,
             'reseverID' => auth()->user()->id,
             'statu' => true,
             'respond_at' => Carbon::now('Africa/Casablanca'),
@@ -464,7 +464,7 @@ class AdminTicketManagementController extends Controller
         ]);
         TicketOwnership::create([
             'ticketID' => $req->ticketId,
-            'ownerID' => 0,
+            'ownerID' => 1,
             'reseverID' => auth()->user()->id,
             'statu' => true,
             'respond_at' => Carbon::now('Africa/Casablanca'),

@@ -16,11 +16,11 @@ class DatabaseSeeder extends Seeder
     {
         // Call all the seeders you want to run
         $this->call([
-            UsersTableSeeder::class,
+            FileFolderSeeder::class,
             AerportsTableSeeder::class,
             NatureIncidentsTableSeeder::class,
             NatureSolutionsTableSeeder::class,
-            FileFolderSeeder::class,
+            UsersTableSeeder::class,
         ]);
     }
 }

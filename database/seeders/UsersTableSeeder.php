@@ -13,7 +13,7 @@ class UsersTableSeeder extends Seeder
     {
         DB::table('users')->insert([
             [
-                'id' => 0,
+                'id' => 1,
                 'Fname' => 'System',
                 'Lname' => '',
                 'email' => '',
@@ -27,7 +27,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
-                'id' => 1,
+                'id' => 2,
                 'Fname' => 'Annour',
                 'Lname' => 'technology',
                 'email' => 'admin@gmail.com',

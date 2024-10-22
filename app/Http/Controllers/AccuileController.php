@@ -21,12 +21,50 @@ class AccuileController extends Controller
 
         return view('HomePage')->with([
             'ListOfTickets' => $ListOfTickets,
-            'lifeCyleOfTickets' => $this->getTicketStats($ListOfTickets,$now->format("Y/m/d")),
-            'MonthlyTicketStats' => $this->getMonthlyTicketStats($ListOfTickets),
-            'AvergaeTimeOfTickets' => $this->getTicketDataLine($ListOfTickets,$now->format("Y/m/d")),
-            'ProblemStatistics' => $this->getProblemStatistics(),
-            'SolutionStatistics' => $this->getSolutionStatistics(),
-            'HeaderInfoNbrTotalTickets' => $this->getTicketStatistics(),
+            // Default empty data at index
+            'AvergaeTimeOfTickets' => $ticketDataLine = [
+                'thisWeek' => [
+                    'labels' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                    'avgCreationTime' => array_fill(0, 7, 0),
+                    'avgCloseTime' => array_fill(0, 7, 0),
+                    'avgIncidentDuration' => array_fill(0, 7, 0),
+                    'avgLifespan' => array_fill(0, 7, 0),
+                ],
+                'thisMonth' => [
+                    'labels' => array_map(fn($i) => 'Week ' . ($i + 1), range(0, 3)), // Example for 4 weeks
+                    'avgCreationTime' => array_fill(0, 4, 0),
+                    'avgCloseTime' => array_fill(0, 4, 0),
+                    'avgIncidentDuration' => array_fill(0, 4, 0),
+                    'avgLifespan' => array_fill(0, 4, 0),
+                ],
+                'thisYear' => [
+                    'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    'avgCreationTime' => array_fill(0, 12, 0),
+                    'avgCloseTime' => array_fill(0, 12, 0),
+                    'avgIncidentDuration' => array_fill(0, 12, 0),
+                    'avgLifespan' => array_fill(0, 12, 0),
+                ],
+            ],
+
+            'MonthlyTicketStats' => $stats = [
+                'months' => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                'created' => array_fill(0, 12, 0),
+                'closed' => array_fill(0, 12, 0),
+                'recovered' => array_fill(0, 12, 0),
+            ],
+            'lifeCyleOfTickets' => [
+                'today' => ['created' => 0, 'closed' => 0, 'recovered' => 0, 'workedOn' => 0],
+                'lastWeek' => ['created' => 0, 'closed' => 0, 'recovered' => 0, 'workedOn' => 0],
+                'lastMonth' => ['created' => 0, 'closed' => 0, 'recovered' => 0, 'workedOn' => 0],
+                'lastYear' => ['created' => 0, 'closed' => 0, 'recovered' => 0, 'workedOn' => 0],
+            ],
+
+            'ProblemStatistics' => [],
+            'SolutionStatistics' => [],
+            'HeaderInfoNbrTotalTickets' => [
+                'total_tickets' => 0,
+                'open_tickets' => 0,
+            ],
             'AerportTicketRealtion' => $this->getTicketDataBar($now->format("Y/m/d")),
             'top5Users'=> $this->getUserActivityData($now->format("Y/m/d")),
         ]);
