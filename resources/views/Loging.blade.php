@@ -325,7 +325,7 @@
                     <div class="row justify-content-center">
                         <div class="col-md-8">
                             <div class="mb-4">
-                                <h3>Sign In [Test Update Docker Cmd]</h3>
+                                <h3>Sign In</h3>
                             </div>
                             <form action="{{ route('login-submit') }}" method="POST">
                                 @csrf
