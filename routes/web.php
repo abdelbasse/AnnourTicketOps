@@ -16,6 +16,7 @@ use App\Http\Controllers\TicketExporterController;
 use App\Http\Controllers\UserInfoAdminUserManagamentController;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\FileFolder;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,12 +34,28 @@ Route::get('/download/{filename?}', function ($filename) {
     if (is_null($filename)) {
         return response()->json(['success' => false, 'message' => 'Filename is required.'], 400);
     }
-    $filePath = 'public/' . $filename;
 
+    // Find the file in the database using the filename (could be 'name', 'path', etc.)
+    $fileRecord = FileFolder::where('name', $filename)
+        ->orWhere('path', $filename)
+        ->first();
+
+    // If the file is not found in the database
+    if (!$fileRecord) {
+        return response()->json(['success' => false, 'message' => 'File not found in the database.'], 404);
+    }
+
+    // Construct the full file path from the 'path' column (e.g., 'public/yourpath')
+    $filePath = 'public/' . $fileRecord->path;
+
+    // Check if the file exists in storage
     if (Storage::exists($filePath)) {
-        return Storage::download($filePath);
+        // Return the file for download with the original name and extension
+        $originalFileName = $fileRecord->name . '.' . $fileRecord->extension;
+        return Storage::download($filePath, $originalFileName);
     } else {
-        abort(404, 'File not found.');
+        // If the file does not exist on the disk, return a 404 response
+        return response()->json(['success' => false, 'message' => 'File not found on the server.'], 404);
     }
 })->name('download.file');
 
