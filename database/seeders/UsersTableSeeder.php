@@ -32,8 +32,8 @@ class UsersTableSeeder extends Seeder
                 'Lname' => 'technology',
                 'email' => 'admin@gmail.com',
                 'tell' => '054356543212',
-                'password' => Hash::make('your_password'), // Adjust password hashing as needed
-                'password_Org' => '$2y$10$3gOywjcmHBFvOqGgvNqvbuaJJxW3JjT3ZpJPZosi2syMP1oOtlADq',
+                'password' => Hash::make('annourtechnologie'), // Adjust password hashing as needed
+                'password_Org' => '$2a$12$WLiIZZRU9f0uKLEEf7nmFuOZAEpzXeycwbsIGydIzMLqOiZtIVdKy',
                 'role' => 1,
                 'imgUrl' => 'img/users/user.png',
                 'remember_token' => null,
